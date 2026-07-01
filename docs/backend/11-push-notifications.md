@@ -1,60 +1,17 @@
-# Push notifications — Backend
+# Notificações push — fora do MVP
 
-## Objetivo
+Notificações push não fazem parte do MVP inicial.
 
-Permitir notificações futuras para conclusão, falha e expiração próxima.
+## Regra
 
-## Endpoints futuros
+Não implementar endpoints, permissões, subscriptions ou envio de push nesta etapa.
 
-```text
-POST /api/push-subscriptions
-DELETE /api/push-subscriptions/{id}
-GET /api/push-subscriptions
-```
+## Motivo
 
-## Dados
+O MVP deve usar polling em `GET /api/jobs/{job_id}/status` para acompanhar processamento. Isso é suficiente para validar o fluxo assíncrono sem adicionar permissões do navegador nem novos riscos.
 
-```text
-id
-user_id ou anonymous_session_id
-endpoint
-p256dh
-auth
-user_agent opcional
-created_at
-revoked_at
-```
+## Alternativa do MVP
 
-## Segurança
-
-- Salvar chaves com cuidado.
-- Não logar endpoint completo quando não necessário.
-- Vincular subscription ao usuário/sessão.
-- Permitir revogação.
-- Não enviar dados sensíveis na notificação.
-
-## Eventos de notificação
-
-```text
-job_completed
-job_failed
-artifact_expiring_soon
-```
-
-## Exemplo de conteúdo
-
-```text
-WFlyer
-Sua transposição Piano -> Trompete Bb foi concluída.
-Toque para baixar a partitura.
-```
-
-## Scheduler
-
-Para expiração próxima:
-
-```text
-buscar jobs com expires_at em 24h/48h
-notificar usuários que optaram por isso
-evitar duplicidade com notification_events
-```
+- Polling com intervalo controlado.
+- Mensagens textuais de status.
+- `aria-live` para acessibilidade.

@@ -1,147 +1,150 @@
-# Modelagem inicial do banco
+# Modelo de dados do MVP
 
-## Banco
-
-PostgreSQL com SQLAlchemy 2.0 e Alembic.
-
-## Tabelas principais
+## Tabelas mínimas
 
 ```text
-processing_jobs
-uploaded_files
-generated_artifacts
 instruments
+uploads
+processing_jobs
+generated_artifacts
 job_events
-admin_processing_metrics
-```
-
-## Tabelas futuras
-
-```text
-users
-user_settings
-push_subscriptions
-shared_scores
-shared_score_downloads
-admin_audit_logs
-```
-
-## processing_jobs
-
-Campos:
-
-```text
-id UUID PK
-user_id UUID nullable
-anonymous_session_id text nullable
-status text
-progress int
-current_step text
-original_filename text
-source_instrument_id text FK
-target_instrument_id text FK
-transpose_interval int
-detected_key text nullable
-target_key text nullable
-public_error_message text nullable
-internal_error_message text nullable
-created_at timestamptz
-updated_at timestamptz
-expires_at timestamptz
-completed_at timestamptz nullable
-```
-
-Campos internos/admin podem ficar em tabela separada ou colunas controladas:
-
-```text
-confidence_score_omr numeric nullable
-confidence_score_instrument_detection numeric nullable
-confidence_score_key_detection numeric nullable
-unrecognized_symbols_count int nullable
-parsed_measures_count int nullable
-warnings_count int nullable
-processing_duration_ms int nullable
-engine_version text nullable
-worker_id text nullable
-```
-
-## uploaded_files
-
-```text
-id UUID PK
-job_id UUID nullable
-user_id UUID nullable
-anonymous_session_id text nullable
-original_filename text
-sanitized_filename text
-storage_key text
-mime_type text
-size_bytes bigint
-page_count int nullable
-sha256 text nullable
-status text
-created_at timestamptz
-expires_at timestamptz
-```
-
-## generated_artifacts
-
-```text
-id UUID PK
-job_id UUID FK
-kind text
-storage_key text
-filename text
-mime_type text
-size_bytes bigint nullable
-sha256 text nullable
-created_at timestamptz
-expires_at timestamptz
 ```
 
 ## instruments
 
 ```text
-id text PK
-name text
-family text
-written_to_concert int
-aliases jsonb
-description text
-supported bool
-created_at timestamptz
-updated_at timestamptz
+id
+name
+family
+key_name
+written_to_concert
+is_active
+created_at
+updated_at
 ```
+
+Regras:
+
+- `id` deve ser slug estável.
+- `written_to_concert` é obrigatório.
+- Instrumento inativo não pode ser usado em novo job.
+
+## uploads
+
+```text
+id
+original_filename
+mime_type
+size_bytes
+storage_key
+status
+expires_at
+created_at
+updated_at
+```
+
+Regras:
+
+- `storage_key` é interno e nunca aparece em DTO público.
+- `original_filename` não pode ser usado como path físico.
+- `status` inicial é `uploaded`.
+
+## processing_jobs
+
+```text
+id
+upload_id
+source_instrument_id
+target_instrument_id
+status
+progress
+error_code
+error_message
+correlation_id
+started_at
+finished_at
+created_at
+updated_at
+```
+
+Regras:
+
+- `progress` deve ficar entre 0 e 100.
+- `error_message` deve conter mensagem segura para suporte interno; a API pública deve filtrar o que for técnico.
+- `correlation_id` deve conectar API, worker e logs.
+
+## generated_artifacts
+
+```text
+id
+job_id
+artifact_type
+filename
+mime_type
+size_bytes
+storage_key
+expires_at
+created_at
+```
+
+Regras:
+
+- `artifact_type` inicial: `final_musicxml`, `final_pdf` quando renderização PDF estiver disponível.
+- `storage_key` é interno.
+- Artefato expirado não pode ser baixado.
 
 ## job_events
 
 ```text
-id UUID PK
-job_id UUID FK
-status text
-event_type text
-message text
-public bool
-metadata jsonb
-created_at timestamptz
+id
+job_id
+event_type
+message
+metadata_json
+created_at
+```
+
+Regras:
+
+- Eventos públicos devem conter mensagem segura.
+- `metadata_json` não pode guardar stacktrace, segredo ou path físico quando puder aparecer em consulta pública.
+
+## Status possíveis
+
+```text
+uploaded
+queued
+processing
+transposing
+rendering
+completed
+failed
+expired
+cancelled
 ```
 
 ## Índices recomendados
 
 ```text
-processing_jobs(user_id, created_at)
-processing_jobs(anonymous_session_id, created_at)
+uploads(status)
+uploads(expires_at)
+processing_jobs(upload_id)
 processing_jobs(status)
-processing_jobs(expires_at)
+processing_jobs(created_at)
+processing_jobs(correlation_id)
 generated_artifacts(job_id)
 generated_artifacts(expires_at)
-uploaded_files(expires_at)
 job_events(job_id, created_at)
 ```
 
-## Regras
+## Fora do modelo mínimo
 
-- Não guardar binários no banco.
-- Storage key não deve ser pública.
-- Dados internos/admin não retornam em DTO público.
-- Arquivos expiram após 15 dias.
+As tabelas abaixo são futuras e não devem bloquear o MVP:
+
+- `users`;
+- `plans`;
+- `subscriptions`;
+- `cloud_library`;
+- `shared_scores`;
+- `admin_audit_logs`;
+- `push_subscriptions`.

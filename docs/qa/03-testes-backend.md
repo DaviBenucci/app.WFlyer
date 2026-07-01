@@ -1,45 +1,41 @@
-# Testes backend
+# Testes de backend
 
-## Ferramentas sugeridas
+## Endpoints
 
-```text
-pytest
-httpx AsyncClient
-pytest-asyncio
-factory-boy opcional
-Testcontainers opcional
-```
+- `GET /health` responde.
+- `GET /api/instruments` lista catálogo ativo.
+- `POST /api/uploads` aceita arquivo válido.
+- `POST /api/uploads` rejeita MIME inválido.
+- `POST /api/uploads` rejeita arquivo grande.
+- `POST /api/transpositions` cria job.
+- `GET /api/jobs/{job_id}` retorna job público.
+- `GET /api/jobs/{job_id}/status` retorna status leve.
+- `GET /api/jobs/{job_id}/artifacts` lista artefatos do job.
+- `GET /api/artifacts/{artifact_id}/download` baixa artefato válido.
 
-## API
+## Jobs e worker
 
-- Health.
-- Listagem de instrumentos.
-- Upload válido.
-- Upload inválido.
-- Criação de job.
-- Status.
-- Artefatos.
-- Download.
+- Job começa em `queued`.
+- Worker muda status para `processing`.
+- Worker muda status para `transposing`.
+- Worker conclui como `completed`.
+- Erro do worker vira `failed`.
+- Erro do worker não derruba API.
+- Retentativa é limitada.
+- Timeout vira erro público seguro.
 
 ## Segurança
 
-- MIME falso.
-- Arquivo acima do limite.
-- PDF criptografado.
-- Path traversal em filename.
-- Token inválido.
-- Job expirado.
-- Endpoint admin sem role.
+- DTO público não retorna `storage_key`.
+- DTO público não retorna path físico.
+- Erro público não contém stacktrace.
+- Payload malformado é rejeitado.
+- Instrumento inexistente é rejeitado.
+- Upload expirado não cria job.
 
-## Banco
+## Artefatos
 
-- Migrations sobem e descem.
-- Índices existem.
-- `expires_at` preenchido.
-
-## Workers
-
-- Job muda status corretamente.
-- Falha gera `failed`.
-- Retry respeita regras.
-- Timeout gera erro seguro.
+- Artefato válido baixa.
+- Artefato inexistente retorna erro seguro.
+- Artefato expirado é bloqueado.
+- Job não concluído não lista resultado final como disponível.

@@ -2,23 +2,23 @@
 
 ## Objetivo
 
-Disponibilizar artefatos finais com segurança e prazo de expiração.
+Disponibilizar artefatos finais com segurança e expiração controlada.
 
 ## Artefatos
 
 ```text
-final_pdf
 final_musicxml
-preview_image opcional
+final_pdf quando renderização PDF estiver disponível
 ```
 
 ## Download seguro
 
-- Endpoint valida job/token/ownership.
-- Backend gera URL assinada temporária.
-- URL expira rapidamente.
+- Endpoint valida artefato.
+- Endpoint valida status do job.
+- Endpoint bloqueia expirado.
 - Filename de resposta é sanitizado.
-- Não expor path interno.
+- Path interno não aparece.
+- `storage_key` não aparece.
 
 ## Estados
 
@@ -26,17 +26,16 @@ preview_image opcional
 completed
 artifact_missing
 expired
-unauthorized
 failed
 ```
 
 ## Retenção
 
-Arquivos expiram após 15 dias no servidor.
+Arquivos originais e artefatos finais expiram após 15 dias no armazenamento controlado pela aplicação.
 
 ## Critérios de aceite
 
-- Usuário baixa apenas artefatos autorizados.
-- Job expirado não gera URL.
-- Erro de download não expõe storage path.
-- Histórico local é atualizado após conclusão.
+- Usuário baixa apenas artefatos válidos.
+- Artefato expirado é bloqueado.
+- Erro de download não expõe path interno.
+- Histórico local guarda apenas metadados seguros.

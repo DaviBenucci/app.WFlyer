@@ -1,61 +1,24 @@
-# Testes do backend
+# Testes backend do MVP
 
-## Categorias
+Este documento resume os testes backend obrigatórios. A matriz completa está em `docs/qa/03-testes-backend.md`.
 
-```text
-unitários
-integração
-contrato API
-segurança
-pipeline musical
-workers/fila
-storage/retencao
-```
+## Mínimo obrigatório
 
-## Unitários
-
-- cálculo de transposição;
-- sanitização de filename;
-- geração de storage key;
-- validação de status;
-- mapeamento de erro público.
-
-## Integração API
-
-- `GET /health`.
-- `GET /api/instruments`.
-- upload de PDF válido.
-- rejeição de PDF inválido.
-- criação de job.
-- consulta de status.
-- download autorizado.
+- `/health` responde.
+- Upload válido é aceito.
+- Upload inválido é rejeitado.
+- Arquivo grande é rejeitado.
+- Job é criado.
+- Job muda de status.
+- Worker processa job.
+- Erro no worker não quebra API.
+- Download só funciona para artefato válido.
+- Arquivo expirado não pode ser baixado.
 
 ## Segurança
 
-- PDF falso com extensão `.pdf`.
-- filename com `../`.
-- arquivo acima do limite.
-- token inválido.
-- job expirado.
-- endpoint admin sem permissão.
-- resposta pública sem stacktrace.
-
-## Workers
-
-- job concluído atualiza status.
-- falha marca `failed`.
-- timeout marca erro público adequado.
-- retry não ocorre para PDF inválido.
-
-## Musical
-
-- Piano -> Trompete Bb = +2.
-- Trompete Bb -> Piano = -2.
-- Armadura é alterada quando esperado.
-- MusicXML final existe e é parseável.
-
-## Retenção
-
-- cleanup remove arquivos expirados.
-- job vira `expired`.
-- artefato expirado não baixa.
+- Erro não expõe stacktrace.
+- Resposta não expõe path físico.
+- Resposta não expõe `storage_key`.
+- Payload malformado é rejeitado.
+- MIME inválido é rejeitado.

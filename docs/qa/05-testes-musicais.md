@@ -4,38 +4,48 @@
 
 Garantir que a transposição esteja musicalmente correta, não apenas visualmente funcional.
 
+## Fórmula sob teste
+
+```text
+intervalo_escrito = origem.written_to_concert - destino.written_to_concert
+```
+
 ## Casos mínimos
 
-| Origem | Destino | Intervalo esperado | Exemplo |
-|---|---:|---:|---|
-| Piano | Trompete Bb | +2 | C -> D |
-| Trompete Bb | Piano | -2 | D escrito -> C escrito |
-| Piano | Clarinete Bb | +2 | C -> D |
-| Piano | Sax Alto Eb | +9 | C -> A |
-| Piano | Trompa F | +7 | C -> G |
+| Origem | Destino | Intervalo esperado | Exemplo de tonalidade |
+|---|---|---:|---|
+| Piano C | Trompete Bb | +2 | C -> D |
+| Trompete Bb | Piano C | -2 | C -> Bb |
+| Piano C | Sax Alto Eb | +9 | C -> A |
+| Sax Alto Eb | Piano C | -9 | C -> Eb |
+| Clarinete Bb | Sax Alto Eb | +7 | C -> G |
+| Trompa F | Piano C | -7 | C -> F |
+| Piano C | Piano C | 0 | C -> C |
 
-Observação: a tabela assume `intervalo = source.written_to_concert - target.written_to_concert`. Validar cada instrumento com seed oficial.
+## Casos estruturais
 
-## O que validar
+- Transposição com acidentes locais.
+- Transposição com acordes.
+- Transposição com armadura de clave.
+- Transposição com múltiplas partes quando houver fixture.
+- Enarmonia legível quando houver equivalentes.
 
-- Notas transpostas.
-- Acordes transpostos.
-- Armadura alterada.
-- Acidentes locais coerentes.
-- MusicXML final parseável.
-- PDF final renderizado.
-
-## Fixtures
-
-Criar partituras pequenas controladas:
+## Fixtures iniciais
 
 ```text
 escala de C maior
-acordes C/F/G
-melodia com acidentes
-peça com múltiplas partes
+melodia com F# e Bb
+cifras/acordes C, F, G7, Am
+trecho com armadura de D maior
+partitura com duas partes simples
 ```
 
-## Regra crítica
+## Regras de falha
 
-Teste deve falhar se apenas a armadura for alterada e as notas permanecerem iguais.
+O teste deve falhar se:
+
+- apenas o nome da tonalidade for alterado;
+- notas permanecerem iguais quando intervalo não for zero;
+- armadura não for recalculada;
+- acidentes locais forem descartados sem regra;
+- transposição inversa não voltar ao resultado esperado.

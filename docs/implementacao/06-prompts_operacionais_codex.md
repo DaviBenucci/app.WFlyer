@@ -1,68 +1,27 @@
 # Prompts operacionais para Codex
 
-## Prompt para iniciar uma tarefa
+## Prompt para iniciar uma fase
 
 ```text
-Leia primeiro:
-- docs/implementacao/00-guia_de_implementacao.md
-- docs/implementacao/01-implementacao_IA.md
-- docs/logs/IMPLEMENTATION_LOG.md
-- docs/logs/DECISIONS.md
-- docs/logs/TEST_LOG.md
-
-Depois implemente a tarefa: [DESCREVER TAREFA]
-
-Regras:
-- manter escopo pequeno;
-- seguir documentação existente;
-- não inventar contratos;
-- criar/atualizar testes;
-- rodar lint/typecheck/test/build aplicáveis;
-- atualizar logs e documentação.
+Leia README.md, docs/00-visao-geral/05-escopo-mvp-app-wflyer.md,
+W-Flyer_Regra-Transposição.md e docs/100-implementacao/guia-codex-app-wflyer.md.
+Execute somente a fase <N>, sem avançar para a próxima.
+Ao final, registre testes, arquivos alterados, pendências e critério de conclusão.
 ```
 
-## Prompt para corrigir bug
+## Prompt para revisão de fase
 
 ```text
-Investigue o bug: [DESCREVER BUG]
-
-Antes de alterar código:
-- identifique área afetada;
-- leia docs correspondentes;
-- reproduza o problema com teste quando possível.
-
-Depois:
-- corrija a menor causa real;
-- rode testes de regressão;
-- atualize TEST_LOG e IMPLEMENTATION_LOG;
-- registre decisão se houver mudança de comportamento.
+Revise a fase <N> contra o guia Codex e os critérios de aceite do MVP.
+Procure vazamento de stacktrace, path físico, storage_key, regra musical duplicada
+e requisitos fora do MVP.
 ```
 
-## Prompt para implementar endpoint
+## Prompt para regra musical
 
 ```text
-Implemente o endpoint [ENDPOINT] seguindo docs/backend/03-endpoints-api.md.
-
-Obrigatório:
-- schema Pydantic;
-- validação;
-- erro público seguro;
-- teste de sucesso;
-- teste de erro;
-- não expor campos internos;
-- atualizar contratos se necessário.
-```
-
-## Prompt para implementar página
-
-```text
-Implemente a página [PÁGINA] seguindo docs/pages/[ARQUIVO].
-
-Obrigatório:
-- desktop e mobile;
-- loading/error/empty;
-- acessibilidade básica;
-- reduced motion se houver animação;
-- testes de renderização/interação;
-- atualizar logs.
+Antes de alterar o motor musical, leia W-Flyer_Regra-Transposição.md e
+docs/features/11-catalogo-instrumentos-mvp.md.
+Garanta que a fórmula usada seja:
+intervalo_escrito = origem.written_to_concert - destino.written_to_concert.
 ```

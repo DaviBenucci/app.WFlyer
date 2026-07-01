@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Gerenciar a transposição como job assíncrono, evitando travar requisições HTTP.
+Gerenciar transposição como job assíncrono, evitando processamento pesado na requisição HTTP principal.
 
 ## Fluxo
 
@@ -19,16 +19,11 @@ Frontend acompanha status
 ## Status oficiais
 
 ```text
+uploaded
 queued
-validating
-uploading
-extracting
-reading_score
-detecting_instrument
-waiting_user_confirmation
+processing
 transposing
 rendering
-storing_artifacts
 completed
 failed
 expired
@@ -39,14 +34,13 @@ cancelled
 
 ```text
 queued: 0
-validating: 5
-extracting: 15
-reading_score: 30
-detecting_instrument: 45
+processing: 20
 transposing: 60
-rendering: 80
-storing_artifacts: 95
+rendering: 85
 completed: 100
+failed: valor atual
+expired: valor atual
+cancelled: valor atual
 ```
 
 ## Erros
@@ -54,14 +48,13 @@ completed: 100
 Cada erro deve ter:
 
 ```text
-public_error_message
-internal_error_message
 error_code
+public_error_message
 correlation_id
 job_event
 ```
 
-O público nunca recebe stacktrace.
+O público nunca recebe stacktrace, path físico ou log bruto.
 
 ## Critérios de aceite
 

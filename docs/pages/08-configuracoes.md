@@ -1,122 +1,49 @@
-# Página Configurações
+# Tela Configurações locais
 
 ## Rota
 
 ```text
-/configuracoes-local no MVP; /app/configuracoes no futuro
+/configuracoes
 ```
 
 ## Objetivo
 
-Permitir ajustar preferências musicais, visuais, retenção local, notificações e privacidade.
+Permitir preferências locais simples sem criar conta, sincronização ou serviços externos.
 
 ## Escopo MVP
 
-
-No MVP, configurações são locais.
-
-Seções:
-
 ```text
-Preferências musicais
-Experiência visual
-Sons
-Notificações
-Histórico e privacidade
+Instrumento de origem padrão opcional
+Instrumento de destino padrão opcional
+Preferência de formato de resultado
+Preferência de redução de movimento
+Limpeza de histórico local
 ```
 
+## Componentes
 
-## Componentes principais
+- `DefaultInstrumentSettings`.
+- `MotionSettings`.
+- `ResultFormatSettings`.
+- `ClearLocalDataButton`.
 
+## Regras
 
-- `DefaultInstrumentSettings`
-- `MotionSettings`
-- `SoundSettings`
-- `NotificationSettings`
-- `PrivacySettings`
-- `ClearLocalDataButton`
-
-
-## Dados necessários
-
-
-Dados locais:
-
-```ts
-type LocalSettings = {
-  defaultInstrumentId?: string
-  preferredFormats: ('pdf' | 'musicxml')[]
-  musicalAnimations: boolean
-  completionSounds: boolean
-  respectReducedMotion: boolean
-  localHistoryRetention: 'keep' | 'ask' | 'never'
-  notificationsEnabled?: boolean
-}
-```
-
-
-## Interações
-
-
-- Alternar animações musicais.
-- Sons ficam desligados por padrão.
-- Push só solicita permissão após clique explícito.
+- Configurações ficam locais.
+- Não guardar segredos.
+- Não guardar arquivo original.
+- Respeitar `prefers-reduced-motion`.
 - Limpar histórico local exige confirmação.
-- Instrumento padrão pode pré-preencher wizard futuramente.
 
+## Fora do MVP
 
-## Validações e regras de negócio
-
-
-- Nunca tocar som automaticamente.
-- Respeitar `prefers-reduced-motion` mesmo se animações estiverem ativas.
-- Não pedir permissão de notificação na primeira visita sem contexto.
-- Limpar dados locais deve informar o impacto.
-
-
-## Estados de tela
-
-
-Estados:
-
-```text
-loaded
-saving_local
-saved
-save_error
-notifications_unsupported
-permission_denied
-indexeddb_unavailable
-```
-
-
-## Segurança e privacidade
-
-
-- Configurações locais não devem conter tokens sensíveis permanentes.
-- Permissões de notificação devem ser revogáveis.
-- Ao limpar dados, remover histórico, cache relacionado e referências locais.
-
-
-## Acessibilidade
-
-
-- Switches com labels claros.
-- Estado ligado/desligado textual.
-- Explicação de sons e notificações.
-- Confirmações acessíveis.
-
+- Notificações push.
+- Sincronização em nuvem.
+- Preferências por conta.
+- Planos pagos.
 
 ## Critérios de aceite
 
-
-- Sons desligados por padrão.
-- Animações obedecem redução de movimento.
-- Limpeza local funciona.
-- Push não é solicitado sem ação do usuário.
-
-
-
-## Futuro
-
-Com login, parte das configurações pode sincronizar com backend. Preferências sensíveis continuam locais quando apropriado.
+- Preferências locais são salvas.
+- Usuário consegue limpar histórico local.
+- Redução de movimento é respeitada.

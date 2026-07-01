@@ -1,58 +1,54 @@
-# Testes frontend
+# Testes de frontend
 
-## Ferramentas sugeridas
+## Fluxo mínimo
+
+- Enviar arquivo.
+- Selecionar instrumento de origem.
+- Selecionar instrumento de destino.
+- Confirmar transposição.
+- Ver status.
+- Ver resultado.
+- Baixar artefato.
+- Transpor outra partitura.
+
+## Componentes mínimos
+
+- `UploadDropzone`.
+- `InstrumentSelector`.
+- `TransposeSummary`.
+- `ProcessingStatus`.
+- `ResultDownloadCard`.
+- `ErrorState`.
+- `EmptyState`.
+- `LocalHistory`.
+
+## Estados mínimos
 
 ```text
-Vitest
-React Testing Library
-Playwright
-axe-core ou jest-axe
+idle
+uploading
+uploaded
+configuring
+queued
+processing
+completed
+failed
+expired
 ```
-
-## Testes por página
-
-### Home
-
-- CTA principal navega para `/transpor`.
-- CTA secundário navega para `/como-funciona`.
-- Reduced motion reduz animações.
-
-### Transpor
-
-- Não avança sem PDF.
-- Rejeita arquivo não PDF visualmente.
-- Avança com PDF válido.
-- Não avança sem origem/destino.
-- Mostra feedback de intervalo.
-- Cria job e inicia polling.
-
-### Resultado
-
-- Mostra artefatos quando job concluído.
-- Exibe expirado quando status expired.
-- Não mostra confidence score.
-
-### Instrumentos
-
-- Busca por alias.
-- Filtro por família.
-- Estado sem resultados.
-
-### Histórico local
-
-- Lista itens do IndexedDB.
-- Limpa histórico.
-- Mostra expirado/local-only.
 
 ## Acessibilidade
 
-- Navegação por teclado.
-- `aria-current` na navegação.
-- Erros anunciados.
-- Labels em campos.
+- Fluxo funciona com teclado.
+- Campos possuem labels.
+- Status de processamento usa `aria-live`.
+- Erros são textuais.
+- Botões têm área de toque adequada.
+- `prefers-reduced-motion` é respeitado.
 
-## E2E crítico
+## Critérios de aceite
 
-```text
-Home -> Transpor -> Upload -> Origem -> Destino -> Revisão -> Processamento mockado -> Resultado
-```
+- Usuário completa fluxo feliz.
+- Usuário entende erro de arquivo inválido.
+- Usuário entende falha de processamento.
+- Mobile não quebra layout.
+- Teclado alcança todos os controles.

@@ -2,77 +2,77 @@
 
 ## Ativos protegidos
 
-- PDFs originais enviados pelos usuários.
+- Arquivos originais enviados pelos usuários.
 - MusicXML e PDFs finais.
-- Tokens temporários de download.
 - Metadados de jobs.
-- Dados futuros de conta.
-- Métricas internas/admin.
-- Infraestrutura de workers.
+- Artefatos gerados.
+- Métricas internas de processamento.
+- Fila e worker.
 
-## Ameaças principais
+## Upload malicioso
 
-### Upload malicioso
-
-Risco: PDF explorando ferramenta de parsing/OMR/renderização.
+Risco: arquivo explorando ferramenta de parsing, OMR ou renderização.
 
 Mitigações:
 
 - validação real de MIME;
-- limites de tamanho/páginas;
-- quarentena;
-- worker sem privilégio;
-- subprocess com timeout;
-- isolamento por job.
+- validação de extensão;
+- limite de tamanho;
+- renomeação interna;
+- worker com timeout;
+- isolamento por job quando houver arquivo temporário.
 
-### Path traversal
+## Path traversal
 
-Risco: filename com `../` gravando fora do diretório esperado.
+Risco: filename com `../` gravando fora do local esperado.
 
 Mitigações:
 
 - nunca usar filename original como path;
-- usar UUID;
-- storage key gerada pelo servidor.
+- usar identificador interno;
+- `storage_key` gerada pela aplicação.
 
-### Vazamento por URL
+## Vazamento de artefato
 
-Risco: artefato acessível publicamente.
+Risco: artefato acessível sem validação.
 
 Mitigações:
 
-- bucket privado;
-- URLs assinadas e temporárias;
-- validação de token/ownership.
+- download controlado;
+- expiração;
+- validação do artefato;
+- bloqueio de expirado.
 
-### Exposição de métricas internas
+## Exposição de detalhes internos
 
-Risco: usuário comum ver confidence score, erros internos ou stacktrace.
+Risco: usuário ver métricas internas, stacktrace, path físico ou logs.
 
 Mitigações:
 
 - DTO público separado;
-- admin API separada;
-- testes de contrato.
+- envelope de erro seguro;
+- testes de contrato;
+- logs com `correlation_id`.
 
-### Abuso de processamento
+## Abuso de processamento
 
-Risco: usuário envia muitos jobs e consome CPU/memória.
+Risco: muitos jobs consumindo recursos.
 
 Mitigações:
 
 - rate limiting;
-- limite de jobs simultâneos;
-- quota futura;
-- filas separadas;
-- timeout.
+- limite de tamanho;
+- timeout;
+- retentativas limitadas;
+- erro público seguro.
 
-### Logs sensíveis
+## Logs sensíveis
 
-Risco: tokens, URLs e nomes de arquivos sensíveis em logs.
+Risco: nomes de arquivos sensíveis, tokens, paths ou exceções brutas em logs.
 
 Mitigações:
 
 - mascaramento;
-- política de logging;
-- correlation ID sem dados sensíveis.
+- não logar payload completo;
+- registrar `correlation_id`;
+- manter logs internos fora dos DTOs públicos.

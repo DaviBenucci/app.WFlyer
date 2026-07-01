@@ -6,6 +6,7 @@
 - `02-roadmap-fases.md`
 - `03-glossario.md`
 - `04-stack-recomendada.md`
+- `05-escopo-mvp-app-wflyer.md`
 
 ## Páginas
 
@@ -68,6 +69,8 @@
 
 ## Implementação por IA/Codex
 
+- `../100-implementacao/guia-codex-app-wflyer.md`
+- `../100-implementacao/criterios-aceite-mvp.md`
 - `../implementacao/00-guia_de_implementacao.md`
 - `../implementacao/01-implementacao_IA.md`
 - `../implementacao/02-backlog_executavel.md`

@@ -1,137 +1,110 @@
 # Decisões arquiteturais principais
 
-## ADR-001 — Projeto novo, sem reaproveitar código antigo
+## ADR-001 — Projeto novo, orientado por documentação
 
-A nova versão do WFlyer deve ser construída do zero. O código antigo pode ser usado apenas como referência conceitual, nunca como base direta.
+A nova aplicação `app.WFlyer` deve ser construída a partir desta documentação técnica. Código antigo, protótipos visuais ou documentos conceituais podem servir como referência de produto, mas não definem arquitetura, contratos ou regra musical.
 
-### Motivo
+Consequência: antes de codar, o Codex deve ler `README.md`, `docs/00-visao-geral/05-escopo-mvp-app-wflyer.md`, `W-Flyer_Regra-Transposição.md` e `docs/100-implementacao/guia-codex-app-wflyer.md`.
 
-O objetivo é evitar herdar decisões técnicas antigas, dependências sem controle, vulnerabilidades e acoplamentos que dificultem a arquitetura assíncrona.
+## ADR-002 — MVP sem login obrigatório
 
-### Consequência
+O MVP deve validar a transposição musical sem exigir autenticação.
 
-O Codex deve criar uma estrutura limpa e documentada, com contratos explícitos entre frontend, backend, workers, banco e storage.
-
-## ADR-002 — MVP sem login
-
-O MVP começa sem autenticação obrigatória para validar rapidamente o núcleo do produto:
+Fluxo:
 
 ```text
-Upload PDF -> instrumento origem -> instrumento destino -> processamento -> resultado -> download
+upload -> instrumento de origem -> instrumento de destino -> job assíncrono -> status -> download
 ```
 
-### Motivo
+Login, biblioteca em nuvem, histórico remoto, planos, assinatura e painel administrativo ficam como evolução futura. Nenhum desses itens pode bloquear o MVP.
 
-Autenticação, permissões, planos, histórico persistente e biblioteca aumentam complexidade antes da validação principal: transpor corretamente partituras.
+## ADR-003 — MusicXML-first
 
-### Implicação técnica
-
-No MVP, jobs usam:
+O desenvolvimento inicial deve priorizar MusicXML para validar o motor musical com segurança.
 
 ```text
-job_id
-download_token temporário
-anonymous_session_id/client_session_id
-expires_at
+Fase 1: MusicXML-first para validar o motor musical.
+Fase 2: PDF simples com pipeline de leitura controlado.
+Fase 3: PDF real com validação, avisos e revisão assistida.
 ```
 
-Quando login for adicionado, entram:
+Motivo: MusicXML é estruturado e permite testar notas, acordes, acidentes, armadura e tonalidade escrita com menos incerteza. PDF continua no escopo do produto, mas tem risco maior de leitura.
+
+Consequência: o MVP não deve prometer OMR perfeito nem leitura perfeita de PDF escaneado, manuscrito, torto ou com baixa qualidade.
+
+## ADR-004 — Processamento sempre assíncrono
+
+A API não deve executar leitura musical pesada, transposição ou renderização dentro da requisição HTTP principal.
+
+Fluxo:
 
 ```text
-user_id
-permissions
-ownership
-quotas
-plan_limits
-```
-
-## ADR-003 — Processamento sempre assíncrono
-
-A API não deve executar PDF/OMR/MusicXML/transposição/renderização dentro da requisição HTTP.
-
-Fluxo correto:
-
-```text
-Frontend envia PDF
-API valida o mínimo necessário
-API salva arquivo em storage
-API cria job
-API publica job na fila
+API valida entrada
+API cria upload/job
+API coloca job na fila
 Worker processa
-Frontend acompanha status
-Usuário baixa artefatos
+Frontend consulta status
+Usuário baixa resultado
 ```
 
-## ADR-004 — Banco guarda metadados; storage guarda arquivos
+Consequência: qualquer endpoint que criar job deve responder rapidamente com `202 Accepted` e `job_id`.
 
-PDFs originais, MusicXML intermediários e PDFs finais não devem ser armazenados no banco.
+## ADR-005 — Regra musical centralizada
 
-O banco armazena:
+A fórmula única é:
 
 ```text
-ids
-status
-progresso
-instrumentos
-intervalo de transposição
-paths/referências no storage
-métricas internas
-expiração
-eventos
+intervalo_escrito = origem.written_to_concert - destino.written_to_concert
 ```
 
-## ADR-005 — Retenção de 15 dias no servidor
+Essa regra deve ficar em módulo compartilhado ou motor musical centralizado, nunca duplicada em componentes visuais ou rotas HTTP.
 
-Arquivos originais e artefatos finais expiram após 15 dias no servidor.
+Consequência: não criar `if/else` por par de instrumentos. O catálogo de instrumentos alimenta a fórmula.
 
-### Motivo
+## ADR-006 — Arquivos fora do banco, metadados no banco
 
-Reduzir custo, risco de vazamento, responsabilidade sobre dados antigos e volume de storage.
+O banco deve guardar registros, status, eventos e referências internas. Arquivos originais, MusicXML intermediário e artefatos finais devem ficar em storage privado ou pasta controlada pela aplicação.
 
-### Consequência
+Consequência: endpoints públicos não retornam `storage_key`, path físico, logs brutos ou detalhes internos do worker.
 
-O frontend pode manter histórico local, mas deve informar quando o arquivo está expirado no servidor.
+## ADR-007 — Upload tratado como superfície de risco
 
-## ADR-006 — Confiança visível apenas para admin
+Arquivos enviados devem passar por validação de MIME, extensão, tamanho, nome seguro e renomeação interna.
 
-Usuário comum não deve ver porcentagens de confiança de OMR, detecção de instrumento ou tonalidade.
-
-Usuário comum vê:
+Tipos inicialmente permitidos:
 
 ```text
-Origem
-Destino
-Transposição aplicada
-Tonalidade resultante
-Avisos objetivos
+application/pdf
+application/vnd.recordare.musicxml+xml
+application/xml
+text/xml
 ```
 
-Admin vê:
+Imagens ficam para fase posterior e não fazem parte do MVP.
+
+## ADR-008 — Frontend orientado ao fluxo de uso
+
+O frontend deve priorizar a ferramenta, não uma landing page.
+
+Fluxo:
 
 ```text
-confidence_score_omr
-confidence_score_instrument_detection
-confidence_score_key_detection
-unrecognized_symbols_count
-parsed_measures_count
-warnings_count
-processing_duration_ms
-engine_version
+UploadDropzone -> InstrumentSelector origem -> InstrumentSelector destino -> TransposeSummary -> ProcessingStatus -> ResultDownloadCard
 ```
 
-## ADR-007 — Segurança por padrão para PDFs
+Consequência: a primeira tela útil deve permitir iniciar uma transposição, com estados de loading, erro, vazio, processamento, sucesso e expiração.
 
-Todo PDF deve ser tratado como arquivo potencialmente perigoso.
+## ADR-009 — Futuro separado do MVP
 
-Isso exige:
+Funcionalidades futuras podem ser documentadas como evolução, mas não podem aparecer como requisito obrigatório do MVP:
 
-- validação real de MIME;
-- limite de tamanho;
-- limite de páginas;
-- bloqueio de PDF criptografado quando não suportado;
-- sanitização de nome;
-- UUID interno;
-- quarentena/isolamento;
-- subprocess sem `shell=True`;
-- workers sem privilégio;
-- timeouts e limites de CPU/memória.
+- login;
+- biblioteca em nuvem;
+- planos;
+- pagamento;
+- dashboard administrativo;
+- colaboração;
+- compartilhamento público;
+- push notifications;
+- aplicativo mobile nativo;
+- integração Spotify.

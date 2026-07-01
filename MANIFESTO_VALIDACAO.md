@@ -1,8 +1,8 @@
 # Manifesto de validação
 
-Data: 2026-05-14
+Data: 2026-07-01
 
-Total de arquivos Markdown: 71
+Total de arquivos Markdown: 78
 
 Arquivos obrigatórios ausentes: nenhum
 

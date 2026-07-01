@@ -1,26 +1,13 @@
-# Filas e Workers
+# Fila e workers
 
 ## Objetivo
 
-Processar tarefas pesadas fora da API com controle de retry, timeout e observabilidade.
-
-## Broker/cache
-
-Redis.
+Processar transposições fora da API, com status, retentativas, falhas seguras, timeout e idempotência básica.
 
 ## Fila inicial
 
 ```text
 transposition_default
-```
-
-## Filas futuras
-
-```text
-omr_heavy
-render_pdf
-cleanup
-notifications
 ```
 
 ## Worker inicial
@@ -29,54 +16,83 @@ notifications
 worker-transposition
 ```
 
-Pode executar o pipeline completo no MVP. Depois pode separar:
+O worker inicial pode executar o pipeline completo do MVP. Separar leitura, transposição e renderização em workers diferentes é evolução futura.
 
-```text
-worker-omr
-worker-transposition
-worker-render
+## Payload da fila
+
+```json
+{
+  "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
+  "correlation_id": "req_123"
+}
 ```
 
-## Retries
+Não incluir path físico, segredo, token de download ou conteúdo do arquivo no payload.
 
-- Retries limitados por tipo de erro.
-- Não repetir erro determinístico, como PDF inválido.
-- Retry para falha temporária de storage ou render.
-- Backoff exponencial.
+## Retentativas
+
+- Não repetir erro determinístico, como MIME inválido ou MusicXML malformado.
+- Repetir de forma limitada falha transitória de storage, fila ou renderização.
+- Usar backoff.
+- Registrar cada tentativa em `job_events`.
 
 ## Timeouts
 
-Timeout por etapa:
+Cada etapa deve ter timeout documentado antes da implementação:
 
 ```text
-PDF validation: curto
-OMR: longo, mas limitado
-Transposition: médio
-Rendering: médio/longo
-Storage: curto/médio
+upload_validation
+musicxml_parse
+pdf_read
+transposition
+rendering
+artifact_storage
 ```
 
-## Dead-letter
+Ao estourar timeout:
 
-Opções:
+- marcar job como `failed`;
+- usar erro público `PROCESSING_TIMEOUT`;
+- registrar `correlation_id`.
 
-- fila dead-letter;
-- tabela `failed_jobs`;
-- eventos em `job_events` com `event_type=failed_permanent`.
+## Falhas
 
-## Observabilidade
+Falha do worker não pode derrubar a API.
 
-- logs JSON;
-- correlation/job ID;
-- duração por etapa;
-- worker_id;
-- tamanho de fila;
-- falhas por tipo.
+Fluxo de falha:
 
-## Segurança
+```text
+capturar erro
+registrar log interno com correlation_id
+registrar job_event seguro
+atualizar processing_jobs.status = failed
+preencher error_code
+preencher mensagem pública segura
+```
 
-- Worker sem privilégio root.
-- Sem acesso a secrets desnecessários.
-- Diretório temporário isolado.
-- Limites de CPU/memória.
-- Subprocess sem shell.
+## Idempotência básica
+
+- Worker deve verificar status atual antes de processar.
+- Job `completed`, `failed`, `expired` ou `cancelled` não deve ser processado novamente sem decisão explícita.
+- Reentrega da fila não deve gerar artefatos duplicados sem controle.
+
+## Cancelamento futuro
+
+Cancelamento pode existir como status, mas execução cooperativa de cancelamento é evolução futura. O MVP deve ao menos não quebrar ao encontrar job `cancelled`.
+
+## Observabilidade interna
+
+- Logs com `job_id` e `correlation_id`.
+- Duração por etapa.
+- Erro categorizado por `error_code`.
+- Eventos públicos sem detalhes internos.
+
+## Critérios de aceite
+
+- API coloca job na fila.
+- Worker consome job.
+- Worker altera status.
+- Falha vira `failed`.
+- Retentativa é limitada.
+- Timeout é documentado.
+- Payload não contém segredo nem path físico.

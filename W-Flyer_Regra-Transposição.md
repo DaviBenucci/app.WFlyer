@@ -327,60 +327,51 @@ F maior no Piano
 
 ## 8. Catálogo obrigatório de instrumentos
 
-O Codex deve implementar um catálogo de instrumentos com, no mínimo:
+O catálogo mínimo do MVP deve estar documentado também em `docs/features/11-catalogo-instrumentos-mvp.md`.
+
+Cada instrumento deve declarar:
 
 ```text
 id
-nome
-família
+name
+family
+key_name
 written_to_concert
-clave padrão
-aliases
-transposição de oitava, quando existir
-registro confortável opcional
-status de suporte
+transposes_octave
+octave_offset
+observations
+is_active
 ```
 
-Exemplo conceitual:
+Instrumentos mínimos:
 
-```ts
-{
-  id: "trumpet_bb",
-  name: "Trompete Bb",
-  family: "metais",
-  written_to_concert: -2,
-  default_clef: "treble",
-  aliases: ["trompete bb", "trumpet in bb", "trumpet b flat"],
-  octave_adjustment: 0,
-  supported: true
-}
+| Instrumento | Família | Afinação | written_to_concert | Transpõe oitava | Observação |
+|---|---|---:|---:|---|---|
+| Piano | teclas | C | 0 | não | Som real. |
+| Voz | voz | C | 0 | não | Som real. |
+| Flauta | madeiras | C | 0 | não | Som real. |
+| Violino | cordas | C | 0 | não | Som real. |
+| Violão | cordas | C | 0 | sim | Pode soar uma oitava abaixo do escrito; modelar a política de oitava. |
+| Trompete Bb | metais | Bb | -2 | não | Quando lê C, soa Bb. |
+| Clarinete Bb | madeiras | Bb | -2 | não | Quando lê C, soa Bb. |
+| Sax Tenor Bb | madeiras | Bb | -14 | sim | Soa nona maior abaixo do escrito. |
+| Sax Alto Eb | madeiras | Eb | -9 | não | Quando lê C, soa Eb abaixo. |
+| Sax Barítono Eb | madeiras | Eb | -21 | sim | Soa décima terceira maior abaixo do escrito. |
+| Trompa F | metais | F | -7 | não | Quando lê C, soa F. |
+
+Casos de teste mínimos:
+
+```text
+Piano C -> Trompete Bb = +2 semitons
+Trompete Bb -> Piano C = -2 semitons
+Piano C -> Sax Alto Eb = +9 semitons
+Sax Alto Eb -> Piano C = -9 semitons
+Clarinete Bb -> Sax Alto Eb = +7 semitons
+Trompa F -> Piano C = -7 semitons
+Mesmo instrumento -> 0 semitons
 ```
 
-```ts
-{
-  id: "piano",
-  name: "Piano",
-  family: "teclas",
-  written_to_concert: 0,
-  default_clef: "grand_staff",
-  aliases: ["piano", "keyboard"],
-  octave_adjustment: 0,
-  supported: true
-}
-```
-
-```ts
-{
-  id: "alto_sax_eb",
-  name: "Sax Alto Eb",
-  family: "madeiras",
-  written_to_concert: -9,
-  default_clef: "treble",
-  aliases: ["sax alto", "alto sax", "alto saxophone eb"],
-  octave_adjustment: 0,
-  supported: true
-}
-```
+O motor não deve criar regras especiais por par de instrumentos. A fórmula universal e o catálogo devem ser suficientes.
 
 ---
 
@@ -874,13 +865,13 @@ Este documento deve ser referenciado em:
 
 ```text
 docs/backend/05-pipeline-processamento.md
-docs/backend/13-regras-musicais-transposicao.md
-docs/features/03-catalogo-instrumentos-transpositores.md
+docs/features/11-catalogo-instrumentos-mvp.md
 docs/qa/05-testes-musicais.md
 docs/implementacao/01-implementacao_IA.md
+docs/100-implementacao/guia-codex-app-wflyer.md
 ```
 
-O arquivo `implementacao_IA.md` deve instruir o Codex a ler este documento antes de implementar qualquer código relacionado à transposição musical.
+O arquivo `docs/implementacao/01-implementacao_IA.md` deve instruir o Codex a ler este documento antes de implementar qualquer código relacionado à transposição musical.
 
 ---
 
@@ -911,4 +902,3 @@ F#, C#, G#, D# → F#, C#
 ```
 
 Essa regra deve valer para todos os instrumentos suportados, não apenas para trompete.
-

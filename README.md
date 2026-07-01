@@ -1,130 +1,141 @@
-# WFlyer — Documentação modular do projeto
+# WFlyer — Documentação técnica da aplicação
 
-Este pacote divide a documentação do WFlyer em arquivos menores, com foco em orientar a implementação futura por IA/Codex sem perda de contexto.
+Este repositório documenta a aplicação `app.WFlyer`: uma ferramenta web para receber uma partitura, escolher instrumento de origem, escolher instrumento de destino, calcular a transposição musical correta, processar o arquivo de forma assíncrona e entregar um resultado baixável.
 
-A nova versão do WFlyer deve ser planejada do zero. O código antigo não deve ser reaproveitado como base técnica. Ele pode servir apenas como referência conceitual quando houver algo útil de produto.
+Esta etapa é somente documental. Não há implementação de código de produção neste pacote.
 
-## Objetivo do produto
+## Escopo atual
 
-O WFlyer será uma aplicação web/mobile capaz de receber uma partitura em PDF e gerar uma nova versão transposta para outro instrumento, alterando:
+O WFlyer deve começar como um MVP sem login obrigatório, focado na transposição musical:
 
-- notas;
-- acordes;
-- armadura de clave;
-- acidentes locais;
-- tonalidade escrita;
-- partes musicais quando houver múltiplos instrumentos.
+1. upload de partitura;
+2. seleção manual do instrumento de origem;
+3. seleção manual do instrumento de destino;
+4. criação de job de processamento;
+5. acompanhamento de status;
+6. motor musical centralizado;
+7. resultado final baixável;
+8. mensagens claras de erro;
+9. validação de arquivo;
+10. testes musicais, backend e frontend.
 
-Exemplo principal:
+O escopo canônico está em `docs/00-visao-geral/05-escopo-mvp-app-wflyer.md`.
+
+## Estratégia de formato
+
+O início do desenvolvimento deve seguir a decisão MusicXML-first:
 
 ```text
-Piano em C maior, som real/concert pitch
-Destino: Trompete Bb
-written_to_concert do piano = 0
-written_to_concert do trompete Bb = -2
-intervalo = 0 - (-2) = +2 semitons
-Resultado escrito: C maior -> D maior
+Fase 1: MusicXML-first para validar o motor musical.
+Fase 2: PDF simples com pipeline de leitura controlado.
+Fase 3: PDF real com validação, avisos e revisão assistida.
 ```
 
-## Princípios obrigatórios
+PDF é importante para o usuário final, mas não deve ser prometido como leitura perfeita de qualquer partitura. PDFs escaneados, manuscritos, tortos ou com baixa qualidade devem gerar erro amigável quando a aplicação não conseguir ler a partitura com confiança.
 
-1. Começar pelo MVP sem login.
-2. Processamento musical sempre assíncrono no backend.
-3. PDFs tratados como arquivos potencialmente perigosos.
-4. Banco guarda metadados; arquivos ficam em storage.
-5. Arquivos expiram no servidor após 15 dias.
-6. Métricas de confiança não aparecem para usuário comum.
-7. Interface deve ser responsiva, acessível, musical, profissional e discreta.
-8. Codex deve implementar em etapas pequenas, testadas e documentadas.
-9. Codex só pode avançar para a próxima etapa quando a etapa anterior estiver `CONCLUIDA`.
-10. Banco de dados e backend devem ser implementados antes do frontend final.
-11. Antes do frontend final, só é permitido frontend simples de verificação do backend.
+## Regra musical central
+
+A regra universal de transposição é:
+
+```text
+intervalo_escrito = origem.written_to_concert - destino.written_to_concert
+```
+
+Exemplo:
+
+```text
+Piano C -> Trompete Bb
+origem.written_to_concert = 0
+destino.written_to_concert = -2
+intervalo = 0 - (-2) = +2 semitons
+```
+
+A transposição deve alterar notas, acordes, acidentes, armadura de clave, tonalidade escrita, partes individuais quando houver múltiplos instrumentos e metadados musicais relevantes. Não basta alterar o nome da tonalidade.
+
+Documento detalhado: `W-Flyer_Regra-Transposição.md`.
+
+## Fora do MVP inicial
+
+Não são dependências do MVP:
+
+- login;
+- biblioteca em nuvem;
+- planos pagos;
+- assinatura;
+- dashboard administrativo;
+- colaboração entre usuários;
+- editor visual completo de partitura;
+- detecção automática perfeita de instrumento;
+- detecção automática perfeita de tonalidade;
+- OMR perfeito para qualquer PDF;
+- aplicativo mobile nativo;
+- integração Spotify;
+- site institucional ou landing page.
+
+## Estrutura de código esperada
+
+```text
+app-wflyer/
+  apps/
+    web/
+      src/
+        app/
+        components/
+        features/
+        services/
+        hooks/
+        lib/
+        styles/
+        tests/
+    api/
+      src/
+        modules/
+        routes/
+        services/
+        workers/
+        repositories/
+        validators/
+        middlewares/
+        tests/
+  packages/
+    shared/
+      src/
+        types/
+        constants/
+        music/
+        validation/
+    ui/
+      src/
+        components/
+  docs/
+```
+
+Detalhe de responsabilidades: `docs/backend/13-estrutura-pastas.md`.
+
+## Documentos principais
+
+- Escopo e MVP: `docs/00-visao-geral/05-escopo-mvp-app-wflyer.md`
+- Decisões arquiteturais: `docs/00-visao-geral/01-decisoes-arquiteturais.md`
+- Roadmap técnico: `docs/00-visao-geral/02-roadmap-fases.md`
+- Stack recomendada: `docs/00-visao-geral/04-stack-recomendada.md`
+- Contratos de API: `docs/backend/03-endpoints-api.md`
+- Modelo de dados: `docs/backend/04-modelagem-banco.md`
+- Pipeline assíncrono: `docs/backend/05-pipeline-processamento.md`
+- Fila e worker: `docs/backend/07-filas-e-workers.md`
+- Catálogo de instrumentos: `docs/features/11-catalogo-instrumentos-mvp.md`
+- Acessibilidade: `docs/frontend/06-acessibilidade.md`
+- Testes: `docs/qa/01-estrategia-testes.md`
+- Guia Codex: `docs/100-implementacao/guia-codex-app-wflyer.md`
+- Critérios de aceite: `docs/100-implementacao/criterios-aceite-mvp.md`
 
 ## Regra rígida para Codex
 
-O guia principal está em:
-
 ```text
-docs/implementacao/00-guia_de_implementacao.md
+O Codex só poderá avançar para a próxima fase quando a fase anterior estiver concluída, testada e documentada.
 ```
 
-A regra central é:
+Se surgir imprevisto, o Codex deve resolver dentro da fase atual, registrar a decisão e somente depois avançar.
 
-```text
-Nenhuma etapa seguinte pode começar enquanto a etapa anterior não estiver CONCLUIDA.
-```
+## Escopo proibido nesta documentação
 
-Se ocorrer imprevisto, o Codex deve criar sub-etapa na etapa atual, corrigir, validar, registrar em log e somente então continuar.
-
-## Ordem macro de implementação
-
-```text
-1. Escopo, documentação e governança.
-2. Estrutura do repositório.
-3. Docker Compose, Postgres, Redis e storage.
-4. Banco de dados, migrations e seeds.
-5. Backend base.
-6. Backend de instrumentos, upload, jobs, fila, worker e pipeline musical.
-7. Frontend simples de verificação do backend.
-8. Hardening e testes do backend.
-9. Congelamento de contratos API.
-10. Frontend final.
-11. Integração ponta a ponta.
-12. QA, segurança, documentação e entrega.
-```
-
-## Estrutura
-
-```text
-docs/
-  00-visao-geral/       Decisões principais, roadmap, stack e glossário
-  pages/                Especificação detalhada de cada página
-  frontend/             Layout, navegação, design system, acessibilidade e guia detalhado
-  features/             Funcionalidades transversais do produto
-  backend/              API, workers, banco, filas, storage, admin e guia detalhado
-  security/             Modelo de ameaças e checklist de segurança
-  qa/                   Estratégia de testes e regressão
-  implementacao/        Guia para Codex e arquivo implementacao_IA
-  logs/                 Arquivos que devem ser atualizados durante o desenvolvimento
-```
-
-## Ordem recomendada de leitura pelo Codex
-
-Antes de escrever qualquer código, o Codex deve ler nesta ordem:
-
-1. `README.md`
-2. `docs/implementacao/00-guia_de_implementacao.md`
-3. `docs/implementacao/01-implementacao_IA.md`
-4. `docs/implementacao/02-backlog_executavel.md`
-5. `docs/implementacao/03-checklist_codex.md`
-6. `docs/implementacao/05-definition_of_done.md`
-7. `docs/00-visao-geral/01-decisoes-arquiteturais.md`
-8. `docs/00-visao-geral/04-stack-recomendada.md`
-9. `docs/backend/01-visao-geral.md`
-10. `docs/backend/15-guia_detalhado_backend.md`
-11. `docs/frontend/09-guia_detalhado_frontend.md`
-12. `docs/security/02-checklist-seguranca.md`
-13. `docs/qa/01-estrategia-testes.md`
-14. `docs/logs/IMPLEMENTATION_LOG.md`
-15. `docs/logs/TEST_LOG.md`
-16. `docs/logs/DECISIONS.md`
-
-## Documentos principais atualizados
-
-- Guia de implementação detalhado: `docs/implementacao/00-guia_de_implementacao.md`
-- Instruções operacionais para IA: `docs/implementacao/01-implementacao_IA.md`
-- Backlog executável por fases/etapas: `docs/implementacao/02-backlog_executavel.md`
-- Checklist Codex: `docs/implementacao/03-checklist_codex.md`
-- Definition of Done: `docs/implementacao/05-definition_of_done.md`
-- Guia detalhado backend: `docs/backend/15-guia_detalhado_backend.md`
-- Guia detalhado frontend: `docs/frontend/09-guia_detalhado_frontend.md`
-- Estratégia de testes: `docs/qa/01-estrategia-testes.md`
-- Checklist de segurança: `docs/security/02-checklist-seguranca.md`
-
-## Regra de manutenção documental
-
-Qualquer alteração em comportamento, rota, contrato de API, regra de negócio, banco, segurança, teste ou componente visual deve atualizar também a documentação correspondente e os logs em `docs/logs/`.
-
-## Status atual
-
-A documentação foi reforçada para que o Codex implemente o projeto de forma sequencial, começando por banco/backend, validando cada etapa individualmente, registrando status e usando sub-etapas para qualquer imprevisto.
+Esta documentação da aplicação não deve conter instruções de publicação online, domínio, DNS, hospedagem, servidor de produção ou integração Spotify. Qualquer material desse tipo deve ficar em documento separado e explicitamente marcado como fora do escopo da aplicação `app.WFlyer`.

@@ -4,11 +4,7 @@
 
 Preservar metadados de transposições no dispositivo sem exigir conta.
 
-## Storage
-
-Usar IndexedDB via Dexie.
-
-## Dados
+## Dados permitidos
 
 ```text
 job_id
@@ -19,23 +15,23 @@ intervalo
 data
 status final
 expires_at
-estado local/remoto
+estado local
 ```
 
 ## Estados
 
 ```text
-Disponível no servidor
-Disponível apenas localmente
-Expirado no servidor
-Arquivo removido localmente
+Disponível
+Expirado
+Removido localmente
+Armazenamento local indisponível
 ```
 
 ## Privacidade
 
 - Usuário pode limpar histórico.
 - Não salvar tokens permanentes.
-- Não sincronizar sem consentimento.
+- Não sincronizar sem decisão futura.
 - Avisar que histórico é deste dispositivo.
 
 ## Testes
@@ -43,4 +39,4 @@ Arquivo removido localmente
 - Criar histórico após job concluído.
 - Atualizar estado expirado.
 - Limpar histórico remove registros.
-- App continua funcionando sem IndexedDB.
+- Aplicação continua funcionando sem armazenamento local.

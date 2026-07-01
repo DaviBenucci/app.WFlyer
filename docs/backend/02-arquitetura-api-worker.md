@@ -1,99 +1,81 @@
 # Arquitetura API + Worker
 
-## Componentes
+## Componentes internos
 
 ```text
+frontend
 api
-worker-omr
-worker-transposition
-worker-render
-scheduler-cleanup
-redis
-postgres
-storage
+database
+storage_controlado
+queue
+worker
+music_engine
 ```
 
-## API
+## Princípio
 
-Responsável por:
-
-- autenticação futura;
-- rate limiting;
-- validação inicial;
-- criação de jobs;
-- consulta de status;
-- geração de URLs assinadas;
-- endpoints de instrumentos;
-- endpoints admin futuros.
-
-## Workers
-
-Responsáveis por:
-
-- validação profunda de PDF;
-- OMR;
-- MusicXML;
-- transposição;
-- renderização;
-- storage de artefatos;
-- eventos e métricas.
+O processamento musical não deve acontecer dentro da requisição HTTP principal. A API cria e consulta jobs; o worker processa.
 
 ## Fluxo de criação de job
 
 ```text
 POST /api/transpositions
-  validar request
-  validar upload existente
+  validar payload
+  validar upload existente e não expirado
+  validar instrumentos ativos
+  calcular intervalo_escrito
   criar processing_jobs(status=queued)
-  publicar tarefa no Redis/Celery
-  retornar job_id + status inicial
+  registrar job_events(event_type=queued)
+  publicar job_id na fila
+  retornar 202 com job_id e status inicial
 ```
 
 ## Fluxo de worker
 
 ```text
-task process_transposition(job_id)
+process_transposition(job_id)
   carregar job
-  marcar validating
-  validar PDF
-  marcar extracting
-  executar OMR
-  marcar reading_score
-  ler MusicXML
+  marcar processing
+  ler arquivo original ou MusicXML controlado
+  extrair representação musical
   marcar transposing
-  aplicar transposição
+  aplicar regra musical central
+  validar resultado
   marcar rendering
-  renderizar PDF
-  marcar storing_artifacts
-  salvar artefatos
+  gerar artefato final
+  registrar generated_artifacts
   marcar completed
 ```
 
-## Comunicação de status
+## Status consultável
 
-MVP:
+O frontend deve consultar:
 
 ```text
-polling em GET /api/jobs/{job_id}/status
+GET /api/jobs/{job_id}/status
 ```
 
-Futuro:
+O polling para quando o job chegar em:
 
 ```text
-SSE ou WebSocket para atualizações em tempo real
+completed
+failed
+expired
+cancelled
 ```
 
 ## Falhas
 
-- Retries limitados.
-- Timeout por etapa.
-- Estado `failed` com mensagem pública segura.
-- Erro interno guardado para admin.
-- Evento registrado em `job_events`.
+- Erro determinístico não deve ser repetido indefinidamente.
+- Erro transitório pode ter retentativa limitada.
+- Falha permanente deve marcar job como `failed`.
+- Mensagem pública deve ser amigável.
+- Erro interno fica apenas em log controlado com `correlation_id`.
 
 ## Critérios de aceite
 
-- API não processa transposição dentro da request.
-- Worker pode falhar sem derrubar API.
-- Status terminal sempre é definido.
+- API retorna `202 Accepted` ao criar job.
+- Worker consome job sem bloquear API.
+- Status muda durante processamento.
+- Falha no worker vira status seguro.
 - Frontend consegue acompanhar progresso.

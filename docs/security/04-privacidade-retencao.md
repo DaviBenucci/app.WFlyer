@@ -2,7 +2,7 @@
 
 ## Regra de retenção
 
-Arquivos originais e finais ficam no servidor por até 15 dias.
+Arquivos originais e artefatos finais ficam no armazenamento controlado pela aplicação por até 15 dias.
 
 ## Histórico local
 
@@ -14,7 +14,6 @@ No MVP, armazenar apenas o necessário:
 
 ```text
 job_id
-anonymous_session_id
 filename sanitizado
 instrumentos
 status
@@ -24,13 +23,13 @@ expiração
 
 ## Após expiração
 
-- Remover arquivos do storage.
-- Marcar job como `expired`.
-- Remover/anonimizar metadados sensíveis quando aplicável.
-- Preservar métricas agregadas sem identificar usuário.
+- Bloquear download.
+- Marcar job como `expired` quando aplicável.
+- Remover ou anonimizar metadados sensíveis quando aplicável.
+- Registrar evento de expiração.
 
 ## Mensagem ao usuário
 
 ```text
-Arquivos no servidor expiram após 15 dias. Você pode baixar o resultado e manter uma cópia local.
+Arquivos expiram após 15 dias. Baixe o resultado se quiser manter uma cópia.
 ```

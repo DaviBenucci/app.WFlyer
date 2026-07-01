@@ -1,81 +1,33 @@
-# Endpoints da API
+# Contratos de API
 
-## Objetivo
+## Convenções
 
-Definir os contratos públicos iniciais da API do WFlyer para que backend e frontend evoluam sem divergência.
-
-A implementação deve seguir também:
-
-```text
-docs/backend/15-guia_detalhado_backend.md
-docs/frontend/08-contratos-api-frontend.md
-docs/implementacao/00-guia_de_implementacao.md
-```
-
-## Convenções gerais
-
-- Prefixo público: `/api`.
-- Health simples fora do prefixo: `/health`.
-- Respostas JSON em endpoints de dados.
+- Respostas JSON para endpoints de dados.
 - Upload por `multipart/form-data`.
 - Datas em ISO 8601 UTC.
-- IDs em UUID, exceto `instrument.id`, que pode ser slug estável.
-- Erros com `code`, `message` e `correlation_id`.
-- DTO público nunca retorna campos internos/admin.
-- Download deve usar token temporário, URL assinada ou stream controlado.
-- Storage path/key nunca aparece em resposta pública.
-
-## Autorização no MVP sem login
-
-O MVP não possui login obrigatório.
-
-Para jobs e artefatos sensíveis, usar uma das estratégias documentadas:
-
-```text
-X-WFlyer-Access-Token: <token temporario>
-```
-
-ou parâmetro temporário quando estritamente necessário:
-
-```text
-?access_token=<token temporario>
-```
-
-Preferência: header. Query string deve ser evitada quando houver risco de log em proxy/navegador.
-
-O backend deve armazenar apenas hash do token quando viável.
+- IDs em UUID, exceto instrumentos, que usam slug estável.
+- Erros sempre usam envelope `{ "error": ... }`.
+- DTO público nunca retorna `storage_key`, path físico, stacktrace, segredo, log bruto ou detalhe interno do worker.
 
 ## Erro padrão
 
 ```json
 {
-  "code": "PDF_INVALID",
-  "message": "Envie um arquivo PDF válido para continuar.",
-  "correlation_id": "req_abc123"
+  "error": {
+    "code": "INVALID_FILE_TYPE",
+    "message": "O arquivo enviado não é uma partitura válida.",
+    "correlation_id": "req_123"
+  }
 }
 ```
 
-Regras:
+## GET /health
 
-- `message` deve ser segura para usuário.
-- `correlation_id` ajuda suporte/debug.
-- `details` só pode conter dados públicos.
-- nunca retornar stacktrace.
-- nunca retornar path interno.
-- nunca retornar comando do worker.
+Objetivo: confirmar que a API está viva.
 
-## Health
+Entrada: nenhuma.
 
-```text
-GET /health
-```
-
-Uso:
-
-- verificar se API está viva;
-- usado por Docker, deploy e frontend debug.
-
-Resposta:
+Resposta 200:
 
 ```json
 {
@@ -84,60 +36,17 @@ Resposta:
 }
 ```
 
-## Health de dependências
+Erros possíveis: indisponibilidade geral da API.
 
-```text
-GET /health/dependencies
-```
+Segurança: não retornar dependências internas, segredos ou stacktrace.
 
-Uso:
+## GET /api/instruments
 
-- desenvolvimento;
-- frontend debug;
-- operação interna.
+Objetivo: listar instrumentos ativos para origem e destino.
 
-Resposta exemplo:
+Entrada: nenhuma no MVP.
 
-```json
-{
-  "status": "ok",
-  "service": "wflyer-api",
-  "dependencies": {
-    "database": "ok",
-    "redis": "ok",
-    "storage": "ok"
-  }
-}
-```
-
-Segurança:
-
-- não retornar host, senha, DSN, bucket interno ou stacktrace.
-- em produção, proteger ou limitar conforme ambiente.
-
-## Instrumentos
-
-### Listar instrumentos
-
-```text
-GET /api/instruments
-```
-
-Uso:
-
-- preencher seleção de origem;
-- preencher seleção de destino;
-- exibir tela de instrumentos.
-
-Query params opcionais futuros:
-
-```text
-family
-supported
-q
-```
-
-Resposta:
+Resposta 200:
 
 ```json
 {
@@ -146,10 +55,11 @@ Resposta:
       "id": "trumpet-bb",
       "name": "Trompete Bb",
       "family": "metais",
+      "key_name": "Bb",
       "written_to_concert": -2,
-      "aliases": ["trumpet", "trompete em si bemol"],
-      "description": "Instrumento transpositor em Bb.",
-      "supported": true
+      "transposes_octave": false,
+      "is_active": true,
+      "notes": "Quando lê C, soa Bb."
     }
   ]
 }
@@ -157,106 +67,75 @@ Resposta:
 
 Validações:
 
-- retornar apenas campos públicos;
-- ordenar por família/nome ou regra documentada;
-- não depender de mock no frontend final.
+- retornar apenas instrumentos ativos;
+- ordenar por família e nome;
+- não depender de catálogo hardcoded no frontend.
 
-### Buscar instrumento por ID
+Status codes:
 
-```text
-GET /api/instruments/{id}
-```
+- `200 OK`.
+- `500 INTERNAL_ERROR` com envelope seguro.
 
-Resposta 200:
+## POST /api/uploads
 
-```json
-{
-  "id": "piano",
-  "name": "Piano",
-  "family": "teclas",
-  "written_to_concert": 0,
-  "aliases": ["keyboard"],
-  "description": "Instrumento em som real.",
-  "supported": true
-}
-```
+Objetivo: receber arquivo de partitura e criar registro de upload.
 
-Erro 404:
-
-```json
-{
-  "code": "INSTRUMENT_NOT_FOUND",
-  "message": "Instrumento não encontrado.",
-  "correlation_id": "req_abc123"
-}
-```
-
-## Uploads
-
-### Enviar PDF
+Entrada:
 
 ```text
-POST /api/uploads
 Content-Type: multipart/form-data
+file=<arquivo>
 ```
 
-Campos:
+Tipos inicialmente permitidos:
 
 ```text
-file: PDF
+application/pdf
+application/vnd.recordare.musicxml+xml
+application/xml
+text/xml
 ```
-
-Responsabilidades do endpoint:
-
-1. validar tamanho;
-2. detectar MIME real;
-3. validar assinatura/estrutura mínima de PDF;
-4. rejeitar PDF criptografado se não suportado;
-5. sanitizar nome original;
-6. gerar storage key interna;
-7. salvar arquivo no storage;
-8. persistir `uploaded_files`;
-9. retornar DTO público.
 
 Resposta 201:
 
 ```json
 {
   "upload_id": "7b2c89b2-7a7a-4e3e-a91d-6d0d9893a101",
-  "original_filename": "partitura.pdf",
-  "safe_display_filename": "partitura.pdf",
+  "original_filename": "partitura.musicxml",
+  "mime_type": "application/vnd.recordare.musicxml+xml",
   "size_bytes": 123456,
-  "detected_mime": "application/pdf",
   "status": "uploaded",
-  "expires_at": "2026-07-04T12:00:00Z"
+  "expires_at": "2026-07-16T12:00:00Z"
 }
 ```
 
-Erros possíveis:
+Status codes:
 
-```text
-PDF_INVALID
-PDF_TOO_LARGE
-PDF_EMPTY
-PDF_ENCRYPTED_UNSUPPORTED
-UPLOAD_STORAGE_FAILED
-RATE_LIMITED
-```
+- `201 CREATED`.
+- `400 INVALID_FILE`.
+- `413 FILE_TOO_LARGE`.
+- `415 INVALID_FILE_TYPE`.
+- `429 RATE_LIMITED`.
+- `500 UPLOAD_STORAGE_FAILED`.
+
+Validações:
+
+- MIME real;
+- extensão;
+- tamanho;
+- arquivo vazio;
+- nome original apenas como metadado;
+- renomeação interna obrigatória.
 
 Segurança:
 
+- não retornar path físico;
 - não retornar `storage_key`;
-- não retornar path temporário;
-- não confiar em `Content-Type` informado pelo navegador;
-- limpar storage se persistência falhar após upload.
+- não confiar no `Content-Type` enviado pelo navegador.
 
-## Transpositions
+## POST /api/transpositions
 
-### Criar job de transposição
-
-```text
-POST /api/transpositions
-```
+Objetivo: criar job assíncrono de transposição.
 
 Entrada:
 
@@ -264,21 +143,9 @@ Entrada:
 {
   "upload_id": "7b2c89b2-7a7a-4e3e-a91d-6d0d9893a101",
   "source_instrument_id": "piano",
-  "target_instrument_id": "trumpet-bb",
-  "client_session_id": "anonymous-session-id"
+  "target_instrument_id": "trumpet-bb"
 }
 ```
-
-Responsabilidades:
-
-1. validar upload existente e não expirado;
-2. validar instrumentos suportados;
-3. calcular intervalo;
-4. criar `processing_jobs`;
-5. criar evento inicial;
-6. gerar token temporário;
-7. publicar job na fila;
-8. retornar status inicial.
 
 Resposta 202:
 
@@ -287,250 +154,168 @@ Resposta 202:
   "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
   "status": "queued",
   "progress": 0,
-  "current_step": "queued",
   "source_instrument_id": "piano",
   "target_instrument_id": "trumpet-bb",
   "transpose_interval": 2,
-  "access_token": "token-temporario-retornado-uma-vez",
-  "expires_at": "2026-07-04T12:00:00Z"
+  "expires_at": "2026-07-16T12:00:00Z"
 }
 ```
 
-Observação:
+Status codes:
 
-- `access_token` deve ser retornado somente quando necessário e tratado como dado sensível.
-- O backend deve preferir armazenar hash do token.
+- `202 ACCEPTED`.
+- `404 UPLOAD_NOT_FOUND`.
+- `410 UPLOAD_EXPIRED`.
+- `404 INSTRUMENT_NOT_FOUND`.
+- `422 TRANSPOSITION_INVALID`.
+- `429 RATE_LIMITED`.
+- `503 QUEUE_UNAVAILABLE`.
 
-Erros possíveis:
+Validações:
 
-```text
-UPLOAD_NOT_FOUND
-UPLOAD_EXPIRED
-INSTRUMENT_NOT_FOUND
-INSTRUMENT_UNSUPPORTED
-TRANSPOSITION_INVALID
-QUEUE_UNAVAILABLE
-RATE_LIMITED
-```
+- upload existe;
+- upload não expirou;
+- instrumentos estão ativos;
+- intervalo foi calculado pela fórmula central.
 
-## Jobs
+Segurança:
 
-### Buscar job
+- não iniciar processamento pesado no endpoint;
+- não aceitar instrumento fora do catálogo;
+- registrar `correlation_id`.
 
-```text
-GET /api/jobs/{job_id}
-X-WFlyer-Access-Token: <token temporario>
-```
+## GET /api/jobs/{job_id}
 
-Resposta:
+Objetivo: retornar visão pública do job.
+
+Resposta 200:
 
 ```json
 {
-  "id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
+  "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
+  "upload_id": "7b2c89b2-7a7a-4e3e-a91d-6d0d9893a101",
   "status": "transposing",
   "progress": 65,
-  "current_step": "transposing",
-  "original_filename": "partitura.pdf",
   "source_instrument_id": "piano",
   "target_instrument_id": "trumpet-bb",
   "transpose_interval": 2,
-  "detected_key": "C",
-  "target_key": "D",
   "public_error_message": null,
-  "created_at": "2026-06-19T12:00:00Z",
-  "updated_at": "2026-06-19T12:01:00Z",
-  "expires_at": "2026-07-04T12:00:00Z",
-  "completed_at": null
+  "created_at": "2026-07-01T12:00:00Z",
+  "updated_at": "2026-07-01T12:01:00Z",
+  "finished_at": null
 }
 ```
 
-Proibido no retorno:
+Status codes:
 
-```text
-storage_key
-internal_error_message
-stacktrace
-worker_id
-confidence_score_omr
-download_token_hash
-```
+- `200 OK`.
+- `404 JOB_NOT_FOUND`.
+- `410 JOB_EXPIRED`.
 
-### Buscar status resumido
+Segurança: não retornar erro interno, worker id, storage, stacktrace ou logs.
 
-```text
-GET /api/jobs/{job_id}/status
-X-WFlyer-Access-Token: <token temporario>
-```
+## GET /api/jobs/{job_id}/status
 
-Resposta:
+Objetivo: endpoint leve para polling do frontend.
+
+Resposta 200:
 
 ```json
 {
-  "id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
+  "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
   "status": "rendering",
   "progress": 82,
-  "current_step": "rendering",
-  "public_error_message": null,
-  "updated_at": "2026-06-19T12:02:00Z"
+  "message": "Gerando arquivo final.",
+  "updated_at": "2026-07-01T12:02:00Z"
 }
 ```
 
-Uso:
+Status codes:
 
-- polling do frontend.
+- `200 OK`.
+- `404 JOB_NOT_FOUND`.
+- `410 JOB_EXPIRED`.
 
-### Listar eventos públicos do job
+Validações:
 
-```text
-GET /api/jobs/{job_id}/events
-X-WFlyer-Access-Token: <token temporario>
-```
+- `progress` entre 0 e 100;
+- status pertence à lista oficial.
 
-Resposta:
+## GET /api/jobs/{job_id}/artifacts
+
+Objetivo: listar artefatos gerados por job concluído.
+
+Resposta 200:
 
 ```json
 {
   "items": [
     {
-      "type": "queued",
-      "message": "Sua partitura entrou na fila de processamento.",
-      "created_at": "2026-06-19T12:00:00Z"
-    }
-  ]
-}
-```
-
-Eventos públicos não devem conter detalhes internos.
-
-### Cancelar job
-
-```text
-DELETE /api/jobs/{job_id}
-X-WFlyer-Access-Token: <token temporario>
-```
-
-Resposta:
-
-```json
-{
-  "id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
-  "status": "cancelled"
-}
-```
-
-Regra:
-
-- cancelar somente se job ainda não finalizou ou se o worker permitir cancelamento seguro.
-- se cancelamento real não estiver disponível, documentar limitação.
-
-## Artefatos
-
-### Listar artefatos do job
-
-```text
-GET /api/jobs/{job_id}/artifacts
-X-WFlyer-Access-Token: <token temporario>
-```
-
-Resposta:
-
-```json
-{
-  "items": [
-    {
-      "id": "c9d3b87a-9c10-46ea-9db7-b76d99a4a01e",
+      "artifact_id": "c9d3b87a-9c10-46ea-9db7-b76d99a4a01e",
       "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
-      "kind": "final_pdf",
-      "filename": "partitura-transposta-trompete-bb.pdf",
+      "artifact_type": "final_musicxml",
+      "filename": "partitura-transposta.musicxml",
+      "mime_type": "application/vnd.recordare.musicxml+xml",
       "size_bytes": 345678,
-      "expires_at": "2026-07-04T12:00:00Z"
+      "expires_at": "2026-07-16T12:00:00Z"
     }
   ]
 }
 ```
 
-### Download de artefato
+Status codes:
+
+- `200 OK`.
+- `404 JOB_NOT_FOUND`.
+- `409 JOB_NOT_COMPLETED`.
+- `410 JOB_EXPIRED`.
+
+Segurança: nunca retornar `storage_key`.
+
+## GET /api/artifacts/{artifact_id}/download
+
+Objetivo: permitir download controlado de artefato válido.
+
+Resposta 200:
 
 ```text
-GET /api/artifacts/{artifact_id}/download
-X-WFlyer-Access-Token: <token temporario>
+Arquivo binário em stream controlado pela API
 ```
 
-Opção A — redirecionamento:
+Alternativa documentável antes da implementação: resposta JSON com URL temporária controlada.
+
+Status codes:
+
+- `200 OK`.
+- `404 ARTIFACT_NOT_FOUND`.
+- `410 ARTIFACT_EXPIRED`.
+- `403 DOWNLOAD_FORBIDDEN`.
+- `500 DOWNLOAD_UNAVAILABLE`.
+
+Validações:
+
+- artefato existe;
+- artefato não expirou;
+- job associado permite download;
+- arquivo físico/referência interna existe.
+
+Segurança:
+
+- bloquear artefato expirado;
+- não revelar path físico;
+- não revelar chave interna de storage;
+- não retornar logs do worker.
+
+## Status oficiais
 
 ```text
-302 -> URL assinada temporária
-```
-
-Opção B — payload:
-
-```json
-{
-  "download_url": "https://storage-temporario-assinado",
-  "expires_in_seconds": 300
-}
-```
-
-Opção C — stream controlado pela API:
-
-```text
-200 application/pdf
-```
-
-A decisão deve ser registrada antes da implementação final.
-
-Erros possíveis:
-
-```text
-ARTIFACT_NOT_FOUND
-ARTIFACT_EXPIRED
-ACCESS_TOKEN_INVALID
-ACCESS_TOKEN_EXPIRED
-DOWNLOAD_UNAVAILABLE
-```
-
-## Admin futuro
-
-Endpoints admin são futuros e exigem autenticação/autorização.
-
-```text
-GET /api/admin/jobs
-GET /api/admin/jobs/{id}
-GET /api/admin/metrics
-GET /api/admin/instruments
-PATCH /api/admin/instruments/{id}
-GET /api/admin/shared-scores
-PATCH /api/admin/shared-scores/{id}/moderation
-```
-
-Não implementar admin completo no MVP sem decisão explícita.
-
-## Status de job
-
-```text
+uploaded
 queued
-validating
-uploading
-extracting
-reading_score
-detecting_instrument
-waiting_user_confirmation
+processing
 transposing
 rendering
-storing_artifacts
 completed
 failed
 expired
 cancelled
 ```
-
-## Regras de segurança dos endpoints
-
-- Não retornar stacktrace.
-- Não retornar storage path.
-- Não retornar confidence score em endpoints públicos.
-- Validar token/sessão em jobs e artefatos.
-- Aplicar rate limiting em upload, transposition e download.
-- Usar CORS restritivo.
-- Retornar mensagens públicas seguras.
-- Registrar correlation ID em erros e logs.

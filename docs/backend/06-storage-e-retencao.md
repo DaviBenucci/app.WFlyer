@@ -2,67 +2,54 @@
 
 ## Objetivo
 
-Guardar arquivos fora do banco, com isolamento, URLs temporárias e expiração automática.
+Guardar arquivos fora do banco, com isolamento, nomes internos seguros e expiração controlada.
 
-## Ambientes
+## Regras
+
+- O banco guarda metadados.
+- Arquivos ficam em storage controlado pela aplicação.
+- `storage_key` é interno.
+- Filename original nunca define path.
+- Download público não expõe path físico.
+- Artefatos expirados não podem ser baixados.
+
+## Organização interna sugerida
 
 ```text
-Desenvolvimento: storage local ou MinIO
-Produção: S3, Cloudflare R2, Backblaze B2 ou Supabase Storage
-```
-
-## Organização de chaves
-
-Sugestão:
-
-```text
-jobs/{job_id}/original/{uuid}.pdf
+uploads/{upload_id}/{uuid}.musicxml
+uploads/{upload_id}/{uuid}.pdf
 jobs/{job_id}/intermediate/{uuid}.musicxml
-jobs/{job_id}/final/{uuid}.pdf
-jobs/{job_id}/final/{uuid}.musicxml
-jobs/{job_id}/preview/{uuid}.png
+jobs/{job_id}/artifacts/{artifact_id}.musicxml
+jobs/{job_id}/artifacts/{artifact_id}.pdf
 ```
-
-Nunca usar filename original como path real.
-
-## URLs assinadas
-
-- Downloads devem usar URLs temporárias.
-- Tempo sugerido: 5 a 15 minutos.
-- Não armazenar URL assinada no banco como valor permanente.
-- Gerar sob demanda após validar autorização.
 
 ## Retenção
 
-Regra principal:
+Regra inicial:
 
 ```text
-Arquivos originais e artefatos finais expiram após 15 dias no servidor.
+Arquivos originais e artefatos finais expiram após 15 dias.
 ```
 
-## Scheduler de limpeza
+Ao expirar:
 
-```text
-Buscar jobs expirados
-Remover arquivos do storage
-Marcar jobs como expired
-Remover/anonimizar metadados sensíveis
-Preservar métricas agregadas quando necessário
-Registrar evento de limpeza
-```
+- marcar `uploads.status` ou `processing_jobs.status` como `expired` quando aplicável;
+- bloquear download;
+- registrar evento em `job_events`;
+- remover referência física quando o mecanismo de limpeza existir.
 
 ## Segurança
 
-- Bucket privado.
-- Storage key não exposta publicamente.
-- Path traversal impossível por design.
-- Nomes internos com UUID.
-- Separação por job/usuário.
-- Não servir arquivos diretamente por pasta pública.
+- Não salvar arquivo em pasta pública.
+- Não usar nome original como path.
+- Não retornar `storage_key`.
+- Não retornar path local.
+- Não logar conteúdo do arquivo.
+- Sanitizar metadados visíveis ao usuário.
 
 ## Testes
 
-- Job expirado não gera URL.
-- Limpeza remove arquivos.
-- Metadata fica consistente após expiração.
-- Storage key não aparece em resposta pública.
+- Artefato válido pode ser baixado.
+- Artefato expirado é bloqueado.
+- `storage_key` não aparece em resposta pública.
+- Nome original malicioso não altera path interno.

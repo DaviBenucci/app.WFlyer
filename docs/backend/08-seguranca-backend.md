@@ -1,110 +1,74 @@
 # Segurança do backend
 
-## Princípio central
+## Objetivo
 
-PDFs devem ser tratados como arquivos potencialmente perigosos.
+Proteger upload, jobs, artefatos, erros públicos e logs sem adicionar login como dependência do MVP.
+
+## Regras obrigatórias
+
+- Validar MIME real.
+- Validar extensão.
+- Limitar tamanho.
+- Renomear arquivo internamente.
+- Não confiar no nome original.
+- Não expor arquivo diretamente.
+- Não expor stacktrace.
+- Não expor logs internos.
+- Não salvar segredos no frontend.
+- Aplicar rate limit.
+- Definir timeout de processamento.
+- Sanitizar inputs.
+- Validar payload.
+- Usar `correlation_id` em logs.
+- Retornar mensagens amigáveis.
+
+## Erro público
+
+```json
+{
+  "error": {
+    "code": "INVALID_FILE_TYPE",
+    "message": "O arquivo enviado não é uma partitura válida.",
+    "correlation_id": "req_123"
+  }
+}
+```
+
+## Proibido no DTO público
+
+```text
+stacktrace
+storage_key
+storage_path
+raw_log
+worker_exception
+secret
+token_hash
+filesystem_path
+```
 
 ## Upload
 
-Checklist obrigatório:
-
-- validação real de MIME;
-- magic bytes;
-- limite de tamanho;
-- limite de páginas;
-- bloqueio de PDFs criptografados se não suportados;
-- rejeição de arquivos vazios;
-- sanitização de filename;
-- UUID interno;
-- storage fora de pasta pública;
-- quarentena/isolamento.
-
-## Path traversal
-
-Nunca concatenar path com input do usuário.
-
-Correto:
+Tipos permitidos no início:
 
 ```text
-storage_key = jobs/{job_id}/original/{uuid}.pdf
+application/pdf
+application/vnd.recordare.musicxml+xml
+application/xml
+text/xml
 ```
 
-Errado:
+Imagens podem ser avaliadas futuramente, mas não entram no MVP inicial.
 
-```text
-uploads/{original_filename}
-```
+## Worker
 
-## Subprocessos
-
-Regras:
-
-- `shell=False`;
-- argumentos como lista;
-- timeout obrigatório;
-- cwd temporário isolado;
-- variáveis de ambiente mínimas;
-- usuário sem privilégio;
-- capturar stdout/stderr com limite;
-- não logar conteúdo sensível.
-
-## API
-
-- Rate limiting por IP/sessão/usuário.
-- CORS restritivo.
-- Headers de segurança.
-- Validação Pydantic em todos os payloads.
-- Erros sem stacktrace.
-- Correlation ID.
-- Logs sem dados sensíveis.
+- Falha do worker não pode derrubar a API.
+- Erros internos devem virar `error_code` e mensagem pública segura.
+- Retentativas devem ser limitadas.
+- Timeout deve marcar job como `failed`.
 
 ## Download
 
-- URLs assinadas.
-- Tokens temporários.
-- Validar ownership/token.
-- Não expor storage path.
-- Bloquear artefatos expirados.
-
-## Workers
-
-- Separar API e worker.
-- Worker sem privilégio root.
-- Limitar CPU/memória.
-- Timeouts por etapa.
-- Limpar temporários.
-- Isolar arquivos por job.
-
-## Logs
-
-Não logar:
-
-- tokens;
-- URLs assinadas completas;
-- conteúdo de PDFs;
-- dados pessoais desnecessários;
-- stacktrace em resposta pública.
-
-Pode logar:
-
-- job_id;
-- correlation_id;
-- error_code;
-- etapa;
-- duração;
-- worker_id.
-
-## Proteções adicionais
-
-- Proteção contra zip bomb/PDF malicioso via limite de tamanho, páginas e timeout.
-- Varredura opcional com antivírus/ClamAV em fase futura.
-- CSP e headers na camada frontend/API gateway.
-- Secrets via ambiente/secret manager, nunca commitados.
-
-## Critérios de aceite
-
-- PDF falso é rejeitado.
-- Path traversal em filename não afeta storage.
-- Download expirado não funciona.
-- Erro público não contém stacktrace.
-- Worker não usa `shell=True`.
+- Artefato expirado deve ser bloqueado.
+- Download deve validar artefato e job.
+- Resposta nunca pode revelar path físico ou chave interna.

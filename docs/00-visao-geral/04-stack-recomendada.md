@@ -1,5 +1,11 @@
 # Stack recomendada
 
+## Princípio
+
+A stack deve servir ao MVP técnico: backend assíncrono, frontend de ferramenta, banco relacional, fila de jobs, validação forte de payloads e motor musical testável.
+
+Esta documentação não escolhe fornecedor de publicação online nem trata de domínio, DNS ou servidor de produção.
+
 ## Frontend
 
 ```text
@@ -7,25 +13,21 @@ Next.js
 React
 TypeScript
 Tailwind CSS
-shadcn/ui
-Framer Motion
+shadcn/ui ou componentes próprios equivalentes
 Lucide React
 React Hook Form
 Zod
 TanStack Query
-Dexie/IndexedDB
-Service Worker/PWA
+Testing Library
+Playwright
 ```
 
-### Justificativa
+Justificativa:
 
-- Next.js oferece estrutura robusta para aplicação web moderna.
-- TypeScript reduz erros de contrato entre componentes e API.
-- Tailwind + shadcn/ui aceleram a criação de UI consistente.
-- Framer Motion atende às animações musicais com controle de acessibilidade.
-- Zod e React Hook Form ajudam a validar formulários e uploads.
-- TanStack Query organiza cache, polling e estados assíncronos.
-- Dexie/IndexedDB sustenta histórico local.
+- TypeScript reduz divergência entre componentes e API.
+- Zod valida contratos recebidos.
+- TanStack Query organiza upload, criação de job, polling e artefatos.
+- Playwright cobre fluxo do usuário e uso mobile/teclado.
 
 ## Backend
 
@@ -36,52 +38,44 @@ Pydantic v2
 SQLAlchemy 2.0
 Alembic
 PostgreSQL
-Redis
+Redis ou broker equivalente para fila
 Celery, RQ ou Dramatiq
-MinIO/local storage no desenvolvimento
-S3/R2/B2/Supabase Storage em produção
-Docker/Docker Compose
+pytest
+ruff
+mypy
 ```
 
-### Escolha recomendada para fila
-
-Para o WFlyer, a recomendação inicial é Celery com Redis, por maturidade e capacidade de lidar com retries, timeouts e workers separados.
-
-RQ é mais simples, mas menos completo para pipelines complexos.
-
-Dramatiq é uma boa alternativa moderna, mas Celery tende a ter mais documentação e exemplos para cenários pesados.
+Recomendação inicial: Celery com Redis ou RQ com Redis. A escolha final deve ser registrada antes da fase de fila/worker.
 
 ## Processamento musical
 
 ```text
-Audiveris para OMR
-music21 para leitura/manipulação/transposição musical
-MuseScore CLI para renderizar PDF final
+MusicXML como formato prioritário da Fase 1
+music21 ou biblioteca equivalente para manipulação musical
+MuseScore CLI ou alternativa documentada para renderização futura
+OMR somente após validação do motor MusicXML-first
 ```
 
-## Observabilidade
+## Storage controlado pela aplicação
 
-```text
-Logs JSON
-Correlation ID
-OpenTelemetry
-Prometheus
-Grafana
-Sentry
-Loki
-```
+O MVP deve abstrair armazenamento por interface interna. A implementação inicial pode usar storage local controlado ou adaptador equivalente, desde que:
+
+- não use filename original como path;
+- não exponha caminho físico ao frontend;
+- permita expiração;
+- permita testes de download e bloqueio de artefato expirado.
 
 ## Segurança
 
 ```text
-Rate limiting
-CORS restritivo
-Headers de segurança
+Rate limit
 Validação real de MIME
-Storage com URLs assinadas
-Workers sem privilégio
-Subprocess sem shell=True
-Quarentena de arquivos
+Validação de extensão
+Limite de tamanho
+Renomeação interna
+Erros sem stacktrace
+Logs com correlation_id
 Timeout por etapa
-Limite de CPU/memória
+Subprocess sem shell=True
+DTO público sem storage_key
 ```

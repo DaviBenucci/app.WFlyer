@@ -10,7 +10,7 @@
 - Documentação de backend assíncrono.
 - Segurança de upload/storage/workers.
 - Estratégia de testes.
-- Guia de implementação e arquivo `implementacao_IA`.
+- Guia de implementação e arquivo `docs/implementacao/01-implementacao_IA.md`.
 - Logs de implementação, testes e decisões.
 
 ### Observação
@@ -26,7 +26,7 @@ Nenhum código final de aplicação foi criado nesta etapa.
 - Foi adicionada regra para imprevistos: criar sub-etapa dentro da etapa atual antes de avançar.
 - `docs/implementacao/01-implementacao_IA.md` foi reforçado com ordem obrigatória, gates, logs e proibições.
 - `docs/implementacao/02-backlog_executavel.md` foi reorganizado por fases e etapas.
-- `docs/implementacao/03-checklist_codex.md` e `05-definition_of_done.md` foram ampliados.
+- `docs/implementacao/03-checklist_codex.md` e `docs/implementacao/05-definition_of_done.md` foram ampliados.
 - `docs/backend/01-visao-geral.md` foi detalhado e recebeu referência ao guia backend.
 - `docs/backend/03-endpoints-api.md` foi expandido com contratos, erros, tokens, status e segurança.
 - `docs/frontend/01-layout-responsivo.md` foi detalhado com regra de frontend final após backend.

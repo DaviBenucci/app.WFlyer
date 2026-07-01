@@ -1,316 +1,47 @@
-# Roadmap por fases
-
-## Objetivo
-
-Definir a ordem macro do WFlyer para que a implementação seja previsível, segura e validável.
-
-A implementação detalhada está em:
-
-```text
-docs/implementacao/00-guia_de_implementacao.md
-```
+# Roadmap técnico do MVP
 
 ## Regra de progressão
 
-Nenhuma fase pode começar enquanto a fase anterior não estiver `CONCLUIDA`.
-
-Se uma etapa falhar, criar sub-etapa de correção dentro da fase atual. Não pular para a próxima fase.
-
-## Fase 0 — Documentação, escopo e governança
-
-Objetivo: garantir que o Codex entenda o produto, o MVP e as regras de implementação.
-
-Entregáveis:
-
-- leitura documental registrada;
-- escopo MVP separado de futuro;
-- regra de progressão registrada;
-- riscos iniciais mapeados;
-- logs preparados.
-
-## Fase 1 — Fundação técnica do repositório
-
-Objetivo: criar base limpa para código novo.
-
-Escopo:
-
-- estrutura `apps/api` e `apps/web` quando aplicável;
-- `.gitignore`;
-- `.env.example` sem secrets reais;
-- lint, format, typecheck e testes base;
-- README técnico;
-- scripts seguros.
-
-## Fase 2 — Infra local
-
-Objetivo: preparar dependências para banco/backend.
-
-Escopo:
-
-- Docker Compose;
-- Postgres;
-- Redis;
-- MinIO/storage local;
-- healthchecks;
-- variáveis de ambiente;
-- política de volumes locais.
-
-## Fase 3 — Banco de dados primeiro
-
-Objetivo: criar a persistência antes dos endpoints.
-
-Escopo:
-
-- SQLAlchemy 2.0;
-- Alembic;
-- tabela de instrumentos;
-- seed de instrumentos;
-- uploads;
-- jobs;
-- eventos;
-- artefatos;
-- métricas admin;
-- índices;
-- expiração de 15 dias;
-- testes de migrations.
-
-## Fase 4 — Backend base
-
-Objetivo: criar FastAPI robusto, sem regra pesada ainda.
-
-Escopo:
-
-- app FastAPI;
-- settings;
-- health;
-- errors;
-- CORS;
-- correlation ID;
-- logs estruturados;
-- sessão de banco;
-- DTOs públicos/internos;
-- testes base.
-
-## Fase 5 — Instrumentos e regra musical inicial
-
-Objetivo: disponibilizar dados musicais estáveis.
-
-Escopo:
-
-- API de instrumentos;
-- busca por instrumento;
-- cálculo de intervalo;
-- validação de suporte;
-- testes musicais unitários.
-
-## Fase 6 — Upload seguro e storage
-
-Objetivo: aceitar PDF com segurança.
-
-Escopo:
-
-- storage service;
-- validação de tamanho;
-- validação real de PDF;
-- sanitização;
-- hash;
-- upload endpoint;
-- rollback/cleanup em falha;
-- documentação de segurança.
-
-## Fase 7 — Jobs e fila
-
-Objetivo: criar execução assíncrona.
-
-Escopo:
-
-- criação de job;
-- token temporário;
-- status público;
-- eventos;
-- publicação em fila;
-- validação de acesso anônimo;
-- erros públicos seguros.
-
-## Fase 8 — Worker
-
-Objetivo: processar jobs fora da request HTTP.
-
-Escopo:
-
-- app do worker;
-- task principal;
-- retries;
-- timeouts;
-- workspace por job;
-- atualização de progresso;
-- eventos técnicos;
-- worker simulado controlado quando necessário.
-
-## Fase 9 — Pipeline musical
-
-Objetivo: implementar o núcleo de transposição.
-
-Escopo:
-
-- fixtures musicais;
-- MusicXML;
-- music21;
-- armadura;
-- acidentes;
-- MuseScore CLI;
-- OMR ou caminho documentado;
-- métricas admin;
-- testes musicais.
-
-## Fase 10 — Artefatos, download e retenção
-
-Objetivo: fechar resultado backend.
-
-Escopo:
-
-- registro de artefatos;
-- endpoint de artefatos;
-- download temporário;
-- expiração lógica;
-- cleanup de 15 dias;
-- fluxo backend completo testado.
-
-## Fase 11 — Frontend simples de verificação
-
-Objetivo: provar backend/banco com UI técnica mínima.
-
-Escopo:
-
-- `/debug/health`;
-- `/debug/instruments`;
-- `/debug/upload`;
-- `/debug/transposition`;
-- `/debug/jobs`;
-- `/debug/artifacts`.
-
-Esta fase não implementa o frontend final.
-
-## Fase 12 — Hardening backend, segurança e observabilidade
-
-Objetivo: concluir backend MVP antes do frontend final.
-
-Escopo:
-
-- rate limiting;
-- CORS;
-- headers;
-- logs sensíveis;
-- permissões de worker;
-- testes de upload/download;
-- testes de DTO público;
-- suíte backend completa.
-
-## Fase 13 — Congelamento de contratos
-
-Objetivo: estabilizar API para frontend final.
-
-Escopo:
-
-- DTOs públicos revisados;
-- OpenAPI/schemas;
-- política de polling;
-- mensagens públicas;
-- estados de UI por status;
-- validação via frontend debug.
-
-## Fase 14 — Frontend final: fundação visual
-
-Objetivo: construir UI definitiva sobre backend real.
-
-Escopo:
-
-- Next.js/TypeScript;
-- Tailwind;
-- shadcn/ui;
-- tokens;
-- componentes base;
-- AppShell;
-- DesktopSidebar;
-- MobileBottomNav;
-- PageContainer;
-- TanStack Query;
-- Zod.
-
-## Fase 15 — Frontend final: páginas
-
-Objetivo: implementar telas do MVP.
-
-Escopo:
-
-- Home;
-- Como funciona;
-- Instrumentos;
-- Configurações locais;
-- Histórico local;
-- Resultado;
-- placeholders seguros para futuro;
-- responsividade.
-
-## Fase 16 — Wizard integrado
-
-Objetivo: implementar fluxo principal do usuário com backend real.
-
-Escopo:
-
-- Upload;
-- Origem;
-- Destino;
-- Revisão;
-- criação de job;
-- polling;
-- processamento;
-- resultado;
-- download;
-- tratamento de erro.
-
-## Fase 17 — PWA, histórico local e refinamento
-
-Objetivo: polir experiência sem ampliar escopo indevido.
-
-Escopo:
-
-- IndexedDB;
-- estado offline;
-- limpeza local;
-- acessibilidade;
-- responsividade;
-- animações discretas;
-- copy final.
-
-## Fase 18 — QA final e entrega
-
-Objetivo: finalizar MVP com segurança e documentação.
-
-Escopo:
-
-- testes backend;
-- testes frontend;
-- E2E;
-- regressão musical;
-- checklist de segurança;
-- revisão documental;
-- changelog;
-- manifesto de validação;
-- empacotamento.
-
-## Fase futura — Contas, compartilhamento e admin
-
-Itens fora do MVP inicial:
-
-- login/cadastro;
-- dashboard autenticado;
-- histórico remoto;
+```text
+O Codex só poderá avançar para a próxima fase quando a fase anterior estiver concluída, testada e documentada.
+```
+
+O guia operacional detalhado está em `docs/100-implementacao/guia-codex-app-wflyer.md`.
+
+## Fases
+
+| Fase | Nome | Resultado esperado |
+|---:|---|---|
+| 0 | Auditoria documental | Escopo técnico revisado e sem mistura com requisitos fora do MVP. |
+| 1 | Estrutura base do projeto | Separação clara entre frontend, backend, pacotes compartilhados e docs. |
+| 2 | Backend mínimo | API base, health, erro padrão e módulos iniciais. |
+| 3 | Banco de dados | Tabelas mínimas e status documentados. |
+| 4 | Catálogo de instrumentos | Instrumentos mínimos com `written_to_concert`. |
+| 5 | Regra musical e testes unitários | Fórmula central e testes MusicXML-first. |
+| 6 | Upload e validação de arquivos | Upload seguro com tipos permitidos e limites. |
+| 7 | Fila e worker | Job processado fora da requisição HTTP. |
+| 8 | API de jobs | Status, progresso, eventos públicos e artefatos. |
+| 9 | Frontend funcional mínimo | Usuário cria job pela interface. |
+| 10 | Tela de processamento e resultado | Status acessível, erro claro e resultado. |
+| 11 | Download de artefatos | Download controlado e bloqueio de expirado. |
+| 12 | Testes automatizados | Matriz musical, backend, frontend e segurança. |
+| 13 | Segurança e revisão técnica | Upload, erros, logs, rate limit, timeout e tokens revisados. |
+| 14 | Critérios finais do MVP | Aceite objetivo registrado. |
+
+## Fases futuras separadas
+
+As frentes abaixo não fazem parte do MVP inicial:
+
+- login;
+- histórico em nuvem;
 - biblioteca;
-- compartilhamento público real;
-- push notifications;
-- admin completo;
-- pagamentos;
-- moderação.
-
-Esses itens só podem ser implementados após decisão explícita.
+- planos pagos;
+- assinatura;
+- dashboard administrativo;
+- colaboração entre usuários;
+- editor visual completo;
+- detecção automática perfeita de instrumento;
+- detecção automática perfeita de tonalidade;
+- OMR perfeito para qualquer PDF;
+- aplicativo mobile nativo;
+- integração Spotify.

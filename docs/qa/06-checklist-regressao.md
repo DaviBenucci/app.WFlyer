@@ -34,10 +34,10 @@ Antes de concluir uma tarefa, o Codex deve verificar:
 - [ ] Unitários rodaram?
 - [ ] Typecheck/lint rodaram?
 - [ ] E2E afetado rodou?
-- [ ] Resultado registrado em `TEST_LOG.md`?
+- [ ] Resultado registrado em `docs/logs/TEST_LOG.md`?
 
 ## Documentação
 
-- [ ] `IMPLEMENTATION_LOG.md` atualizado?
-- [ ] `CHANGELOG.md` atualizado se comportamento mudou?
-- [ ] `DECISIONS.md` atualizado se houve decisão nova?
+- [ ] `docs/logs/IMPLEMENTATION_LOG.md` atualizado?
+- [ ] `docs/logs/CHANGELOG.md` atualizado se comportamento mudou?
+- [ ] `docs/logs/DECISIONS.md` atualizado se houve decisão nova?

@@ -1,104 +1,43 @@
 # Decisions Log
 
-## ADR-001 — Projeto novo do zero
+## ADR-001 — Projeto novo orientado por documentação
 
 Status: ACEITA
 
-Contexto:
-O projeto antigo não deve ser base técnica da nova versão.
+Decisão: construir a aplicação a partir da documentação técnica atual, sem reaproveitar código antigo como base.
 
-Decisão:
-Construir nova aplicação do zero, mantendo apenas a ideia central.
-
-Consequências:
-Menos dívida técnica herdada e maior controle arquitetural.
-
-## ADR-002 — MVP sem login
+## ADR-002 — MVP sem login obrigatório
 
 Status: ACEITA
 
-Contexto:
-A prioridade é validar transposição de PDF para instrumento destino.
+Decisão: validar a transposição musical sem exigir autenticação.
 
-Decisão:
-Começar sem autenticação obrigatória.
-
-Consequências:
-Jobs usam `anonymous_session_id`, `job_id` e `download_token` temporário.
-
-## ADR-003 — Processamento assíncrono
+## ADR-003 — MusicXML-first
 
 Status: ACEITA
 
-Contexto:
-OMR, MusicXML, transposição e renderização são tarefas pesadas.
+Decisão: iniciar pelo motor musical com MusicXML controlado, depois evoluir para PDF simples e só então PDF real com validação e avisos.
 
-Decisão:
-API cria job e workers processam em fila.
-
-Consequências:
-Menor latência percebida e melhor escalabilidade.
-
-## ADR-004 — Retenção de 15 dias
+## ADR-004 — Processamento assíncrono
 
 Status: ACEITA
 
-Contexto:
-Arquivos musicais podem ser sensíveis e ocupar storage.
+Decisão: API cria job e worker processa fora da requisição HTTP principal.
 
-Decisão:
-Arquivos expiram após 15 dias no servidor.
-
-Consequências:
-Necessário scheduler de cleanup e estados de expiração no frontend.
-
-## ADR-005 — Confiança só para admin
+## ADR-005 — Regra musical centralizada
 
 Status: ACEITA
 
-Contexto:
-Mostrar percentual de confiança pode gerar insegurança e confusão.
+Decisão: usar a fórmula única `intervalo_escrito = origem.written_to_concert - destino.written_to_concert`.
 
-Decisão:
-Usuário comum vê informações objetivas; admin vê métricas internas.
-
-Consequências:
-DTOs públicos e admin devem ser separados.
-## ADR-006 — Implementação backend-first com frontend final bloqueado
+## ADR-006 — Arquivos fora do banco
 
 Status: ACEITA
 
-Contexto:
-O guia anterior começava pelo frontend e estava simples demais para orientar o Codex em uma implementação completa, segura e sem alucinação.
+Decisão: banco guarda metadados e referências internas; arquivos ficam em armazenamento controlado pela aplicação.
 
-Decisão:
-A implementação passa a seguir ordem backend-first: infraestrutura, banco de dados, backend, upload, jobs, worker, pipeline musical, artefatos e hardening antes do frontend final. Um frontend simples de verificação é permitido apenas para validar backend e banco.
-
-Consequências:
-O Codex só pode iniciar o frontend final após backend MVP concluído, contratos congelados e validações registradas.
-
-## ADR-007 — Gate rígido por etapa
+## ADR-007 — Escopo futuro separado
 
 Status: ACEITA
 
-Contexto:
-Etapas grandes ou soltas aumentam risco de soluções inventadas, falhas não testadas e documentação desatualizada.
-
-Decisão:
-Cada etapa possui status (`PENDENTE`, `EM_EXECUCAO`, `BLOQUEADA`, `CONCLUIDA`) e a próxima etapa só pode iniciar quando a anterior estiver `CONCLUIDA`.
-
-Consequências:
-Falhas ou imprevistos devem ser resolvidos por sub-etapas dentro da etapa atual antes de qualquer avanço.
-
-## ADR-008 — Sub-etapas obrigatórias para imprevistos
-
-Status: ACEITA
-
-Contexto:
-Durante a implementação podem surgir erros de dependência, incompatibilidade, falhas de teste, lacunas de documentação ou decisões técnicas pendentes.
-
-Decisão:
-Todo imprevisto deve gerar sub-etapa na etapa atual, com causa, correção, validação e resultado registrados.
-
-Consequências:
-O Codex não pode contornar falhas pulando para outra etapa. A rastreabilidade da implementação aumenta.
+Decisão: login, biblioteca em nuvem, planos, painel administrativo, compartilhamento, push, aplicativo nativo e Spotify ficam fora do MVP inicial.

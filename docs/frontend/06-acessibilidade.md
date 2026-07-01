@@ -2,52 +2,63 @@
 
 ## Objetivo
 
-Garantir que o WFlyer possa ser usado por teclado, leitores de tela e usuários com sensibilidade a movimento.
+Garantir que o WFlyer possa ser usado por teclado, leitores de tela, dispositivos móveis e usuários com sensibilidade a movimento.
 
-## Requisitos globais
+## Requisitos obrigatórios
 
 - H1 único por página.
-- Ordem de foco lógica.
-- Área de toque mínima de 44x44px.
+- Navegação por teclado.
+- Ordem lógica de foco.
+- Labels em campos.
+- Mensagens de erro textuais.
 - Contraste adequado.
-- `aria-current="page"` em navegação ativa.
-- `aria-live` para erros e progresso relevante.
-- Labels em todos os inputs.
-- Não depender apenas de cor.
+- `aria-live` para status de processamento.
+- Área mínima de toque em mobile.
 - Suporte a `prefers-reduced-motion`.
-
-## Wizard
-
-- Stepper deve informar etapa atual em texto.
-- Erros devem ser associados ao campo/componente.
-- Dropzone deve aceitar Enter/Espaço.
-- Progresso deve ter valor textual.
+- Não depender apenas de cor para comunicar status.
+- Loading acessível.
+- Estados vazios e estados de erro compreensíveis.
 
 ## Upload
 
-- Dropzone com botão alternativo: `Selecionar PDF`.
-- Mensagem de formato e limite clara.
-- Erro anunciado via `aria-live`.
+- Dropzone deve aceitar Enter/Espaço.
+- Deve existir botão alternativo para selecionar arquivo.
+- Erro de arquivo deve ser anunciado em texto.
+- Formato e limite devem estar claros.
 
-## Bottom navigation
+## Seleção de instrumentos
 
-- Botões com `aria-label`.
-- Aba ativa com `aria-current="page"`.
-- Logo com label `Ir para início`.
-- Rastro musical `aria-hidden="true"`.
+- Campo pesquisável deve ter label.
+- Opções devem ser navegáveis por teclado.
+- Estado selecionado não deve depender só de cor.
+- Instrumento inválido deve gerar mensagem textual.
 
-## Redução de movimento
+## Processamento
+
+- Status deve usar `aria-live`.
+- Progresso deve ter texto além de barra visual.
+- Erro do job deve ser anunciado.
+- Loading deve ter nome acessível.
+
+## Mobile
+
+- Botões grandes.
+- Área de toque mínima de 44x44px.
+- Conteúdo não deve ficar oculto por navegação fixa.
+- Textos devem caber sem sobreposição.
+
+## Movimento
 
 Quando `prefers-reduced-motion` estiver ativo:
 
-- remover rastro musical;
-- reduzir transição de cortina;
-- evitar spring/bounce;
-- manter feedback visual simples.
+- reduzir animações;
+- remover efeitos decorativos;
+- manter feedback visual simples;
+- nunca esconder o status textual.
 
 ## Testes
 
-- Navegar a aplicação só com teclado.
-- Verificar labels com leitor de tela.
-- Rodar auditoria com axe ou Lighthouse.
-- Simular `prefers-reduced-motion`.
+- Fluxo completo só com teclado.
+- Auditoria com ferramenta de acessibilidade quando disponível.
+- Simulação de mobile.
+- Simulação de `prefers-reduced-motion`.

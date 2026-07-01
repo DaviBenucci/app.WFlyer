@@ -2,20 +2,20 @@
 
 ## Objetivo
 
-Separar informações públicas de métricas internas, garantindo clareza para o usuário e diagnósticos para admin.
+Separar mensagens públicas de diagnósticos internos, mantendo clareza para o usuário.
 
-## Usuário comum vê
+## Usuário vê
 
 ```text
 Origem
 Destino
 Transposição aplicada
-Tonalidade resultante
+Tonalidade resultante quando disponível
 Arquivos disponíveis
 Avisos claros
 ```
 
-## Usuário comum não vê
+## Usuário não vê
 
 ```text
 confidence_score_omr
@@ -27,29 +27,27 @@ warnings_count
 processing_duration_ms
 engine_version
 stacktrace
+storage_key
+path físico
 ```
 
-## Admin vê
+## Validações antes da entrega
 
-Todas as métricas internas necessárias para suporte e melhoria do sistema.
-
-## Validações automáticas antes da entrega
-
-- MusicXML gerado.
-- Partes musicais detectadas.
+- Representação musical final existe.
+- Partes musicais detectadas quando aplicável.
 - Transposição aplicada.
 - Armadura alterada quando esperado.
-- PDF final renderizado.
-- Artefato baixável.
+- Artefato final existe.
+- Artefato é baixável.
 
 ## Mensagem pública de cautela
 
 ```text
-Confira a prévia antes de usar a partitura em apresentação ou ensaio.
+Confira o resultado antes de usar a partitura em apresentação ou ensaio.
 ```
 
 ## Testes
 
 - DTO público não contém métricas internas.
-- Admin endpoint contém métricas com autorização.
 - Resultado falha se artefato final não existir.
+- Erro técnico é convertido em mensagem segura.

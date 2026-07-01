@@ -1,81 +1,69 @@
-# Estratégia de testes
+# Estratégia de testes do MVP
 
 ## Objetivo
 
-Garantir que cada alteração feita pelo Codex seja validada contra regressões, efeitos colaterais, segurança e regras musicais.
+Garantir que a aplicação comece a ser codada com testes para regra musical, backend, frontend e segurança.
 
-## Pirâmide de testes
+## Testes musicais obrigatórios
 
-```text
-unitários: muitos
-integração: moderados
-e2e: fluxo crítico
-segurança: casos essenciais
-testes musicais: obrigatórios para transposição
-```
+- Piano C -> Trompete Bb.
+- Trompete Bb -> Piano C.
+- Piano C -> Sax Alto Eb.
+- Sax Alto Eb -> Piano C.
+- Clarinete Bb -> Sax Alto Eb.
+- Trompa F -> Piano C.
+- Mesmo instrumento -> mesmo resultado.
+- Transposição com acidentes.
+- Transposição com acordes.
+- Transposição com armadura de clave.
 
-## Comandos obrigatórios por PR/tarefa
+## Testes de backend obrigatórios
 
-O Codex deve executar, conforme stack implementada:
+- `/health` responde.
+- Upload válido é aceito.
+- Upload inválido é rejeitado.
+- Arquivo grande é rejeitado.
+- Job é criado.
+- Job muda de status.
+- Worker processa job.
+- Erro no worker não quebra API.
+- Download só funciona para artefato válido.
+- Arquivo expirado não pode ser baixado.
 
-```text
-lint
-typecheck
-testes unitários
-testes de integração afetados
-testes e2e do fluxo alterado
-build
-```
+## Testes de frontend obrigatórios
 
-Se algum comando ainda não existir, o Codex deve registrar em `docs/logs/IMPLEMENTATION_LOG.md` e criar tarefa no backlog.
+- Usuário consegue enviar arquivo.
+- Usuário consegue selecionar instrumento de origem.
+- Usuário consegue selecionar instrumento de destino.
+- Usuário vê status de processamento.
+- Usuário vê erro amigável.
+- Usuário consegue baixar resultado.
+- Fluxo funciona em mobile.
+- Fluxo funciona com teclado.
 
-## Cobertura mínima por área
+## Testes de segurança obrigatórios
 
-### Frontend
-
-- renderização das páginas;
-- estados loading/error/empty;
-- validações do wizard;
-- acessibilidade básica;
-- bottom navigation;
-- histórico local.
-
-### Backend
-
-- endpoints principais;
-- validação de upload;
-- jobs/status;
-- storage/download;
-- segurança;
-- workers.
-
-### Musical
-
-- cálculo do intervalo;
-- transposição de notas;
-- armadura;
-- MusicXML parseável;
-- renderização final.
-
-## Regra anti-side-effect
-
-Após alterar uma área, rodar pelo menos:
-
-1. testes unitários da área alterada;
-2. testes de contrato relacionados;
-3. teste e2e do fluxo principal se tocar wizard, API, jobs ou downloads;
-4. build completo antes de finalizar.
+- Não expor stacktrace.
+- Não expor caminho interno do arquivo.
+- Não aceitar extensão perigosa.
+- Não aceitar MIME inválido.
+- Não aceitar payload malformado.
+- Rate limit documentado.
+- Validações documentadas.
 
 ## Evidência
 
-Todo resultado deve ser registrado em `docs/logs/TEST_LOG.md` com:
+Quando houver código, cada fase deve registrar:
 
 ```text
 data
-escopo
+fase
+arquivos alterados
 comandos executados
 resultado
 falhas
 correções
 pendências
 ```
+
+Nenhum teste deve ser declarado como executado sem evidência.
