@@ -1,4 +1,6 @@
-# Tela Histórico local
+# Tela Histórico
+
+> Revisão: 2026-07-20.
 
 ## Rota
 
@@ -8,57 +10,66 @@
 
 ## Objetivo
 
-Mostrar transposições recentes armazenadas no navegador/dispositivo, sem exigir conta.
+Listar referências locais a jobs recentes com clareza operacional. Não criar dashboard de métricas no MVP sem conta.
 
-## Escopo MVP
+## Shell
 
-O histórico guarda apenas metadados seguros:
+`UtilityShell`.
+
+## Composição
 
 ```text
-job_id
-original_filename sanitizado
-source_instrument_id
-target_instrument_id
-transpose_interval
+PageHeader
+Filtros simples, quando necessários
+HistoryList
+Retention/SessionNotice
+```
+
+## Lista
+
+Desktop: linhas estruturadas com colunas adaptativas.
+
+Mobile: linhas empilhadas dentro de uma superfície contínua. Evitar um card grande por item quando isso prejudicar comparação.
+
+## Item
+
+```text
+filename sanitizado
+origem -> destino
+intervalo
 status
-created_at
-expires_at
-artifact_types
+warnings
+criado em
+expira em
+artefatos
 ```
 
-## Componentes
+`TranspositionRoute` pode ter variante compacta.
 
-- `LocalHistory`.
-- `LocalHistoryItem`.
-- `RetentionBadge`.
-- `ClearHistoryButton`.
-- `EmptyState`.
+## Ações
 
-## Regras
+- abrir resultado;
+- remover do histórico local;
+- apagar arquivos do servidor, quando autorizado;
+- iniciar nova transposição com mesmas preferências.
 
-- Não guardar arquivo original automaticamente.
-- Não guardar MusicXML completo.
-- Não guardar PDF final.
-- Não guardar `storage_key`.
-- Não guardar stacktrace.
-- Usuário pode limpar histórico local.
-- Item expirado orienta nova transposição.
+Repetir não reutiliza bytes expirados.
 
-## Estados
+## Empty state
+
+Não usar ilustração genérica. Mostrar:
 
 ```text
-empty
-loaded
-search_empty
-available
-expired
-removed_local
-storage_unavailable
+Nenhuma transposição neste navegador.
+Ao concluir uma transposição, a referência aparecerá aqui enquanto os dados locais estiverem disponíveis.
 ```
+
+CTA: “Transpor uma partitura”.
 
 ## Critérios de aceite
 
-- Histórico aparece após job concluído.
-- Item expirado informa indisponibilidade de download.
-- Usuário consegue remover histórico local.
-- Falha de armazenamento local não quebra a aplicação.
+- histórico não parece dashboard;
+- ações local e servidor são distintas;
+- itens expirados não oferecem download;
+- sessão diferente recebe estado neutro;
+- lista funciona com nomes longos, muitos warnings e storage indisponível.

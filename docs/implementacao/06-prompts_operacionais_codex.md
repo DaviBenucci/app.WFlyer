@@ -1,27 +1,40 @@
-# Prompts operacionais para Codex
+# Prompts operacionais para IA/Codex
 
-## Prompt para iniciar uma fase
+## Executar uma fase
 
 ```text
-Leia README.md, docs/00-visao-geral/05-escopo-mvp-app-wflyer.md,
-W-Flyer_Regra-Transposição.md e docs/100-implementacao/guia-codex-app-wflyer.md.
-Execute somente a fase <N>, sem avançar para a próxima.
-Ao final, registre testes, arquivos alterados, pendências e critério de conclusão.
+Leia docs/README.md, a hierarquia documental, o escopo, a matriz de suporte,
+as decisões pendentes e a Fase <N> do guia canônico.
+Inspecione o código e descreva o comportamento atual, os arquivos afetados,
+os riscos e os testes antes de alterar.
+Execute somente a Fase <N>. Não habilite capability futura.
+Ao final, apresente comandos/resultados, contratos/migrations alterados,
+pendências e evidência de cada item do gate. Marque BLOQUEADA se faltar evidência.
 ```
 
-## Prompt para revisão de fase
+## Revisar o motor musical
 
 ```text
-Revise a fase <N> contra o guia Codex e os critérios de aceite do MVP.
-Procure vazamento de stacktrace, path físico, storage_key, regra musical duplicada
-e requisitos fora do MVP.
+Audite a mudança contra docs/music/01-modelo-transposicao.md,
+03-politica-enarmonia-oitavas.md e 05-invariantes-validacao.md.
+Verifique componentes diatônico/cromático/oitava, pitch de concerto,
+armadura, harmony, ritmo, <transpose> e round trip A->B->A.
+Não aprove por comparação textual de XML.
 ```
 
-## Prompt para regra musical
+## Revisar segurança de arquivo
 
 ```text
-Antes de alterar o motor musical, leia W-Flyer_Regra-Transposição.md e
-docs/features/11-catalogo-instrumentos-mvp.md.
-Garanta que a fórmula usada seja:
-intervalo_escrito = origem.written_to_concert - destino.written_to_concert.
+Audite sessão/CSRF/IDOR, streaming/quarentena, parser XML seguro,
+limites estruturais, fila idempotente, sandbox, download e retenção.
+Execute o corpus de docs/qa/08-testes-seguranca-arquivos.md.
+Não trate MIME/extensão/UUID como controle suficiente isoladamente.
+```
+
+## Revisar contrato
+
+```text
+Compare OpenAPI, DTOs backend, cliente gerado, frontend e documentação.
+Liste breaking changes, enums/erros divergentes e campos internos expostos.
+Não edite o cliente gerado manualmente.
 ```

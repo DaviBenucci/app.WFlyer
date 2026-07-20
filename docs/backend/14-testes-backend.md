@@ -1,24 +1,25 @@
-# Testes backend do MVP
+# Testes do backend
 
-Este documento resume os testes backend obrigatórios. A matriz completa está em `docs/qa/03-testes-backend.md`.
+> Status: canônico por referência. Revisão: 2026-07-20.
 
-## Mínimo obrigatório
+A matriz executável está em:
 
-- `/health` responde.
-- Upload válido é aceito.
-- Upload inválido é rejeitado.
-- Arquivo grande é rejeitado.
-- Job é criado.
-- Job muda de status.
-- Worker processa job.
-- Erro no worker não quebra API.
-- Download só funciona para artefato válido.
-- Arquivo expirado não pode ser baixado.
+- `../qa/03-testes-backend.md` — API, persistência, fila e ciclo de vida;
+- `../qa/05-testes-musicais.md` — invariantes do motor;
+- `../qa/08-testes-seguranca-arquivos.md` — corpus hostil e autorização.
 
-## Segurança
+## Gate mínimo do backend Core
 
-- Erro não expõe stacktrace.
-- Resposta não expõe path físico.
-- Resposta não expõe `storage_key`.
-- Payload malformado é rejeitado.
-- MIME inválido é rejeitado.
+- migrations aplicam e revertem em ambiente de teste;
+- OpenAPI e cliente gerado não divergem;
+- sessão/CSRF/propriedade são testados em toda rota de objeto;
+- upload MusicXML passa por parsing seguro;
+- criação de job é idempotente;
+- outbox, reentrega e retry não duplicam resultado;
+- máquinas de estado rejeitam transições inválidas;
+- invariantes musicais aprovam o corpus Core;
+- download e purge respeitam retenção;
+- respostas/logs não vazam dados internos;
+- falhas são categorizadas e observáveis.
+
+Nenhum teste de aplicação é considerado executado apenas porque a documentação existe.

@@ -1,119 +1,251 @@
-# Design System
+# Design system W_Flyer
 
-## Identidade
+> Status: canônico para tokens e componentes. Revisão: 2026-07-20.
 
-O WFlyer deve parecer:
-
-- musical;
-- profissional;
-- tecnológico;
-- confiável;
-- leve de usar.
-
-## Paleta
+## Arquitetura
 
 ```text
-Roxo principal: #7C3AED
-Roxo escuro: #4C1D95
-Azul cobalto: #2563EB
-Azul profundo: #1E3A8A
-Fundo claro: #F8FAFC
-Fundo escuro: #0F1020
-Card escuro: #181A2F
-Texto principal: #111827
-Texto claro: #F9FAFB
-Sucesso: #10B981
-Alerta: #F59E0B
-Erro: #EF4444
+tokens
+-> primitives
+-> components
+-> patterns
+-> page compositions
 ```
 
-## Gradiente principal
+O projeto pode usar componentes headless por meio de shadcn/ui, Base UI ou adapter equivalente. A biblioteca fornece comportamento; **a identidade visual pertence ao W_Flyer**. Não copiar tema, radius e composição padrão sem revisão.
 
-```text
-linear-gradient(135deg, #7C3AED, #2563EB)
+## Tokens semânticos
+
+Usar CSS variables e, no Tailwind CSS atual, mapear tokens apropriados em `@theme`. Valores abaixo são baseline para protótipo e devem passar por contraste e revisão visual.
+
+```css
+:root {
+  --wf-background: oklch(0.982 0.008 86);
+  --wf-foreground: oklch(0.19 0.025 278);
+  --wf-surface: oklch(0.995 0.004 88);
+  --wf-surface-muted: oklch(0.955 0.012 88);
+  --wf-surface-strong: oklch(0.925 0.018 280);
+  --wf-border: oklch(0.875 0.018 278);
+  --wf-border-strong: oklch(0.73 0.035 278);
+
+  --wf-primary: oklch(0.55 0.22 291);
+  --wf-primary-hover: oklch(0.49 0.23 291);
+  --wf-primary-foreground: oklch(0.985 0.004 88);
+  --wf-secondary: oklch(0.58 0.17 250);
+  --wf-accent: oklch(0.70 0.13 196);
+
+  --wf-success: oklch(0.56 0.15 154);
+  --wf-warning: oklch(0.70 0.16 76);
+  --wf-danger: oklch(0.57 0.21 27);
+  --wf-info: oklch(0.59 0.16 247);
+
+  --wf-focus: oklch(0.66 0.20 291);
+  --wf-overlay: oklch(0.12 0.02 278 / 0.58);
+}
 ```
 
-Aplicações:
+## Tema escuro
 
-- botão primário;
-- item ativo da navegação;
-- barra de progresso;
-- destaques de cards;
-- hero visual.
+A arquitetura de tokens deve permitir tema escuro, mas o Core só anuncia esse tema quando todas as páginas, previews, overlays, estados e contrastes estiverem validados. Não entregar dark mode parcial.
+
+## Paleta e uso
+
+- violeta: ação principal e trajetória de transposição;
+- azul/cobalto: informação e origem;
+- ciano controlado: destino ou destaque técnico;
+- superfícies quentes: papel/partitura;
+- cores de status são semânticas e não substituem texto/ícone.
+
+Evitar gradientes em texto. Gradiente pode existir somente em áreas amplas e discretas da marca, nunca em controles ou mensagens de estado.
 
 ## Tipografia
 
+### Interface
+
+Usar uma sans variável de alta legibilidade, com fallback de sistema. Candidatos aprováveis após licença e benchmark:
+
 ```text
-Interface: Inter, Geist ou Poppins
-Títulos: Poppins ou Geist Display
-Código/valores técnicos: JetBrains Mono opcional
+Geist Sans
+Manrope
+Inter Variable
 ```
 
-## Componentes base
+### Editorial
+
+Uma serif discreta pode aparecer em hero, citações técnicas e títulos editoriais. Não usar em formulários ou tabelas. Candidatos:
+
+```text
+Source Serif 4
+Newsreader
+```
+
+### Regras
+
+- carregar com `next/font` ou arquivos aprovados no repositório;
+- evitar requisição externa em runtime;
+- máximo de duas famílias;
+- usar números tabulares em progresso, semitons, datas e medidas;
+- line-height mais compacto em títulos e confortável em textos;
+- escala fluida com `clamp()` onde fizer sentido.
+
+Escala orientativa:
+
+```text
+caption: 12/16
+body-sm: 14/20
+body: 16/24
+body-lg: 18/28
+title-sm: 24/30
+title: 32/38
+display: clamp(40px, 6vw, 72px)
+```
+
+## Espaçamento e ritmo
+
+Base de 4px, com decisões principais em múltiplos de 8px.
+
+```text
+4, 8, 12, 16, 24, 32, 48, 64, 96
+```
+
+Evitar que todo bloco tenha `padding: 24px`. Densidade varia por contexto:
+
+- controles: compactos;
+- workspace: médio;
+- páginas editoriais: espaçamento amplo;
+- tabelas/listas: densidade alta o suficiente para comparação.
+
+## Radius
+
+```text
+xs: 4px
+sm: 8px
+md: 12px
+lg: 18px
+pill: 999px somente para chips/badges
+```
+
+Não aplicar `rounded-2xl` ou maior indiscriminadamente. Superfícies de partitura podem ter radius menor para lembrar papel e precisão.
+
+## Elevação
+
+- nível 0: sem sombra;
+- nível 1: menu, popover e sheet;
+- nível 2: dialog;
+- usar borda antes de sombra em cards e painéis;
+- glass/blur somente em header quando houver razão funcional e contraste comprovado.
+
+## Iconografia
+
+- um único conjunto de ícones lineares para ações comuns;
+- ícones próprios para famílias de instrumentos e conceitos musicais quando necessário;
+- stroke e tamanho consistentes;
+- nenhuma ação importante usa apenas ícone sem nome acessível;
+- evitar símbolos “mágicos” para processamento automático.
+
+## Primitives
 
 ```text
 Button
-Card
+IconButton
+Link
 Input
-Select/Combobox
-Badge
+Textarea
+Field
+Label
+Checkbox
+Switch
+RadioGroup
+Select
+Combobox
+Dialog
+Sheet
+Popover
+Tooltip
+Tabs
+Separator
+ScrollArea
 Progress
 Toast
-Dialog
-Tabs/Chips
-Skeleton
-Alert
 ```
 
-## Botões
-
-### Primário
-
-- gradiente roxo/azul;
-- texto branco;
-- hover com brilho suave;
-- foco visível.
-
-### Secundário
-
-- fundo transparente ou card;
-- borda suave;
-- texto roxo/azul.
-
-### Destrutivo
-
-- vermelho moderado;
-- mensagem clara;
-- confirmação para ações de perda de dados.
-
-## Cards
-
-- bordas suaves;
-- sombra discreta;
-- espaçamento confortável;
-- estado ativo com outline/gradiente discreto;
-- microinterações curtas.
-
-## Mensagens
-
-Evitar jargão excessivo para usuário comum.
-
-Bom:
+## Componentes do produto
 
 ```text
-Confira a prévia antes de usar a partitura em apresentação ou ensaio.
+ScoreSurface
+FileDropzone
+FileSummary
+InstrumentPicker
+InstrumentFamilyFilter
+TranspositionRoute
+IntervalBadge
+ProcessingTimeline
+JobStatusHeader
+WarningPanel
+ArtifactRow
+ExpirationNotice
+HistoryRow
+CapabilityNotice
+StickyActionBar
+EmptyState
+ErrorState
 ```
 
-Ruim:
+## Padrões de composição
+
+### Formulários
+
+- labels persistentes;
+- ajuda abaixo do campo;
+- erro próximo do campo e no resumo quando necessário;
+- placeholders não substituem label;
+- ação principal não fica distante do contexto;
+- combobox de instrumentos agrupa por família e aceita aliases.
+
+### Cards
+
+Card não é container universal. Usar somente quando o conteúdo representa uma unidade independente. Preferir:
+
+- seção com divider;
+- lista estruturada;
+- surface contínua;
+- inspector;
+- tabela responsiva.
+
+### Feedback
+
+- toast somente para confirmação transitória;
+- erro que exige ação permanece na página;
+- warning musical nunca desaparece apenas em toast;
+- progresso possui etapa e texto, não apenas porcentagem.
+
+## Microcopy
+
+Usar termos concretos:
 
 ```text
-Confiança OMR 0.63 com 17 símbolos ambíguos.
+“Segunda maior acima (+2 semitons)”
+“Resultado pronto com 2 avisos para revisão”
+“Este arquivo contém mais de uma pauta e não faz parte do Core atual”
 ```
 
-## Critérios de aceite
+Evitar:
 
-- Tokens de cor centralizados.
-- Componentes reutilizáveis.
-- Estados de foco visíveis.
-- Contraste validado.
-- Sem excesso de animação.
+```text
+“Algo mágico está acontecendo”
+“Deixe a IA fazer o trabalho”
+“Revolucione sua música”
+```
+
+## Gate
+
+Um componente só é “pronto” quando possui:
+
+- API de props restrita e documentada;
+- estados reais em Storybook;
+- teclado e leitor de tela;
+- contraste;
+- mobile/container query;
+- loading, erro e conteúdo longo;
+- teste de interação;
+- aprovação visual fora do tema padrão da biblioteca.

@@ -1,110 +1,107 @@
 # Decisões arquiteturais principais
 
-## ADR-001 — Projeto novo, orientado por documentação
+> Status: canônico. Revisão: 2026-07-20.
 
-A nova aplicação `app.WFlyer` deve ser construída a partir desta documentação técnica. Código antigo, protótipos visuais ou documentos conceituais podem servir como referência de produto, mas não definem arquitetura, contratos ou regra musical.
+## ADR-001 — Projeto orientado por documentação canônica
 
-Consequência: antes de codar, o Codex deve ler `README.md`, `docs/00-visao-geral/05-escopo-mvp-app-wflyer.md`, `W-Flyer_Regra-Transposição.md` e `docs/100-implementacao/guia-codex-app-wflyer.md`.
+A implementação deve seguir a hierarquia definida em `08-hierarquia-documental.md`. Código antigo e protótipos são referências, não fontes normativas.
 
-## ADR-002 — MVP sem login obrigatório
+## ADR-002 — MVP sem conta, mas com sessão anônima autorizada
 
-O MVP deve validar a transposição musical sem exigir autenticação.
+O usuário não precisa criar login. Isso não torna jobs e arquivos públicos. A API deve criar uma sessão anônima opaca, persistida em cookie `HttpOnly`, e validar a propriedade de uploads, jobs e artefatos em todas as operações.
 
-Fluxo:
+Consequência: UUID é identificador, não autorização. O modelo completo está em `../backend/17-sessao-anonima-autorizacao.md`.
 
-```text
-upload -> instrumento de origem -> instrumento de destino -> job assíncrono -> status -> download
-```
+## ADR-003 — Núcleo MusicXML antes de PDF
 
-Login, biblioteca em nuvem, histórico remoto, planos, assinatura e painel administrativo ficam como evolução futura. Nenhum desses itens pode bloquear o MVP.
-
-## ADR-003 — MusicXML-first
-
-O desenvolvimento inicial deve priorizar MusicXML para validar o motor musical com segurança.
+O primeiro marco executável aceita MusicXML não comprimido, normaliza a entrada, transpõe e devolve MusicXML. PDF de entrada só pode ser habilitado após o adaptador OMR cumprir o gate de qualidade e segurança.
 
 ```text
-Fase 1: MusicXML-first para validar o motor musical.
-Fase 2: PDF simples com pipeline de leitura controlado.
-Fase 3: PDF real com validação, avisos e revisão assistida.
+MVP Core: MusicXML -> normalização -> transposição -> validação -> MusicXML
+Extensão PDF: PDF -> rasterização -> OMR -> MusicXML bruto -> normalização -> fluxo do Core
 ```
 
-Motivo: MusicXML é estruturado e permite testar notas, acordes, acidentes, armadura e tonalidade escrita com menos incerteza. PDF continua no escopo do produto, mas tem risco maior de leitura.
+Consequência: a API não deve aceitar PDF em um ambiente no qual a capacidade `pdf_omr` esteja desabilitada.
 
-Consequência: o MVP não deve prometer OMR perfeito nem leitura perfeita de PDF escaneado, manuscrito, torto ou com baixa qualidade.
+## ADR-004 — MusicXML normalizado como representação canônica
 
-## ADR-004 — Processamento sempre assíncrono
+O original é imutável. O sistema mantém artefatos distintos para entrada, MusicXML bruto, MusicXML normalizado, MusicXML transposto e renderizações.
 
-A API não deve executar leitura musical pesada, transposição ou renderização dentro da requisição HTTP principal.
+## ADR-005 — Modelo de transposição intervalar completo
 
-Fluxo:
+A transposição não pode ser representada apenas por um inteiro de semitons. Cada instrumento deve declarar:
 
 ```text
-API valida entrada
-API cria upload/job
-API coloca job na fila
-Worker processa
-Frontend consulta status
-Usuário baixa resultado
+written_to_concert_diatonic
+written_to_concert_chromatic
+written_to_concert_octave
 ```
 
-Consequência: qualquer endpoint que criar job deve responder rapidamente com `202 Accepted` e `job_id`.
+O intervalo de saída é a diferença vetorial entre origem e destino. Isso preserva grafia diatônica, enarmonia e instrumentos que transpõem oitava.
 
-## ADR-005 — Regra musical centralizada
+## ADR-006 — Uma parte e uma pauta por job no MVP Core
 
-A fórmula única é:
+O MVP Core processa uma única parte instrumental e uma única pauta por job. Scores multiparte, piano de duas pautas, tablatura, percussão não afinada e mudanças de instrumento dentro da parte ficam fora do gate inicial.
 
-```text
-intervalo_escrito = origem.written_to_concert - destino.written_to_concert
-```
+Consequência: arquivos fora desse perfil devem ser rejeitados com erro específico, não processados parcialmente em silêncio.
 
-Essa regra deve ficar em módulo compartilhado ou motor musical centralizado, nunca duplicada em componentes visuais ou rotas HTTP.
+## ADR-007 — Processamento assíncrono e banco como fonte de verdade
 
-Consequência: não criar `if/else` por par de instrumentos. O catálogo de instrumentos alimenta a fórmula.
+A API apenas recebe, valida, persiste e agenda. Workers executam parsing, OMR, transposição, validação e renderização. O PostgreSQL é a fonte de verdade para estado; o backend de resultados da fila não substitui o banco.
 
-## ADR-006 — Arquivos fora do banco, metadados no banco
+## ADR-008 — Celery e Redis como fila inicial
 
-O banco deve guardar registros, status, eventos e referências internas. Arquivos originais, MusicXML intermediário e artefatos finais devem ficar em storage privado ou pasta controlada pela aplicação.
+A fila inicial usa Celery com Redis, versões fixadas em lockfile. O payload contém somente `job_id` e `correlation_id`; o worker cria a tentativa após adquirir o job. Tarefas devem ser idempotentes e serializadas em JSON.
 
-Consequência: endpoints públicos não retornam `storage_key`, path físico, logs brutos ou detalhes internos do worker.
+## ADR-009 — Backend Python é a fonte da regra musical
 
-## ADR-007 — Upload tratado como superfície de risco
+A regra musical canônica reside no backend Python. O frontend recebe o intervalo calculado pela API apenas para exibição. Não existe compartilhamento de código executável de música entre TypeScript e Python.
 
-Arquivos enviados devem passar por validação de MIME, extensão, tamanho, nome seguro e renomeação interna.
+Consequência: tipos frontend devem ser gerados ou validados a partir do OpenAPI; `packages/shared` não contém o motor musical.
 
-Tipos inicialmente permitidos:
+## ADR-010 — Storage privado e retenção separada do estado de processamento
 
-```text
-application/pdf
-application/vnd.recordare.musicxml+xml
-application/xml
-text/xml
-```
+Arquivos ficam em storage privado. O estado de processamento e o estado de retenção são campos diferentes. Um job pode estar `completed` e ter retenção `expired` ou `purged`.
 
-Imagens ficam para fase posterior e não fazem parte do MVP.
+## ADR-011 — Confiança interna, aviso público categórico
 
-## ADR-008 — Frontend orientado ao fluxo de uso
+Scores numéricos de OMR permanecem internos. O usuário deve receber avisos categóricos acionáveis, como `OMR_REVIEW_RECOMMENDED`, `ENHARMONIC_SIMPLIFICATION` ou `TARGET_CLEF_REVIEW_RECOMMENDED`. Ocultar toda incerteza é proibido.
 
-O frontend deve priorizar a ferramenta, não uma landing page.
+## ADR-012 — Ferramentas externas atrás de adapters e sandbox
 
-Fluxo:
+OMR e renderização são adapters substituíveis. Cada subprocesso roda sem shell, sem rede, com usuário não privilegiado, limites de CPU/memória/tempo e diretório temporário isolado.
 
-```text
-UploadDropzone -> InstrumentSelector origem -> InstrumentSelector destino -> TransposeSummary -> ProcessingStatus -> ResultDownloadCard
-```
+## ADR-013 — Fidelidade semântica antes de fidelidade visual
 
-Consequência: a primeira tela útil deve permitir iniciar uma transposição, com estados de loading, erro, vazio, processamento, sucesso e expiração.
+O MVP garante correção de alturas, ritmos, armaduras, vozes e metadados de transposição dentro da matriz suportada. Preservar exatamente a paginação e o layout original é melhor esforço, não critério do Core.
 
-## ADR-009 — Futuro separado do MVP
+## ADR-014 — Escopo futuro não bloqueia o Core
 
-Funcionalidades futuras podem ser documentadas como evolução, mas não podem aparecer como requisito obrigatório do MVP:
+Login, cobrança, biblioteca em nuvem, compartilhamento público, editor visual completo, aplicativo nativo, push e Spotify permanecem fora do MVP Core.
 
-- login;
-- biblioteca em nuvem;
-- planos;
-- pagamento;
-- dashboard administrativo;
-- colaboração;
-- compartilhamento público;
-- push notifications;
-- aplicativo mobile nativo;
-- integração Spotify.
+
+## ADR-015 — Frontend como workspace musical, não dashboard
+
+Páginas públicas usam header editorial; Transpor e Resultado usam StudioShell com canvas e inspector; Histórico e Configurações usam UtilityShell. Sidebar larga, cards de métricas e dashboard genérico não são padrão do Core.
+
+## ADR-016 — Design system próprio sobre primitives headless
+
+Bibliotecas como shadcn/ui e Base UI podem fornecer comportamento acessível, mas tokens, composição, componentes de produto e microcopy são próprios do W_Flyer. O tema padrão de uma biblioteca não é entrega final.
+
+## ADR-017 — Identidade por domínio, não por efeitos
+
+A assinatura visual combina papel/tinta, trajetória de transposição e ritmo editorial. Motion é progressivo e funcional; partículas, glow excessivo, glassmorphism indiscriminado e card soup são antipadrões.
+
+## ADR-018 — Storybook e regressão visual como gates
+
+Componentes do produto precisam de stories, testes de interação, acessibilidade automatizada e regressão visual revisada antes do aceite do frontend.
+
+## ADR-019 — Motion declarativo e cena GSAP isolada
+
+CSS nativo resolve microestados simples. Motion for React é a engine padrão para presença, layout, gestos e transições ligadas ao estado React. GSAP com `@gsap/react` é carregado sob demanda e restrito à animação-assinatura SVG e timelines explicitamente aprovadas.
+
+Anime.js e React Spring não entram no MVP Core. Cada nó visual possui uma única engine proprietária.
+
+## ADR-020 — A animação de tinta não é o motor musical
+
+A cena `Ink Transfer` usa SVG determinístico e exemplo musical validado para explicar transposição. Durante jobs, o movimento é apenas metáfora acompanhada do estágio real. Notas do arquivo do usuário só poderão ser animadas quando o renderer fornecer mapeamento estável entre eventos musicais e geometria.

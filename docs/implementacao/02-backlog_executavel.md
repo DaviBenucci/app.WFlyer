@@ -1,31 +1,24 @@
-# Backlog executável — substituído
+# Backlog executável — ponte histórica
 
-O backlog executável do MVP agora está no guia canônico:
+O backlog e seus gates estão em:
 
 ```text
 docs/100-implementacao/guia-codex-app-wflyer.md
 ```
 
-## Motivo
-
-O backlog anterior incluía etapas amplas e itens futuros. Para iniciar o código com segurança, a sequência válida é a do guia canônico, da Fase 0 à Fase 14.
-
-## Ordem resumida
+## Ordem Core
 
 ```text
-Fase 0 — Auditoria documental
-Fase 1 — Estrutura base do projeto
-Fase 2 — Backend mínimo
-Fase 3 — Banco de dados
-Fase 4 — Catálogo de instrumentos
-Fase 5 — Regra musical e testes unitários
-Fase 6 — Upload e validação de arquivos
-Fase 7 — Fila e worker
-Fase 8 — API de jobs
-Fase 9 — Frontend funcional mínimo
-Fase 10 — Tela de processamento e resultado
-Fase 11 — Download de artefatos
-Fase 12 — Testes automatizados
-Fase 13 — Segurança e revisão técnica
-Fase 14 — Critérios finais do MVP
+0 Governança
+1 Fundação/contratos/sessão
+2 Catálogo/modelo musical
+3 Motor MusicXML
+4 Upload/storage/fila
+5 Corte vertical
+6 Segurança/retenção
+7 UX/acessibilidade/histórico
+8 Qualidade/operação
+9 Aceite
 ```
+
+PDF de saída e PDF/OMR são trilhas opcionais; não devem ser inseridos no meio do Core como dependência.

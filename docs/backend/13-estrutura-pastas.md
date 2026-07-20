@@ -1,9 +1,11 @@
 # Estrutura de código esperada
 
-## Estrutura base
+> Status: canônico para o início do projeto. Revisão: 2026-07-20.
+
+## Monorepo sugerido
 
 ```text
-app-wflyer/
+wflyer/
   apps/
     web/
       src/
@@ -13,101 +15,99 @@ app-wflyer/
         services/
         hooks/
         lib/
-        styles/
         tests/
 
     api/
-      src/
-        modules/
-        routes/
-        services/
-        workers/
-        repositories/
-        validators/
-        middlewares/
-        tests/
+      src/wflyer/
+        api/
+        auth/
+        capabilities/
+        instruments/
+        uploads/
+        jobs/
+        artifacts/
+        music/
+          model/
+          musicxml/
+          transpose/
+          validate/
+        processing/
+        storage/
+        queue/
+        observability/
+        security/
+        db/
+      tests/
+
+    worker/
+      src/wflyer_worker/
+        tasks/
+        processors/
+        sandbox/
+        maintenance/
+      tests/
 
   packages/
-    shared/
-      src/
-        types/
-        constants/
-        music/
-        validation/
+    api-client/        cliente TypeScript gerado a partir do OpenAPI
+    ui/                componentes visuais sem regra de domínio
+    config/            lint/typecheck/tsconfig compartilháveis
 
-    ui/
-      src/
-        components/
+  tests/
+    fixtures/
+      musicxml/
+      hostile-files/
+      expected/
+    e2e/
 
   docs/
 ```
 
-## Responsabilidades
+API e worker podem compartilhar o mesmo pacote Python de domínio/infraestrutura por instalação interna, mas devem ser processos implantáveis separadamente.
 
-### `apps/web`
+## Regra musical
 
-Frontend da aplicação:
+A implementação canônica fica em Python no backend:
 
-- telas;
-- componentes;
-- hooks;
-- serviços de API;
-- estados de UI;
-- testes frontend.
+```text
+apps/api/src/wflyer/music/
+```
 
-### `apps/api`
+ou em um pacote Python interno extraído quando necessário. Não colocar a regra canônica em `packages/shared/src/music`, pois esse diretório seria TypeScript e criaria duas implementações.
 
-Backend da aplicação:
+O frontend recebe:
 
-- rotas HTTP;
-- módulos de domínio;
-- validações;
-- serviços;
-- workers;
-- repositórios;
-- middlewares;
-- testes backend.
+- DTOs OpenAPI gerados;
+- intervalo calculado pelo backend;
+- labels e exemplos de apresentação.
 
-### `packages/shared`
+Ele pode calcular uma prévia puramente visual, mas nunca decide o intervalo enviado ao job nem valida o resultado musical.
 
-Código compartilhado:
+## Contratos
 
-- tipos públicos;
-- constantes;
-- regra musical central;
-- schemas de validação reutilizáveis;
-- catálogo base quando fizer sentido.
+- OpenAPI da API é a fonte de tipos de rede.
+- `packages/api-client` é gerado e não editado manualmente.
+- schemas internos Python não são copiados à mão para TypeScript.
+- mudanças incompatíveis exigem versão/ADR e testes de contrato.
 
-### `packages/ui`
+## Separação de responsabilidades
 
-Componentes visuais reutilizáveis sem regra de negócio sensível.
-
-### `docs`
-
-Documentação técnica, contratos, decisões, critérios de aceite e guia Codex.
-
-## Onde ficam itens críticos
-
-| Item | Local esperado |
+| Local | Responsabilidade |
 |---|---|
-| Frontend | `apps/web/src/` |
-| Backend | `apps/api/src/` |
-| Tipos compartilhados | `packages/shared/src/types/` |
-| Regras musicais | `packages/shared/src/music/` ou `apps/api/src/modules/music-engine/` |
-| Testes frontend | `apps/web/src/tests/` |
-| Testes backend | `apps/api/src/tests/` |
-| Testes musicais | `packages/shared/src/music/**/tests/` ou `apps/api/src/modules/music-engine/tests/` |
-| Componentes visuais | `apps/web/src/components/` e `packages/ui/src/components/` |
-| Serviços de API frontend | `apps/web/src/services/` |
-| Workers | `apps/api/src/workers/` |
-| Validações | `apps/api/src/validators/` e `packages/shared/src/validation/` |
-| Contratos e schemas | `packages/shared/src/validation/`, `apps/api/src/routes/` e docs de API |
+| `apps/web` | UX, estado de tela, polling, acessibilidade e download. |
+| `apps/api` | HTTP, sessão, autorização, domínio, persistência e contratos. |
+| `apps/worker` | execução assíncrona, sandbox, engines e manutenção. |
+| `packages/api-client` | tipos/cliente gerados. |
+| `packages/ui` | componentes sem regra musical ou segurança. |
+| `tests/fixtures` | corpus versionado e resultados esperados. |
 
 ## Anti-padrões
 
-- Regra musical dentro de componente React.
-- Regra musical duplicada no frontend e backend.
-- Route HTTP acessando banco sem service/repository quando a lógica crescer.
-- Worker recebendo path físico no payload.
-- DTO público retornando `storage_key`.
-- Testes musicais sem fixtures controladas.
+- regra musical em componente React;
+- catálogo duplicado/hardcoded no frontend;
+- endpoint executando OMR/renderização;
+- worker recebendo path ou segredo na mensagem;
+- acesso a recurso apenas por UUID, sem `session_id`;
+- parser XML permissivo;
+- DTO retornando `storage_key` ou engine stderr;
+- fixture binária sem licença/origem registradas;
+- duas implementações “equivalentes” da transposição em linguagens diferentes.

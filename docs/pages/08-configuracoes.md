@@ -1,49 +1,66 @@
 # Tela Configurações locais
 
+> Revisão: 2026-07-20.
+
 ## Rota
 
 ```text
 /configuracoes
 ```
 
+## Shell
+
+`UtilityShell`.
+
 ## Objetivo
 
-Permitir preferências locais simples sem criar conta, sincronização ou serviços externos.
+Reunir preferências locais sem parecer painel de conta ou plano.
 
-## Escopo MVP
+## Estrutura
 
 ```text
-Instrumento de origem padrão opcional
-Instrumento de destino padrão opcional
-Preferência de formato de resultado
-Preferência de redução de movimento
-Limpeza de histórico local
+Preferências de transposição
+  origem padrão
+  destino padrão
+  formato de saída ativo
+
+Experiência
+  redução de movimento
+  tema, somente se suportado integralmente
+
+Dados deste navegador
+  limpar histórico/preferências
+  explicação sobre sessão e servidor
 ```
 
-## Componentes
-
-- `DefaultInstrumentSettings`.
-- `MotionSettings`.
-- `ResultFormatSettings`.
-- `ClearLocalDataButton`.
+Usar seções com dividers. Não envolver cada configuração em card individual.
 
 ## Regras
 
-- Configurações ficam locais.
-- Não guardar segredos.
-- Não guardar arquivo original.
-- Respeitar `prefers-reduced-motion`.
-- Limpar histórico local exige confirmação.
+- preferências são conveniência e sempre confirmadas;
+- output desabilitado não permanece selecionado;
+- não guardar cookie, CSRF, arquivo, URL ou segredo;
+- limpar dados locais não apaga servidor;
+- tema escuro só aparece se todos os estados estiverem validados;
+- respeitar preferência do sistema antes de override local.
 
-## Fora do MVP
+## Ações destrutivas
 
-- Notificações push.
-- Sincronização em nuvem.
-- Preferências por conta.
-- Planos pagos.
+A área de dados possui explicação direta, confirmação e distinção entre:
+
+```text
+Limpar referências deste navegador
+Apagar arquivos conhecidos no servidor
+```
+
+## Fora do Core
+
+Push, conta, plano, sincronização, analytics opt-in, sons e nuvem.
 
 ## Critérios de aceite
 
-- Preferências locais são salvas.
-- Usuário consegue limpar histórico local.
-- Redução de movimento é respeitada.
+- interface compacta e legível;
+- app funciona sem storage;
+- alteração não muda job já criado;
+- limpeza descreve efeito real;
+- página não sugere que existe conta autenticada.

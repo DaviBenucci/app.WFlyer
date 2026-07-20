@@ -1,110 +1,91 @@
-# Backend — Visão geral
+# Backend — visão geral
 
-## Objetivo
+> Status: canônico. Revisão: 2026-07-20.
 
-Definir o backend do MVP `app.WFlyer`: API, banco, módulos de domínio, fila, worker, validações, artefatos e segurança.
+## Responsabilidade
 
-O backend é a camada de confiança. Ele valida arquivos, cria uploads e jobs, controla status, executa processamento assíncrono por worker, aplica a regra musical por motor centralizado e entrega artefatos sem expor detalhes internos.
+O backend é a camada de confiança do W_Flyer. Ele autoriza o acesso por sessão anônima, valida arquivos, persiste o estado, agenda jobs, executa o motor musical em workers e entrega artefatos privados.
 
-## Módulos esperados
-
-```text
-modules/
-  instruments/
-  uploads/
-  transpositions/
-  jobs/
-  artifacts/
-  music-engine/
-  security/
-```
-
-## Responsabilidades por módulo
-
-### instruments
-
-- Listar instrumentos disponíveis.
-- Guardar dados de transposição.
-- Validar instrumento ativo.
-- Servir catálogo para o frontend.
-
-### uploads
-
-- Receber arquivo.
-- Validar tipo.
-- Validar tamanho.
-- Armazenar referência interna.
-- Criar registro de upload.
-
-### transpositions
-
-- Receber origem e destino.
-- Criar job de transposição.
-- Validar regra musical.
-- Iniciar processamento assíncrono.
-
-### jobs
-
-- Controlar status.
-- Registrar progresso.
-- Registrar falhas.
-- Permitir consulta pelo frontend.
-
-### artifacts
-
-- Guardar referência do arquivo gerado.
-- Permitir download controlado.
-- Bloquear download de artefato expirado ou inválido.
-
-### music-engine
-
-- Aplicar regra musical.
-- Manipular MusicXML ou representação musical interna.
-- Alterar notas, acordes, acidentes e armadura.
-- Validar resultado.
-
-### security
-
-- Padronizar erros públicos.
-- Gerar e propagar `correlation_id`.
-- Aplicar rate limit.
-- Validar payload.
-- Evitar vazamento de stacktrace, path físico, segredo ou log bruto.
-
-## Endpoints mínimos do MVP
+## Módulos
 
 ```text
-GET /health
-GET /api/instruments
-POST /api/uploads
-POST /api/transpositions
-GET /api/jobs/{job_id}
-GET /api/jobs/{job_id}/status
-GET /api/jobs/{job_id}/artifacts
-GET /api/artifacts/{artifact_id}/download
+sessions
+capabilities
+instruments
+uploads
+transpositions
+jobs
+artifacts
+music_engine
+omr
+rendering
+storage
+security
+observability
 ```
 
-## O que o backend não deve fazer
+## Limites de responsabilidade
 
-- Processar transposição pesada dentro da requisição HTTP principal.
-- Confiar apenas na validação do frontend.
-- Salvar arquivos binários no banco.
-- Expor path físico ou `storage_key`.
-- Expor stacktrace.
-- Expor logs internos.
-- Implementar login como dependência do MVP.
-- Implementar pagamento, planos, biblioteca em nuvem ou painel administrativo no MVP.
-- Integrar Spotify.
+### API
 
-## Critérios de aceite
+- contratos HTTP e OpenAPI;
+- criação/validação de sessão;
+- autorização por objeto;
+- validação de payload;
+- upload em quarentena;
+- criação idempotente de job;
+- consulta de estado;
+- download e exclusão controlados.
 
-- API base responde.
-- Upload válido é aceito.
-- Upload inválido é rejeitado.
-- Job é criado em estado `queued`.
-- Worker altera status.
-- Erro no worker não derruba API.
-- Artefato válido pode ser baixado.
-- Artefato expirado é bloqueado.
-- Regra musical vem de módulo centralizado.
-- Testes básicos passam.
+### Worker
+
+- parsing e normalização MusicXML;
+- rasterização/OMR quando habilitado;
+- transposição;
+- validação semântica;
+- renderização quando habilitada;
+- gravação atômica de artefatos;
+- atualização de status, stage, attempts e eventos.
+
+### Banco
+
+Fonte de verdade para sessão, propriedade, jobs, estágios, retenção, artefatos, attempts e eventos.
+
+### Storage
+
+Bytes privados e imutáveis. O banco guarda referências e hashes.
+
+## Regra musical
+
+O motor canônico fica em Python, por exemplo:
+
+```text
+apps/api/src/wflyer/music/
+```
+
+O frontend não executa uma cópia autoritativa do algoritmo.
+
+## Contratos mínimos
+
+- `POST /api/v1/sessions/anonymous`;
+- `GET /api/v1/capabilities`;
+- `GET /api/v1/instruments`;
+- `POST /api/v1/uploads`;
+- `POST /api/v1/transpositions`;
+- `GET /api/v1/jobs/{job_id}`;
+- `GET /api/v1/jobs/{job_id}/status`;
+- `GET /api/v1/jobs/{job_id}/artifacts`;
+- `GET /api/v1/artifacts/{artifact_id}/download`;
+- `DELETE /api/v1/jobs/{job_id}`.
+
+## Proibições
+
+- processamento musical pesado na request;
+- autorização baseada apenas em UUID;
+- binário no banco;
+- path ou `storage_key` em DTO;
+- parser XML com rede/entidades externas;
+- subprocesso no processo da API;
+- regra musical em React/TypeScript;
+- aceitar PDF quando `pdf_omr=false`;
+- declarar sucesso sem validar invariantes.

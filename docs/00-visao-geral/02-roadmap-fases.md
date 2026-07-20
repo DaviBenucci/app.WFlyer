@@ -1,47 +1,53 @@
-# Roadmap técnico do MVP
+# Roadmap técnico do W_Flyer
+
+> Status: canônico. Revisão: 2026-07-20.
 
 ## Regra de progressão
 
-```text
-O Codex só poderá avançar para a próxima fase quando a fase anterior estiver concluída, testada e documentada.
-```
+Uma fase só termina com código, testes, evidência e documentação coerentes. Bloqueios permanecem visíveis; não se avança criando stubs que fingem atender o gate.
 
-O guia operacional detalhado está em `docs/100-implementacao/guia-codex-app-wflyer.md`.
+## MVP Core — MusicXML
 
-## Fases
-
-| Fase | Nome | Resultado esperado |
+| Fase | Nome | Gate de saída |
 |---:|---|---|
-| 0 | Auditoria documental | Escopo técnico revisado e sem mistura com requisitos fora do MVP. |
-| 1 | Estrutura base do projeto | Separação clara entre frontend, backend, pacotes compartilhados e docs. |
-| 2 | Backend mínimo | API base, health, erro padrão e módulos iniciais. |
-| 3 | Banco de dados | Tabelas mínimas e status documentados. |
-| 4 | Catálogo de instrumentos | Instrumentos mínimos com `written_to_concert`. |
-| 5 | Regra musical e testes unitários | Fórmula central e testes MusicXML-first. |
-| 6 | Upload e validação de arquivos | Upload seguro com tipos permitidos e limites. |
-| 7 | Fila e worker | Job processado fora da requisição HTTP. |
-| 8 | API de jobs | Status, progresso, eventos públicos e artefatos. |
-| 9 | Frontend funcional mínimo | Usuário cria job pela interface. |
-| 10 | Tela de processamento e resultado | Status acessível, erro claro e resultado. |
-| 11 | Download de artefatos | Download controlado e bloqueio de expirado. |
-| 12 | Testes automatizados | Matriz musical, backend, frontend e segurança. |
-| 13 | Segurança e revisão técnica | Upload, erros, logs, rate limit, timeout e tokens revisados. |
-| 14 | Critérios finais do MVP | Aceite objetivo registrado. |
+| 0 | Governança documental | Escopo, matriz, ADRs e pendências aprovados. |
+| 1 | Fundação e contratos | Monorepo, CI, API base, OpenAPI, banco, migrations e sessão anônima testados. |
+| 2 | Catálogo e modelo musical | Presets vetoriais, snapshots e properties de todos os pares aprovados. |
+| 3 | Motor MusicXML | Parsing seguro, normalização, transposição e invariantes passam no corpus Core. |
+| 4 | Upload, storage e fila | Quarentena, hashes, outbox, worker idempotente e estados testados. |
+| 5 | Corte vertical funcional | MusicXML entra, job assíncrono conclui e MusicXML transposto baixa pela mesma sessão. |
+| 6 | Segurança e retenção | CSRF/IDOR, corpus hostil, quotas, expiração, purge e reconciliação aprovados. |
+| 7 | UX, acessibilidade e histórico | Fluxo responsivo, teclado, warnings, cancelamento e histórico local completos. |
+| 8 | Qualidade e operação | Contratos, E2E, carga Core, observabilidade, migrations e recuperação aprovados. |
+| 9 | Aceite do Core | Todos os critérios de aceite atendidos; nenhuma pendência crítica. |
 
-## Fases futuras separadas
+## Trilha R — PDF de saída opcional
 
-As frentes abaixo não fazem parte do MVP inicial:
+Não bloqueia o Core:
 
-- login;
-- histórico em nuvem;
-- biblioteca;
-- planos pagos;
-- assinatura;
-- dashboard administrativo;
-- colaboração entre usuários;
+| Fase | Nome | Gate |
+|---:|---|---|
+| R0 | Spike do renderer | CLI/API, licença, determinismo e recursos avaliados. |
+| R1 | Adapter e sandbox | Renderização isolada, output validado e falhas categorizadas. |
+| R2 | Habilitação | `output_formats.pdf=true` somente no ambiente aprovado. |
+
+## Trilha P — PDF de entrada/OMR
+
+Não bloqueia o Core e não pode ser ativada por conveniência:
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| P0 | Spike de OMR | Engine, licença, automação, custo e corpus avaliados. |
+| P1 | Rasterização/adapter/sandbox | Pipeline isolado sem rede, com limites e manifest. |
+| P2 | Corpus e métricas | Métricas definidas previamente e limiares atingidos. |
+| P3 | UX de incerteza | Warnings/falha segura/revisão externa validados. |
+| P4 | Habilitação controlada | `pdf_omr=true` apenas no ambiente aprovado. |
+
+## Fora do roadmap inicial
+
+- multiparte e multipauta;
+- manuscritos, tablatura, percussão não afinada e microtons;
 - editor visual completo;
-- detecção automática perfeita de instrumento;
-- detecção automática perfeita de tonalidade;
-- OMR perfeito para qualquer PDF;
-- aplicativo mobile nativo;
-- integração Spotify.
+- login/biblioteca/pagamento/compartilhamento/push;
+- reprodução/MIDI e integração Spotify;
+- identidade tipográfica/layout idênticos ao original.

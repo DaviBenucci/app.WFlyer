@@ -1,36 +1,45 @@
-# Políticas de upload e storage
+# Política de upload e storage
 
-## Nome de arquivo
+## Nome e metadata
 
-O nome original só pode ser usado para exibição, depois de sanitizado.
+- filename original é dado não confiável;
+- exibir somente versão sanitizada/truncada;
+- remover separadores, controles, CR/LF e nomes reservados;
+- path/chave usa IDs internos;
+- não inferir tipo apenas pela extensão.
 
-Path interno sempre usa UUID.
+## Streaming e quarentena
 
-## Storage key
+- rejeitar `Content-Length` excessivo quando presente, mas também contar bytes reais;
+- não carregar arquivo inteiro em memória;
+- gravar inicialmente em quarentena privada;
+- parsing/aprovação promove por cópia/movimento atômico;
+- falha remove/quarentena conforme política sem liberar download.
 
-Formato sugerido:
+## MusicXML
+
+- aceitar XML não comprimido no Core;
+- validar raiz/perfil com parser seguro;
+- bloquear recursos externos;
+- impor limites estruturais além de bytes;
+- preservar original e gerar artefatos derivados separados.
+
+## MXL e PDF
+
+- MXL é container ZIP e segue política própria antes de ativação;
+- PDF usa sandbox/OMR antes de entrar no pipeline canônico;
+- mudar MIME allowlist exige capability, threat model, corpus e testes.
+
+## Storage
 
 ```text
-jobs/{job_id}/{kind}/{artifact_id}.{ext}
+quarantine/{session}/{upload}/{object}
+internal/jobs/{job}/{attempt}/{artifact}
+public/jobs/{job}/{artifact}
 ```
 
-## Quarentena
+Chaves nunca são públicas. A API controla acesso ou emite URL curta após autorização.
 
-Uploads entram em área isolada até validação profunda.
+## Retenção
 
-## Expiração
-
-Todos os arquivos de job expiram após 15 dias.
-
-## Download
-
-Downloads passam pela API para validação e geração de URL assinada.
-
-## Logs
-
-Não logar:
-
-- URL assinada completa;
-- token;
-- conteúdo do arquivo;
-- path local absoluto quando desnecessário.
+Seguir `../backend/06-storage-e-retencao.md`; o servidor retorna `expires_at` real. Lifecycle do provedor é defesa adicional e deve ser reconciliado com o banco.

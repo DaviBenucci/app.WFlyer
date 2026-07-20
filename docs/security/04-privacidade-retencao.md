@@ -1,35 +1,51 @@
 # Privacidade e retenção
 
-## Regra de retenção
+## Minimização
 
-Arquivos originais e artefatos finais ficam no armazenamento controlado pela aplicação por até 15 dias.
-
-## Histórico local
-
-O navegador pode manter metadados locais. O usuário deve poder limpar esses dados.
-
-## Dados mínimos
-
-No MVP, armazenar apenas o necessário:
+Coletar somente o necessário para processar e operar:
 
 ```text
-job_id
-filename sanitizado
-instrumentos
-status
-artefatos
-expiração
+sessão anônima em hash
+filename sanitizado quando necessário
+formatos/tamanho/hash
+instrumentos e job
+artefatos e eventos categóricos
+telemetria técnica minimizada
 ```
+
+Não usar partituras para treinamento, benchmark externo ou compartilhamento com terceiros sem base, transparência e consentimento/contrato apropriado.
+
+## Janela padrão
+
+- original validado: 15 dias;
+- resultado: 15 dias após conclusão;
+- `expires_at` é exibido ao usuário;
+- sessão deve permitir a janela anunciada enquanto não for apagada/revogada.
+
+## Direitos e ações
+
+- baixar resultado;
+- apagar recurso do servidor antes da expiração;
+- limpar preferências/histórico local separadamente;
+- receber explicação de indisponibilidade após expiração/purge.
 
 ## Após expiração
 
-- Bloquear download.
-- Marcar job como `expired` quando aplicável.
-- Remover ou anonimizar metadados sensíveis quando aplicável.
-- Registrar evento de expiração.
+- bloquear acesso imediatamente;
+- purgar bytes de forma idempotente;
+- reduzir metadados ao mínimo operacional/legal;
+- não manter cópia em cache/log/observabilidade;
+- reconciliar storage e banco.
 
-## Mensagem ao usuário
+## Logs e terceiros
+
+- conteúdo de arquivo não entra em log/APM;
+- nomes/tokens/URLs são omitidos ou mascarados;
+- processadores externos de SaaS não podem receber documento sem decisão específica;
+- retenções de backup precisam ser documentadas antes de produção.
+
+## Texto ao usuário
 
 ```text
-Arquivos expiram após 15 dias. Baixe o resultado se quiser manter uma cópia.
+Seus arquivos ficam disponíveis por até 15 dias após o processamento. Você pode apagá-los antes desse prazo. Limpar o histórico deste navegador não apaga automaticamente os arquivos do servidor.
 ```

@@ -1,35 +1,60 @@
-# Estado local e histórico seguro
+# Estado local, cache e sessão
 
-## Objetivo
+## Sessão
 
-Documentar o histórico local mínimo do MVP sem transformar PWA/offline em requisito inicial.
+- cookie `wf_session` é `HttpOnly` e não é lido pelo JavaScript;
+- cliente usa `credentials: include`;
+- `csrf_token` retornado pelo bootstrap fica somente em memória;
+- após refresh, chamar novamente o endpoint de sessão para obter CSRF válido;
+- não colocar token em localStorage, IndexedDB, URL, log ou ferramenta de analytics.
 
-## MVP
+## Preferências visuais
 
-O frontend pode manter histórico local com metadados seguros:
+Pode persistir somente valores não sensíveis e versionados:
 
 ```text
-job_id
-original_filename seguro
-source_instrument_id
-target_instrument_id
-status
-created_at
-expires_at
-completed_at
-artifact_types
+reduced_motion_override
+theme, somente quando o tema estiver integralmente suportado
+instrumentos padrão
+formato de saída preferido
 ```
 
-## Não guardar localmente
+Preferência inválida ou de versão antiga volta ao padrão seguro.
 
-- Arquivo original.
-- MusicXML completo.
-- PDF final.
-- `storage_key`.
-- Stacktrace.
-- Logs internos.
-- Segredos.
+## Estado remoto
 
-## Fora do MVP
+Usar cache de requisições para:
 
-PWA/offline completo fica para fase futura e não deve bloquear a implementação inicial.
+```text
+capabilities
+instrumentos
+job/status
+artefatos
+```
+
+- dados sensíveis não são persistidos por padrão;
+- status de job respeita `Retry-After` e estados terminais;
+- invalidação ocorre após criar/cancelar/apagar;
+- erro de rede não inventa estado do servidor.
+
+## Histórico local
+
+Pode persistir somente metadados descritos em `../features/07-historico-local.md`. O histórico não é autorização.
+
+## Service worker/PWA
+
+PWA/offline completo não faz parte do Core. Se houver service worker técnico:
+
+- nunca cachear respostas de sessão, upload, job privado ou download;
+- respeitar `Cache-Control: no-store`;
+- não oferecer transposição offline;
+- não manter artefatos após purge/expiração.
+
+## Limpeza
+
+A UI oferece:
+
+- limpar preferências/histórico local;
+- apagar recurso no servidor via ação separada e CSRF.
+
+Falha do storage local não bloqueia a transposição.

@@ -1,63 +1,55 @@
 # Cálculo de transposição
 
+> Status: canônico por referência a `../music/01-modelo-transposicao.md`.
+
 ## Objetivo
 
-Definir a regra musical central do WFlyer.
+Preservar a altura de concerto ao reescrever a parte para outro instrumento, mantendo grafia musical e oitava coerentes.
 
-## Fórmula oficial
+## Modelo
 
-```text
-intervalo = source.written_to_concert - target.written_to_concert
-```
-
-## Exemplo principal
+Cada instrumento possui:
 
 ```text
-Piano.written_to_concert = 0
-TrompeteBb.written_to_concert = -2
-intervalo = 0 - (-2) = +2
+written_to_concert = (diatonic_steps, chromatic_semitones, octave_change)
 ```
 
-Resultado:
+O intervalo de saída é:
 
 ```text
-C maior -> D maior
-Notas sobem 2 semitons na escrita
-Armadura passa a ter F# e C#
+output_interval = source.written_to_concert - target.written_to_concert
 ```
 
-## Elementos alterados
+A operação é componente a componente; `total_semitones` é apenas derivado.
 
-- notas;
-- acordes;
-- armadura de clave;
-- acidentes locais;
-- tonalidade escrita;
-- partes musicais em scores multiparte.
-
-## Validações musicais
-
-Após transpor, validar:
-
-- MusicXML final existe;
-- partes musicais existem;
-- intervalo aplicado;
-- armadura mudou quando esperado;
-- notas foram alteradas;
-- arquivo final renderizado;
-- artefatos baixáveis.
-
-## Testes musicais mínimos
+Invariante:
 
 ```text
-Piano C -> Trompete Bb = D
-Trompete Bb D -> Piano C = C
-Piano C -> Sax Alto Eb = A
-Trompa F C escrita -> Piano F concert, conforme regra inversa no cenário
+source_written + source_to_concert
+=
+target_written + target_to_concert
 ```
 
-Observação: cada teste deve documentar nota escrita, som real esperado e nota escrita final.
+## Transformações obrigatórias
 
-## Risco
+- alturas de todas as notas afinadas;
+- notas de acordes simultâneos;
+- armaduras e mudanças de tonalidade;
+- acidentes no novo contexto;
+- raiz/baixo de cifras suportadas;
+- metadado `<transpose>` do instrumento de destino.
 
-Não basta alterar a armadura. O sistema deve alterar as notas também.
+Ritmo, vozes, ties, tuplets, texto, dinâmica e articulações suportadas devem manter semântica.
+
+## Não fazer
+
+- não alterar pixels/PDF diretamente;
+- não usar apenas um inteiro de semitons;
+- não escolher enarmonia só pelo sinal;
+- não codificar pares de instrumento;
+- não alterar apenas a armadura;
+- não somar duas vezes o `<transpose>`.
+
+## Resultado
+
+O backend retorna o intervalo calculado e produz MusicXML transposto. A validação obrigatória está em `../music/05-invariantes-validacao.md` e a cobertura em `../qa/05-testes-musicais.md`.

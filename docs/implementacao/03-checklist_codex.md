@@ -1,30 +1,34 @@
-# Checklist Codex
+# Checklist para IA/Codex
 
-Antes de implementar qualquer fase:
+## Antes
 
-- [ ] Li `README.md`.
-- [ ] Li `docs/00-visao-geral/05-escopo-mvp-app-wflyer.md`.
-- [ ] Li `W-Flyer_Regra-Transposição.md`.
-- [ ] Li `docs/features/11-catalogo-instrumentos-mvp.md`.
-- [ ] Li `docs/100-implementacao/guia-codex-app-wflyer.md`.
-- [ ] Confirmei a fase atual.
-- [ ] Confirmei que a fase anterior está concluída, testada e documentada.
+- [ ] Li hierarquia, escopo, matriz e decisões pendentes.
+- [ ] Li o documento musical/backend/security/QA específico.
+- [ ] Em tarefa de frontend, li direção visual, design system, arquitetura e antipadrões.
+- [ ] Confirmei fase e evidência do gate anterior.
+- [ ] Inspecionei código, migrations, OpenAPI e testes atuais.
+- [ ] Listei arquivos, riscos e comandos de validação.
+- [ ] Verifiquei que a tarefa não depende de capability desabilitada.
 
-Durante a implementação:
+## Durante
 
-- [ ] Não implementei código fora da fase atual.
-- [ ] Não criei contrato sem documentar.
-- [ ] Não dupliquei regra musical.
-- [ ] Não expus stacktrace.
-- [ ] Não expus path físico.
-- [ ] Não expus `storage_key`.
-- [ ] Não coloquei processamento pesado dentro da request HTTP principal.
+- [ ] Não criei contrato/enum/erro sem atualizar a fonte canônica.
+- [ ] Não dupliquei regra musical no frontend.
+- [ ] Não copiei tema/composição padrão de biblioteca como resultado final.
+- [ ] Mantive shells, tokens semânticos e componentes do domínio.
+- [ ] Mantive modelo diatônico/cromático/oitava.
+- [ ] Mantive sessão/CSRF/autorização por objeto.
+- [ ] Mantive processamento pesado no worker.
+- [ ] Tratei reentrega/idempotência/estado inválido.
+- [ ] Não expus token/path/`storage_key`/stacktrace/stderr.
+- [ ] Adicionei teste que falharia antes da correção.
 
-Antes de finalizar a fase:
+## Antes de concluir
 
-- [ ] Executei testes aplicáveis.
-- [ ] Registrei testes não executados e motivo.
-- [ ] Atualizei documentação afetada.
-- [ ] Registrei decisões novas.
-- [ ] Listei pendências.
-- [ ] Só marquei conclusão com evidência.
+- [ ] Executei testes aplicáveis e registrei comandos.
+- [ ] Testei cenário feliz, erro, autorização e regressão musical afetada.
+- [ ] OpenAPI/cliente/migrations/docs estão sincronizados.
+- [ ] Golden/snapshot alterado foi revisado, não aceito cegamente.
+- [ ] Storybook, visual regression, conteúdo extremo e acessibilidade foram executados quando aplicáveis.
+- [ ] Registrei testes não executados e risco.
+- [ ] Provei o gate; caso contrário, marquei `BLOQUEADA`.

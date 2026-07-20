@@ -8,7 +8,7 @@ Não implementar endpoints, permissões, subscriptions ou envio de push nesta et
 
 ## Motivo
 
-O MVP deve usar polling em `GET /api/jobs/{job_id}/status` para acompanhar processamento. Isso é suficiente para validar o fluxo assíncrono sem adicionar permissões do navegador nem novos riscos.
+O MVP deve usar polling em `GET /api/v1/jobs/{job_id}/status` para acompanhar processamento. Isso é suficiente para validar o fluxo assíncrono sem adicionar permissões do navegador nem novos riscos.
 
 ## Alternativa do MVP
 

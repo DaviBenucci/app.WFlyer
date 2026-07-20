@@ -1,78 +1,94 @@
 # Modelo de ameaças
 
-## Ativos protegidos
+> Status: canônico. Revisão: 2026-07-20.
 
-- Arquivos originais enviados pelos usuários.
-- MusicXML e PDFs finais.
-- Metadados de jobs.
-- Artefatos gerados.
-- Métricas internas de processamento.
-- Fila e worker.
+## Ativos
 
-## Upload malicioso
+- arquivos originais e artefatos;
+- estrutura musical e metadados;
+- sessão anônima/CSRF;
+- propriedade de uploads/jobs;
+- capacidade de CPU/memória/storage;
+- integridade do motor/catálogo;
+- logs e diagnósticos internos;
+- dependências e imagens de processamento.
 
-Risco: arquivo explorando ferramenta de parsing, OMR ou renderização.
+## Atores
 
-Mitigações:
+- usuário legítimo;
+- atacante externo sem sessão;
+- sessão maliciosa tentando abuso/IDOR;
+- arquivo hostil;
+- dependência/processador comprometido;
+- erro operacional ou bug concorrente.
 
-- validação real de MIME;
-- validação de extensão;
-- limite de tamanho;
-- renomeação interna;
-- worker com timeout;
-- isolamento por job quando houver arquivo temporário.
+## Ameaças e controles
 
-## Path traversal
+### Acesso horizontal/IDOR
 
-Risco: filename com `../` gravando fora do local esperado.
+Ataque: usar UUID de outra sessão.
 
-Mitigações:
+Controles: cookie opaco, consulta por `(id, session_id)`, `404` neutro, testes A/B, autorização antes de stream/URL.
 
-- nunca usar filename original como path;
-- usar identificador interno;
-- `storage_key` gerada pela aplicação.
+### CSRF e roubo de sessão
 
-## Vazamento de artefato
+Ataque: criar/apagar recursos usando cookie da vítima ou expor token.
 
-Risco: artefato acessível sem validação.
+Controles: SameSite, CSRF por header, HTTPS, HttpOnly, rotação, sem tokens em URL/log/storage, CORS allowlist.
 
-Mitigações:
+### Arquivo poliglota ou tipo falso
 
-- download controlado;
-- expiração;
-- validação do artefato;
-- bloqueio de expirado.
+Ataque: extensão/MIME enganoso ou parser diferencial.
 
-## Exposição de detalhes internos
+Controles: capability/allowlist, streaming limitado, assinatura + parse restritivo, quarentena, rejeição de ambiguidades.
 
-Risco: usuário ver métricas internas, stacktrace, path físico ou logs.
+### XML hostil
 
-Mitigações:
+Ataque: XXE, SSRF, leitura local, expansão de entidades, profundidade/quantidade extrema.
 
-- DTO público separado;
-- envelope de erro seguro;
-- testes de contrato;
-- logs com `correlation_id`.
+Controles: entidades/XInclude/rede desabilitados, limites de estrutura, schema local, timeout/memória e corpus hostil.
 
-## Abuso de processamento
+### MXL/ZIP hostil
 
-Risco: muitos jobs consumindo recursos.
+Ataque: zip slip, zip bomb, paths absolutos, links, entries aninhadas.
 
-Mitigações:
+Controles: feature off no Core; quando ativa, extração segura sem filesystem arbitrário, limites de entries/tamanho/ratio e validação de container.
 
-- rate limiting;
-- limite de tamanho;
-- timeout;
-- retentativas limitadas;
-- erro público seguro.
+### PDF/OMR/renderer hostil
 
-## Logs sensíveis
+Ataque: explorar rasterizador/OMR/renderer ou consumir recursos.
 
-Risco: nomes de arquivos sensíveis, tokens, paths ou exceções brutas em logs.
+Controles: feature gate, sandbox sem rede/privilégio, filesystem read-only, quotas, timeout, versão fixada, validação da saída.
 
-Mitigações:
+### Abuso de recursos
 
-- mascaramento;
-- não logar payload completo;
-- registrar `correlation_id`;
-- manter logs internos fora dos DTOs públicos.
+Ataque: muitos uploads/jobs/polling/downloads ou partituras estruturalmente enormes.
+
+Controles: rate limit, quota, limites de bytes/nós/eventos/páginas, fila priorizada, cancelamento, reconciliação e alertas.
+
+### Confusão/double transposition
+
+Ataque/bug: metadata de origem contraditória, intervalo aplicado duas vezes ou artefato errado.
+
+Controles: snapshots, `SOURCE_INSTRUMENT_MISMATCH`, invariantes de concerto, vínculo job→artefato e hashes.
+
+### Vazamento por logs/telemetria
+
+Ataque/erro: conteúdo, token, URL assinada ou path em logs.
+
+Controles: allowlist/redaction, acesso restrito, testes de log, retenção e `correlation_id`.
+
+### Supply chain
+
+Ataque: dependência/imagem maliciosa ou vulnerável.
+
+Controles: lockfiles/digests, scanner/SBOM, origem confiável, privilégio mínimo e regressão antes de upgrade.
+
+## Riscos residuais
+
+- OMR pode interpretar música incorretamente mesmo sem falha de segurança;
+- MusicXML pode perder layout no round-trip;
+- sessão apagada pelo usuário pode impedir acesso a recurso ainda retido;
+- rate limiting por IP pode afetar redes compartilhadas.
+
+Esses riscos devem ser comunicados/medidos, não escondidos por afirmação genérica de segurança.

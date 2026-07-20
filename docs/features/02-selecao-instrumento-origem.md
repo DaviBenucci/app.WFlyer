@@ -1,36 +1,51 @@
-# Seleção de instrumento de origem
+# Seleção do instrumento de origem
 
 ## Objetivo
 
-Confirmar manualmente para qual instrumento a partitura original foi escrita.
+Registrar para qual instrumento a parte de entrada foi escrita. No Core a seleção é manual e obrigatória.
 
 ## Fluxo
 
 ```text
-Carregar instrumentos
-Usuário escolhe instrumento de origem
-Wizard grava source_instrument_id
+GET /api/v1/instruments
+-> usuário busca/filtra
+-> seleciona origem
+-> UI mostra afinação escrita/concerto em linguagem simples
+-> seleção entra no pedido de transposição
 ```
+
+## Fonte de verdade
+
+O catálogo vem da API. Não manter uma cópia independente com intervalos no frontend.
+
+## Metadado do arquivo
+
+Durante a normalização, o backend lê `<transpose>` quando presente:
+
+- coincide com o preset selecionado: continuar;
+- ausente: usar a declaração manual;
+- diverge: falhar com `SOURCE_INSTRUMENT_MISMATCH` e pedir correção.
+
+O sistema não deve “escolher o que parece certo” silenciosamente.
 
 ## Detecção automática
 
-Detecção automática perfeita não faz parte do MVP. Se existir sugestão simples no futuro, ela nunca deve substituir a confirmação manual.
+Detecção de instrumento por texto/OMR não faz parte do Core. Uma sugestão futura deve indicar que é sugestão, registrar fonte/confiança internamente e exigir confirmação.
 
-## UI
+## Regras de UI
 
-- Busca por nome.
-- Filtro por família quando útil.
-- Cards com instrumento, família e afinação.
-- Explicação simples de transposição.
-
-## Regras
-
-- Origem é obrigatória.
-- Instrumento deve estar ativo no catálogo.
-- Confidence score não aparece na UI pública.
+- origem obrigatória;
+- apenas instrumento ativo e afinado suportado;
+- busca por nome/alias;
+- explicar instrumentos que soam em oitava;
+- não exibir score numérico de confiança;
+- preservar seleção apenas como preferência local, nunca como prova do arquivo.
 
 ## Testes
 
-- Busca encontra instrumento.
-- Seleção habilita próxima etapa.
-- Instrumento inativo não pode ser selecionado.
+- catálogo e aliases funcionam;
+- instrumento inativo não é selecionável;
+- metadata coincidente passa;
+- metadata divergente bloqueia;
+- metadata ausente usa seleção manual;
+- violão e sax tenor exibem indicação de oitava.

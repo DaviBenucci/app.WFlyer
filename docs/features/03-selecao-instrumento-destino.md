@@ -1,49 +1,50 @@
-# Seleção de instrumento de destino
+# Seleção do instrumento de destino
 
 ## Objetivo
 
-Escolher para qual instrumento a nova partitura será escrita.
+Escolher para qual instrumento a parte será reescrita e apresentar a transformação calculada pelo backend.
 
 ## Fluxo
 
 ```text
-Usuário busca ou filtra instrumento
-Seleciona destino
-Sistema calcula intervalo
-Sistema exibe feedback imediato
+selecionar destino
+-> UI pode mostrar prévia não autoritativa
+-> POST /api/v1/transpositions
+-> backend calcula output_interval vetorial
+-> UI exibe nome, direção e oitava
 ```
 
-## Feedback imediato
-
-Exemplo:
+Exemplos:
 
 ```text
-Piano -> Trompete Bb
-A partitura será escrita 1 tom acima.
-Exemplo: C maior se transforma em D maior.
+Piano -> Trompete Bb: segunda maior acima (+2)
+Piano -> Sax tenor Bb: nona maior acima (+14)
+Violão -> Piano: uma oitava abaixo (-12)
 ```
-
-## Cálculo
-
-```text
-intervalo = source.written_to_concert - target.written_to_concert
-```
-
-## UI
-
-- Cards para mais usados.
-- Busca por instrumento.
-- Filtros por família.
-- Microinteração por família.
 
 ## Regras
 
-- Destino é obrigatório.
-- Se origem e destino forem iguais, permitir, mas avisar que não haverá transposição instrumental.
-- Não permitir instrumentos não suportados.
+- destino obrigatório e ativo;
+- não aceitar instrumento não afinado no Core;
+- origem e destino iguais são permitidos: intervalo zero, normalização/validação ainda ocorrem;
+- não reduzir todo intervalo a “N semitons” quando a grafia diatônica ou a oitava importam;
+- cliente nunca envia o intervalo como autoridade.
+
+## Feedback
+
+Mostrar:
+
+- origem e destino;
+- nome do intervalo;
+- direção;
+- exemplo de nota/tonalidade somente quando o contexto permite;
+- aviso de oitava para instrumentos relevantes;
+- aviso de revisão de clave/tessitura quando retornado pelo job.
 
 ## Testes
 
-- Piano -> Trompete Bb retorna +2.
-- Trompete Bb -> Piano retorna -2.
-- Feedback muda quando destino muda.
+- Piano -> Trompete Bb resulta em `(diatonic=1, chromatic=2, octave=0)`;
+- Piano -> Sax tenor Bb resulta em `(1, 2, 1)` e total `+14`;
+- Violão -> Piano resulta em `(0, 0, -1)`;
+- alteração do destino atualiza resumo;
+- resposta do backend prevalece sobre qualquer prévia local.

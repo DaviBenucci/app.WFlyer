@@ -1,61 +1,115 @@
-# Critérios de aceite do MVP app.WFlyer
+# Critérios de aceite do MVP Core W_Flyer
 
-O MVP só poderá ser considerado pronto quando todos os critérios abaixo estiverem atendidos, testados e documentados.
+> Status: canônico. Revisão: 2026-07-20.
 
-## Critérios objetivos
+O MVP é um produto executável e testado. Documentação completa, isoladamente, não satisfaz estes critérios.
 
-1. A estrutura do código está documentada.
-2. Backend e frontend estão separados de forma clara.
-3. A regra musical está centralizada.
-4. O catálogo mínimo de instrumentos está documentado.
-5. Os contratos de API estão definidos.
-6. O modelo de dados está definido.
-7. O pipeline assíncrono está definido.
-8. A estratégia MusicXML/PDF está documentada.
-9. A segurança de upload está documentada.
-10. A UX mínima da aplicação está documentada.
-11. A acessibilidade está documentada.
-12. A matriz de testes está documentada.
-13. O guia de implementação está em ordem sequencial.
-14. Não há mistura com site institucional.
-15. Não há mistura com Spotify.
-16. Não há requisitos de publicação online nesta etapa.
+## 1. Escopo e capabilities
 
-## Checklist final
+- [ ] Core aceita `.musicxml` e XML que seja MusicXML válido.
+- [ ] PDF, MXL e imagens são rejeitados quando suas capabilities estão desabilitadas.
+- [ ] Uma parte/uma pauta é aceita; estruturas fora da matriz são rejeitadas explicitamente.
+- [ ] Saída principal é `transposed_musicxml`.
+- [ ] Recursos futuros não aparecem como funcionais.
 
-- [ ] A documentação está focada somente na aplicação.
-- [ ] A documentação está focada somente no código.
-- [ ] Não há instruções de hospedagem.
-- [ ] Não há instruções de domínio.
-- [ ] Não há instruções de DNS.
-- [ ] Não há instruções de deploy.
-- [ ] Não há mistura com site institucional.
-- [ ] Não há mistura com Spotify.
-- [ ] O MVP está definido.
-- [ ] As fases futuras estão separadas.
-- [ ] A estrutura de código está documentada.
-- [ ] O backend está documentado.
-- [ ] O frontend está documentado.
-- [ ] O banco de dados está documentado.
-- [ ] A regra musical está centralizada.
-- [ ] O catálogo de instrumentos está documentado.
-- [ ] Os contratos de API estão documentados.
-- [ ] O pipeline assíncrono está documentado.
-- [ ] A segurança de upload está documentada.
-- [ ] A UX da aplicação está documentada.
-- [ ] A acessibilidade está documentada.
-- [ ] A matriz de testes está documentada.
-- [ ] O guia de implementação está em ordem sequencial.
-- [ ] Os critérios de aceite são objetivos.
-- [ ] Nenhum requisito fora do escopo foi introduzido.
+## 2. Sessão e fluxo funcional
 
-## Evidências esperadas
+- [ ] Sessão anônima é criada/renovada por cookie `HttpOnly`.
+- [ ] CSRF protege mutações.
+- [ ] Usuário envia arquivo, escolhe origem/destino e cria job idempotente.
+- [ ] Job é processado fora da request.
+- [ ] Status/stage/progresso/warnings são recuperáveis após refresh na mesma sessão.
+- [ ] Resultado válido pode ser baixado.
+- [ ] Usuário pode cancelar job ativo e apagar bytes do servidor.
+- [ ] Histórico local funciona sem virar mecanismo de autorização.
 
-- Lista de arquivos analisados.
-- Lista de arquivos criados.
-- Lista de arquivos alterados.
-- Problemas encontrados.
-- Correções realizadas.
-- Decisões técnicas formalizadas.
-- Checklist de prontidão para início do código.
-- Pendências restantes.
+## 3. Correção musical
+
+- [ ] Instrumentos usam componentes diatônico, cromático e de oitava.
+- [ ] Catálogo inicial coincide com o documento canônico e é versionado.
+- [ ] Todos os pares de instrumentos preservam altura de concerto em property tests.
+- [ ] Piano→tenor e violão→piano comprovam transposição de oitava.
+- [ ] Notas, acordes, armaduras, acidentes, mudanças de tonalidade e harmony suportada são transpostos.
+- [ ] Ritmo, medidas, vozes, ties e tuplets são preservados.
+- [ ] `<transpose>` do resultado representa o destino e não há dupla transposição.
+- [ ] Comparador semântico e corpus/goldens passam.
+- [ ] Violação obrigatória impede publicação do artefato.
+
+## 4. MusicXML e arquivos
+
+- [ ] Original, normalized e transposed MusicXML são artefatos distintos e imutáveis.
+- [ ] Parser desabilita recursos externos/rede e impõe limites estruturais.
+- [ ] Output é parseado e validado novamente.
+- [ ] Upload usa streaming, quarentena, nome interno, hash e storage privado.
+- [ ] Extensão/MIME/assinatura não são tratados isoladamente como prova.
+- [ ] Filename não controla path, header ou comando.
+
+## 5. Autorização e segurança
+
+- [ ] Toda operação de upload/job/artefato filtra por `session_id`.
+- [ ] Sessão B não descobre nem acessa recursos de A.
+- [ ] Cookie, CSRF, path, `storage_key`, task id, stderr e stacktrace não vazam.
+- [ ] Rate limits/quotas/limites de recursos estão configurados e testados.
+- [ ] Downloads têm autorização e headers seguros.
+- [ ] Corpus hostil de XML e testes de IDOR/CSRF passam.
+- [ ] Dependências/containers são fixados e escaneados conforme política.
+
+## 6. Assíncrono, consistência e retenção
+
+- [ ] Banco é fonte de verdade; outbox evita job perdido.
+- [ ] Reentrega/retry não duplica artefatos.
+- [ ] Erros determinísticos não entram em retry infinito.
+- [ ] Heartbeat/lease e reconciliação tratam jobs presos.
+- [ ] Estado, stage e retenção são separados e transições inválidas falham.
+- [ ] Cancelamento/crash não publicam resultado parcial.
+- [ ] Expiração bloqueia download antes do purge.
+- [ ] Purge e reconciliação de objetos são idempotentes.
+
+## 7. Frontend, identidade e acessibilidade
+
+- [ ] Capabilities governam formatos/outputs na UI.
+- [ ] Fluxo funciona em mobile, desktop, teclado e zoom 200%.
+- [ ] PublicShell, StudioShell e UtilityShell são aplicados conforme a documentação.
+- [ ] A tela Transpor funciona como workspace musical e não como wizard/dashboard genérico.
+- [ ] Origem, destino e intervalo possuem componente visual e equivalente textual próprios.
+- [ ] Tokens semânticos substituem tema padrão de biblioteca.
+- [ ] Componentes de produto possuem stories, estados extremos e testes de interação.
+- [ ] Visual regression foi revisada nos viewports definidos.
+- [ ] Labels, foco não encoberto, `aria-live`, contraste, forced colors e reduced motion foram validados.
+- [ ] Loading, offline/rede, erro de domínio, warning, cancelamento, sucesso e expiração existem.
+- [ ] Intervalo é apresentado com diatônica/semitons/oitava quando relevante.
+- [ ] Warning material aparece antes do download.
+- [ ] Nenhum token é persistido pelo JavaScript.
+- [ ] Rotas públicas não carregam preview/renderizador pesado sem necessidade.
+- [ ] A revisão de antipadrões de interface gerada por IA não possui bloqueio aberto.
+- [ ] CSS, Motion e GSAP possuem fronteiras claras; nenhuma propriedade é disputada.
+- [ ] Motion é a engine padrão da UI e GSAP está restrito a cenas lazy-loaded.
+- [ ] Anime.js e React Spring não estão instalados no MVP Core.
+- [ ] A intro não bloqueia CTA/conteúdo, toca no máximo uma vez por sessão e possui fallback estático.
+- [ ] Reduced motion troca a cena por composição reduzida, não apenas acelera a timeline.
+- [ ] Strict Mode, navegação antecipada, background e estado terminal não deixam timeline/listener ativo.
+- [ ] GSAP não aparece no bundle das rotas que não usam cena.
+
+## 8. Contratos, operação e evidência
+
+- [ ] OpenAPI e cliente TypeScript gerado estão sincronizados.
+- [ ] Migrations aplicam em banco vazio e caminho de rollback/forward foi testado.
+- [ ] Health/readiness, logs estruturados, métricas e correlação funcionam.
+- [ ] Logs não contêm documento/segredo.
+- [ ] Suíte unit/property/integration/contract/E2E/security passa em CI.
+- [ ] Comandos, versões, fixtures e resultados estão registrados.
+- [ ] Falhas conhecidas e riscos residuais estão documentados.
+
+## 9. Itens que não bloqueiam o Core
+
+- PDF de saída;
+- PDF de entrada/OMR;
+- MXL;
+- login, nuvem, pagamento, compartilhamento e push;
+- editor interno de partitura.
+
+Se algum desses itens for habilitado, deve satisfazer seu gate adicional antes de ser anunciado como suportado.
+
+## Regra final
+
+O Core só recebe status **ACEITO** quando todos os itens aplicáveis acima possuem evidência. Item “não testado” é pendência; não é aprovação tácita.

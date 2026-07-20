@@ -1,69 +1,54 @@
-# Estratégia de testes do MVP
+# Estratégia de testes
 
-## Objetivo
+> Status: canônico. Revisão: 2026-07-20.
 
-Garantir que a aplicação comece a ser codada com testes para regra musical, backend, frontend e segurança.
+## Princípio
 
-## Testes musicais obrigatórios
+O W_Flyer precisa provar quatro propriedades independentes:
 
-- Piano C -> Trompete Bb.
-- Trompete Bb -> Piano C.
-- Piano C -> Sax Alto Eb.
-- Sax Alto Eb -> Piano C.
-- Clarinete Bb -> Sax Alto Eb.
-- Trompa F -> Piano C.
-- Mesmo instrumento -> mesmo resultado.
-- Transposição com acidentes.
-- Transposição com acordes.
-- Transposição com armadura de clave.
+1. correção musical;
+2. segurança/autorização de documentos;
+3. confiabilidade assíncrona;
+4. usabilidade/acessibilidade do fluxo.
 
-## Testes de backend obrigatórios
+Cobertura de linhas não substitui nenhuma delas.
 
-- `/health` responde.
-- Upload válido é aceito.
-- Upload inválido é rejeitado.
-- Arquivo grande é rejeitado.
-- Job é criado.
-- Job muda de status.
-- Worker processa job.
-- Erro no worker não quebra API.
-- Download só funciona para artefato válido.
-- Arquivo expirado não pode ser baixado.
+## Pirâmide
 
-## Testes de frontend obrigatórios
+```text
+unit/property: intervalos, catálogo, normalização e estados
+component/integration: API, banco, storage, fila, frontend
+contract: OpenAPI/cliente/DTOs
+golden/semantic: MusicXML e resultados esperados
+security corpus: XML/MXL/PDF/IDOR/CSRF/DoS
+E2E: fluxos reais do usuário
+performance/soak: limites antes de produção/PDF
+```
 
-- Usuário consegue enviar arquivo.
-- Usuário consegue selecionar instrumento de origem.
-- Usuário consegue selecionar instrumento de destino.
-- Usuário vê status de processamento.
-- Usuário vê erro amigável.
-- Usuário consegue baixar resultado.
-- Fluxo funciona em mobile.
-- Fluxo funciona com teclado.
+## Gates do Core
 
-## Testes de segurança obrigatórios
+- todos os presets e pares preservam altura de concerto;
+- fixtures Core passam no comparador semântico;
+- parser rejeita corpus hostil sem rede/leitura local/exaustão;
+- A não acessa recursos de B;
+- reentrega/retry não duplica job/artefato;
+- downloads e purge respeitam retenção;
+- cliente OpenAPI não diverge;
+- fluxo E2E MusicXML funciona em desktop/mobile/teclado;
+- nenhum warning/erro interno vaza.
 
-- Não expor stacktrace.
-- Não expor caminho interno do arquivo.
-- Não aceitar extensão perigosa.
-- Não aceitar MIME inválido.
-- Não aceitar payload malformado.
-- Rate limit documentado.
-- Validações documentadas.
+## Ambientes
+
+- banco/Redis/storage reais em integração via containers;
+- engines externas fixadas por versão;
+- relógio controlável para expiração;
+- seed/corpus versionado;
+- sem depender de rede pública nos testes.
 
 ## Evidência
 
-Quando houver código, cada fase deve registrar:
+Cada execução registra comando, commit, ambiente, versões, fixtures, resultado e falhas em `../logs/TEST_LOG.md`. Teste não executado deve ter motivo; não pode ser declarado como aprovado.
 
-```text
-data
-fase
-arquivos alterados
-comandos executados
-resultado
-falhas
-correções
-pendências
-```
+## PDF/OMR
 
-Nenhum teste deve ser declarado como executado sem evidência.
+Possui gate separado com corpus representativo, métricas definidas antes da avaliação, sandbox, performance e revisão de falsos positivos/negativos. Aprovar Core não aprova PDF.

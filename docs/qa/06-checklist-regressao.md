@@ -1,43 +1,48 @@
 # Checklist de regressão
 
-Antes de concluir uma tarefa, o Codex deve verificar:
+## Escopo e contrato
 
-## Produto
+- [ ] Mudança está dentro do Core ou sob feature gate?
+- [ ] Documento canônico/ADR foi atualizado?
+- [ ] OpenAPI e cliente gerado estão sincronizados?
+- [ ] Enum/erro/capability não foi inventado localmente?
 
-- [ ] O comportamento implementado está documentado?
-- [ ] A rota está correta?
-- [ ] MVP e futuro não foram misturados indevidamente?
+## Música
 
-## Frontend
-
-- [ ] Estados loading/error/empty existem?
-- [ ] Acessibilidade básica foi mantida?
-- [ ] Reduced motion respeitado?
-- [ ] Mobile não ficou quebrado?
-
-## Backend
-
-- [ ] Endpoint tem validação?
-- [ ] Erro público é seguro?
-- [ ] Não há processamento pesado na request?
-- [ ] Status de job é terminal em falhas?
+- [ ] Invariante de altura de concerto passa?
+- [ ] Grafia diatônica e oitava foram testadas?
+- [ ] Ritmo/vozes/ties/tuplets permanecem?
+- [ ] `<transpose>` não foi aplicado duas vezes?
+- [ ] Corpus/golden afetado foi revisado conscientemente?
 
 ## Segurança
 
-- [ ] Não há token em log?
-- [ ] Não há path interno em resposta pública?
-- [ ] Upload é validado no backend?
-- [ ] Download valida autorização?
+- [ ] Autorização por sessão em todo objeto?
+- [ ] CSRF em mutações?
+- [ ] Parser/arquivo permanece restritivo?
+- [ ] Sem token/path/storage key/stderr em resposta ou log?
+- [ ] Rate/size/resource limits preservados?
+- [ ] Saída e download são revalidados?
 
-## Testes
+## Assíncrono/storage
 
-- [ ] Unitários rodaram?
-- [ ] Typecheck/lint rodaram?
-- [ ] E2E afetado rodou?
-- [ ] Resultado registrado em `docs/logs/TEST_LOG.md`?
+- [ ] Reentrega/retry é idempotente?
+- [ ] Estado/stage/retenção não foram misturados?
+- [ ] Crash/cancelamento não publica parcial?
+- [ ] Expiração/purge/reconciliação continuam corretos?
 
-## Documentação
+## Frontend
 
-- [ ] `docs/logs/IMPLEMENTATION_LOG.md` atualizado?
-- [ ] `docs/logs/CHANGELOG.md` atualizado se comportamento mudou?
-- [ ] `docs/logs/DECISIONS.md` atualizado se houve decisão nova?
+- [ ] Capabilities governam formatos?
+- [ ] Loading/network/domain/warning/terminal tratados?
+- [ ] Teclado, mobile, zoom e reduced motion?
+- [ ] Histórico local não virou autorização?
+
+## Evidência
+
+- [ ] Unit/property/integration aplicáveis executados?
+- [ ] E2E afetado executado?
+- [ ] Corpus hostil executado quando parser/engine mudou?
+- [ ] Performance executada quando limite/engine mudou?
+- [ ] Comandos/resultados registrados no TEST_LOG?
+- [ ] Testes não executados têm justificativa e risco?

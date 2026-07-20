@@ -1,69 +1,70 @@
 # Upload de partitura
 
+> O nome histórico do arquivo contém “pdf”, mas o Core aceita MusicXML. PDF permanece sob feature gate.
+
 ## Objetivo
 
-Receber arquivo de partitura com validação em frontend e backend, tratando todo upload como potencialmente perigoso.
+Receber uma partitura, validar o formato ativo e criar um upload pertencente à sessão anônima.
 
-## Tipos permitidos inicialmente
+## Fonte de formatos
+
+A UI consulta `GET /api/v1/capabilities`. No Core:
 
 ```text
-application/pdf
-application/vnd.recordare.musicxml+xml
-application/xml
-text/xml
+.musicxml                       habilitado
+.xml que seja MusicXML válido   habilitado
+.mxl                            desabilitado
+.pdf                            desabilitado até gate OMR
+.png/.jpg                       fora do MVP
 ```
+
+Não hardcodar PDF como permitido. Quando `pdf_omr=false`, a UI não oferece PDF e a API retorna `FORMAT_NOT_ENABLED`.
 
 ## Fluxo
 
 ```text
-Usuário seleciona arquivo
-Frontend valida tipo/tamanho para UX
-Frontend mostra resumo
-API valida MIME real, extensão e tamanho
-API sanitiza nome
-API gera nome interno
-API salva referência controlada
-API cria registro em uploads
+criar/renovar sessão anônima
+-> consultar capabilities
+-> selecionar arquivo
+-> validação local apenas para feedback
+-> POST /api/v1/uploads com CSRF
+-> backend faz streaming para quarentena
+-> valida bytes, tipo e estrutura segura
+-> retorna upload validated ou erro
 ```
 
-## Validação frontend
+## UI
 
-- Campo obrigatório.
-- Extensão apenas como indício visual.
-- `file.type` não é confiável como única validação.
-- Mostrar nome seguro/truncado.
-- Exibir erro claro.
+- informar formatos e limite retornados/configurados;
+- permitir teclado e botão alternativo à dropzone;
+- mostrar filename sanitizado e tamanho;
+- não prometer que extensão válida implica partitura válida;
+- permitir remover upload ainda não associado a job.
 
-## Validação backend obrigatória
+Estados locais de UI:
 
-- MIME real.
-- Extensão.
-- Tamanho máximo.
-- Arquivo vazio.
-- Estrutura mínima quando aplicável.
-- Nome original não usado como path.
-- Renomeação interna.
+```text
+idle | selecting | uploading | validating | ready | error
+```
+
+Estados persistidos do upload estão em `../backend/16-maquina-estados.md`.
 
 ## Segurança
 
-- Não salvar em pasta pública.
-- Não expor path físico.
-- Não retornar `storage_key`.
-- Subprocessos, quando existirem, devem ter timeout e não usar `shell=True`.
-
-## Estados públicos
-
-```text
-idle
-uploading
-uploaded
-failed
-expired
-```
+- `file.type` e extensão são apenas indícios;
+- backend limita bytes durante o streaming;
+- filename original não vira path;
+- XML usa parser seguro;
+- arquivo rejeitado nunca entra no pipeline;
+- frontend não lê nem armazena o conteúdo permanentemente;
+- sessão/CSRF são obrigatórios.
 
 ## Critérios de aceite
 
-- Arquivo inválido não avança.
-- Nome interno não depende do nome original.
-- Backend rejeita MIME inválido.
-- Erro público é claro e sem detalhes internos.
+- formatos exibidos refletem capabilities;
+- MusicXML suportado cria upload `validated`;
+- XML genérico não MusicXML é rejeitado;
+- PDF/MXL desabilitados não são aceitos nem apenas ocultados;
+- arquivo vazio, excessivo, malformado ou hostil é rejeitado;
+- resposta e log não expõem path/`storage_key`;
+- recurso de outra sessão não pode ser consultado ou apagado.

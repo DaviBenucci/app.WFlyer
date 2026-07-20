@@ -1,5 +1,7 @@
 # Página Instrumentos suportados
 
+> Revisão: 2026-07-20.
+
 ## Rota
 
 ```text
@@ -8,126 +10,76 @@
 
 ## Objetivo
 
-Listar instrumentos disponíveis, explicar transposição e permitir busca/filtro por família.
+Apresentar o catálogo como biblioteca musical pesquisável, não como grid de cards repetidos.
 
-## Escopo MVP
+## Shell
 
+`PublicShell` ou `UtilityShell`, conforme navegação final.
 
-Desktop:
-
-```text
-Título
-Busca
-Filtros por família
-Tabela/lista com instrumentos
-Exemplo de leitura/sonoridade
-```
-
-Mobile:
+## Desktop
 
 ```text
-Busca no topo
-Chips de família horizontal
-Cards de instrumentos
-Detalhe expandível
+Header da página
+Busca + filtros por família
+InstrumentLibrary
+  lista/tabela estruturada
+InstrumentDetailPanel
 ```
 
+A lista permite comparar nome, afinação, família, clave e comportamento de C escrito. O painel detalha o item selecionado.
 
-## Componentes principais
+## Mobile
 
+- busca no topo;
+- chips de família em scroll acessível;
+- linhas compactas;
+- detalhe em sheet;
+- CTA para usar como origem/destino.
 
-- `InstrumentSearch`
-- `InstrumentFamilyFilter`
-- `InstrumentTable`
-- `InstrumentCard`
-- `InstrumentDetailsDrawer`
-- `FamilySelectionEffect`
+## Dados
 
+Vêm da API/cliente gerado. Não hardcodar intervalos.
 
-## Dados necessários
+## Apresentação
 
+Para cada instrumento:
 
-Modelo de instrumento:
+- nome e aliases;
+- família;
+- afinação;
+- “quando lê C, soa ...” com oitava;
+- intervalo escrito → concerto;
+- clave padrão como referência;
+- badge de transposição de oitava quando aplicável.
 
-```ts
-type Instrument = {
-  id: string
-  name: string
-  family: 'teclas' | 'metais' | 'madeiras' | 'cordas' | 'voz' | 'percussao_melodica'
-  writtenToConcert: number
-  aliases: string[]
-  description: string
-  example?: string
-  supported: boolean
-}
-```
+## Visual de família
 
-Exemplos iniciais:
+Famílias podem ter ícone/acentuação secundária, mas a cor não muda regras de status nem prejudica contraste.
+
+## Ações
 
 ```text
-Piano: 0
-Trompete Bb: -2
-Clarinete Bb: -2
-Sax Alto Eb: -9
-Trompa F: -7
-Flauta: 0
-Violino: 0
+Usar como origem
+Usar como destino
+Iniciar transposição
 ```
 
+A seleção prévia deve ser confirmada na tela Transpor.
 
-## Interações
-
-
-- Busca por nome e alias.
-- Filtro por família.
-- Clique em instrumento abre detalhes.
-- Selecionar família dispara microinteração discreta.
-- Futuramente, card pode iniciar wizard com instrumento pré-selecionado.
-
-
-## Validações e regras de negócio
-
-
-- Não exibir instrumentos não suportados como disponíveis.
-- Mostrar aviso quando suporte for experimental.
-- O `written_to_concert` é dado técnico; pode aparecer como explicação, mas com linguagem simples.
-
-
-## Estados de tela
-
-
-Estados:
+## Estados
 
 ```text
 loading
 loaded
 empty_search
 api_error
-offline_cached
+offline_sem_cache_privado
 ```
-
-
-## Segurança e privacidade
-
-
-- Dados de instrumentos devem vir de fonte confiável no backend ou seed controlado.
-- Não permitir que parâmetros de busca gerem XSS.
-- Sanitizar qualquer conteúdo administrável.
-
-
-## Acessibilidade
-
-
-- Busca com label claro.
-- Filtros com estado selecionado textual.
-- Tabela deve ser navegável por teclado.
-- Cards devem manter contraste.
-
 
 ## Critérios de aceite
 
-
-- Busca encontra instrumentos por alias.
-- Filtros funcionam em desktop e mobile.
-- Dados batem com contratos usados no cálculo de transposição.
-- Estado sem resultado é claro.
+- comparação é mais fácil que em um grid de cards;
+- instrumentos de oitava aparecem corretamente;
+- busca por alias funciona;
+- teclado e mobile são suportados;
+- nenhum instrumento inativo é oferecido.

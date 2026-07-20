@@ -1,53 +1,67 @@
-# Validação e confiança
+# Validação, warnings e confiança
 
-## Objetivo
+## Princípio
 
-Separar mensagens públicas de diagnósticos internos, mantendo clareza para o usuário.
+Métricas brutas de engine são diagnósticas e não devem ser apresentadas como verdade compreensível ao usuário. Porém, esconder risco material também é incorreto.
 
-## Usuário vê
+## Saída pública
 
-```text
-Origem
-Destino
-Transposição aplicada
-Tonalidade resultante quando disponível
-Arquivos disponíveis
-Avisos claros
-```
-
-## Usuário não vê
+O usuário pode receber warnings categóricos:
 
 ```text
-confidence_score_omr
-confidence_score_instrument_detection
-confidence_score_key_detection
-unrecognized_symbols_count
-parsed_measures_count
-warnings_count
-processing_duration_ms
-engine_version
-stacktrace
-storage_key
-path físico
+OMR_REVIEW_RECOMMENDED
+LAYOUT_MAY_DIFFER
+ENHARMONIC_SIMPLIFICATION
+TARGET_CLEF_REVIEW_RECOMMENDED
+OUT_OF_RECOMMENDED_RANGE
+SOURCE_METADATA_ASSUMED
 ```
 
-## Validações antes da entrega
-
-- Representação musical final existe.
-- Partes musicais detectadas quando aplicável.
-- Transposição aplicada.
-- Armadura alterada quando esperado.
-- Artefato final existe.
-- Artefato é baixável.
-
-## Mensagem pública de cautela
+Cada warning possui:
 
 ```text
-Confira o resultado antes de usar a partitura em apresentação ou ensaio.
+code
+message
+action opcional
+location opcional (página/medida, quando confiável)
 ```
+
+Não incluir score numérico, símbolo interno, stacktrace, quantidade bruta do parser ou versão do engine na UI comum.
+
+## Regra de entrega
+
+- sem violação obrigatória e sem warning material: `completed`;
+- sem violação obrigatória, com warning: `completed_with_warnings`;
+- qualquer invariante obrigatório violado: `failed`;
+- OMR abaixo do gate: falha, não “resultado com confiança baixa” enganoso.
+
+## Diagnóstico interno
+
+Pode registrar:
+
+```text
+engine/version/config
+confidence agregada e por região
+símbolos não reconhecidos
+medidas/eventos parseados
+resultado de cada invariante
+tempo e recursos por stage
+```
+
+Acesso é restrito, retenção minimizada e nenhum dado é enviado a terceiros sem decisão de privacidade.
+
+## Mensagem padrão
+
+```text
+Revise a partitura transposta antes de usá-la em ensaio ou apresentação.
+```
+
+A mensagem geral não substitui avisos específicos.
 
 ## Testes
 
-- DTO público não contém métricas internas.
-- Resultado falha se artefato final não existir.
-- Erro técnico é convertido em mensagem segura.
+- DTO público contém apenas warning allowlisted;
+- warning material aparece na tela e no resultado;
+- score bruto não aparece;
+- violação semântica bloqueia publicação;
+- localização imprecisa não é apresentada como exata.

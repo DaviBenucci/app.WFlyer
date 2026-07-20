@@ -1,65 +1,79 @@
-# Glossário do WFlyer
+# Glossário do W_Flyer
 
-## Partitura escrita
+> Status: canônico. Revisão: 2026-07-20.
 
-Forma como a música aparece para o instrumentista. Instrumentos transpositores podem ler uma nota diferente do som real produzido.
+## Altura escrita
 
-## Concert pitch / som real
+Altura notada para o instrumentista.
 
-Som real produzido, usado como referência neutra. Piano, flauta e violino normalmente são tratados como instrumentos em som real no contexto básico.
+## Altura de concerto
 
-## Instrumento transpositor
+Altura sonora real usada para comparar instrumentos.
 
-Instrumento cuja nota escrita não corresponde ao som real. Exemplo: trompete em Bb lê C e soa Bb.
+## Intervalo `written_to_concert`
 
-## `written_to_concert`
+Transformação que deve ser adicionada à altura escrita para obter a altura de concerto. No W_Flyer ela é composta por:
 
-Quantidade de semitons necessária para converter a nota escrita do instrumento para som real.
+- `diatonic_steps`: passos de letra musical, sem contar a parcela de oitava;
+- `chromatic_semitones`: semitons, sem contar a parcela de oitava;
+- `octave_change`: oitavas completas.
 
-Exemplo:
+Exemplo para trompete em Bb:
 
-```text
-Piano: 0
-Trompete Bb: -2
-Trompa F: -7
-Sax alto Eb: -9
+```json
+{
+  "diatonic_steps": -1,
+  "chromatic_semitones": -2,
+  "octave_change": 0
+}
 ```
 
-## Intervalo de transposição
+## Intervalo escrito de saída
 
-Para converter uma partitura escrita para instrumento de origem em uma partitura escrita para instrumento de destino:
-
-```text
-intervalo = source.written_to_concert - target.written_to_concert
-```
-
-Exemplo:
+Diferença entre a transformação da origem e a transformação do destino:
 
 ```text
-Piano -> Trompete Bb
-0 - (-2) = +2 semitons
+output_interval = source.written_to_concert - target.written_to_concert
 ```
+
+A subtração é feita em cada componente.
+
+## MusicXML bruto
+
+MusicXML recebido do usuário ou produzido pelo OMR, antes da normalização do W_Flyer.
+
+## MusicXML normalizado
+
+Representação canônica validada, com estrutura e metadados coerentes para o motor musical.
 
 ## OMR
 
-Optical Music Recognition. Processo de ler uma partitura visual/PDF/imagem e converter para representação musical estruturada, como MusicXML.
+Optical Music Recognition. Conversão de uma imagem de partitura para representação simbólica. Não é OCR textual e não é determinístico em todos os documentos.
 
-## MusicXML
+## Parte e pauta
 
-Formato estruturado para representação de partituras. Deve ser o formato intermediário principal para leitura, transposição e renderização.
+Uma parte representa um instrumento/voz no score. Uma pauta é a estrutura de cinco linhas na qual a parte é notada. O MVP Core aceita uma parte e uma pauta por job.
 
-## Artefato
+## Grafia enarmônica
 
-Arquivo gerado ou armazenado pelo sistema. Exemplos: PDF original, MusicXML intermediário, MusicXML final, PDF final, preview.
+Escolha entre notas de mesma altura sonora, como F# e Gb. A grafia depende do intervalo diatônico e da tonalidade, não apenas do número de semitons.
 
 ## Job
 
-Unidade de processamento assíncrono. Um job representa uma solicitação de transposição.
+Solicitação assíncrona de processamento. `status`, `stage` e `retention_status` são conceitos distintos.
 
-## Download token
+## Sessão anônima
 
-Token temporário usado no MVP sem login para autorizar acesso a artefatos de um job sem expor dados privados.
+Identidade temporária, sem conta, usada para autorizar o acesso aos objetos criados pelo navegador.
 
-## Confidence score
+## Artefato
 
-Métrica interna de confiança. Não deve ser exibida para o usuário comum; deve ficar restrita a admin/suporte.
+Arquivo versionado do pipeline, interno ou público. Exemplos: original, MusicXML normalizado, MusicXML transposto e PDF renderizado.
+
+## Aviso público
+
+Código categórico e mensagem segura que comunica incerteza ou limitação sem revelar métricas internas.
+
+## Gate
+
+Conjunto objetivo de critérios que bloqueia a progressão ou a ativação de uma capacidade.

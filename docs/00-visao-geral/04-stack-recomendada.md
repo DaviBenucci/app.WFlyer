@@ -1,81 +1,92 @@
 # Stack recomendada
 
+> Status: canônico. Revisão: 2026-07-20.
+
 ## Princípio
 
-A stack deve servir ao MVP técnico: backend assíncrono, frontend de ferramenta, banco relacional, fila de jobs, validação forte de payloads e motor musical testável.
-
-Esta documentação não escolhe fornecedor de publicação online nem trata de domínio, DNS ou servidor de produção.
+Versões exatas são fixadas em lockfiles na Fase 1. A documentação define responsabilidades e escolhas arquiteturais, não versões flutuantes.
 
 ## Frontend
 
 ```text
-Next.js
-React
-TypeScript
-Tailwind CSS
-shadcn/ui ou componentes próprios equivalentes
-Lucide React
+Next.js App Router + React + TypeScript strict
+React Server Components por padrão
+Tailwind CSS com CSS variables/theme tokens
+shadcn/ui com primitives headless adaptados ao W_Flyer
+TanStack Query
 React Hook Form
 Zod
-TanStack Query
+Storybook
 Testing Library
 Playwright
+Motion for React como engine padrão da UI
+GSAP + @gsap/react apenas para cenas SVG/timelines isoladas
 ```
 
-Justificativa:
+### Regras
 
-- TypeScript reduz divergência entre componentes e API.
-- Zod valida contratos recebidos.
-- TanStack Query organiza upload, criação de job, polling e artefatos.
-- Playwright cobre fluxo do usuário e uso mobile/teclado.
+- tipos de API gerados/validados a partir do OpenAPI;
+- nenhuma regra musical canônica no frontend;
+- não transformar layouts inteiros em Client Components;
+- tokens semânticos são fonte visual; classes não substituem design system;
+- componentes copiados de registry precisam ser adaptados e documentados;
+- polling respeita `Retry-After`, pausa/reduz em aba oculta e encerra em estado terminal;
+- cookies de sessão são `HttpOnly`;
+- heavy preview/renderer é lazy-loaded;
+- fontes são otimizadas e não dependem de rede externa em runtime;
+- View Transition API pode ser progressive enhancement, nunca requisito funcional;
+- CSS resolve microestados simples; Motion resolve presença/layout/gestos React;
+- GSAP é lazy-loaded e restrito à animação-assinatura e cenas aprovadas;
+- Anime.js e React Spring não são dependências do MVP Core;
+- uma propriedade de um nó não pode ser controlada simultaneamente por CSS, Motion e GSAP.
 
 ## Backend
 
 ```text
 FastAPI
-Python 3.12+
-Pydantic v2
-SQLAlchemy 2.0
+Python
+Pydantic
+SQLAlchemy
 Alembic
 PostgreSQL
-Redis ou broker equivalente para fila
-Celery, RQ ou Dramatiq
+Celery
+Redis
 pytest
 ruff
-mypy
+mypy ou pyright
 ```
 
-Recomendação inicial: Celery com Redis ou RQ com Redis. A escolha final deve ser registrada antes da fase de fila/worker.
+Regras:
+
+- PostgreSQL é fonte de verdade para jobs;
+- Celery transporta trabalho;
+- serialização da fila em JSON;
+- migrations obrigatórias;
+- OpenAPI versionado e testado.
 
 ## Processamento musical
 
 ```text
-MusicXML como formato prioritário da Fase 1
-music21 ou biblioteca equivalente para manipulação musical
-MuseScore CLI ou alternativa documentada para renderização futura
-OMR somente após validação do motor MusicXML-first
+MusicXML 4.0 como formato canônico de saída
+music21 como candidato inicial do motor
+adapter de OMR selecionado após spike
+adapter de renderização selecionado após spike
 ```
 
-## Storage controlado pela aplicação
+Integrações ficam atrás de interfaces, com versão registrada no job.
 
-O MVP deve abstrair armazenamento por interface interna. A implementação inicial pode usar storage local controlado ou adaptador equivalente, desde que:
+## Storage
 
-- não use filename original como path;
-- não exponha caminho físico ao frontend;
-- permita expiração;
-- permita testes de download e bloqueio de artefato expirado.
+- filesystem privado para desenvolvimento/teste;
+- storage compatível com objetos para ambientes compartilhados.
 
-## Segurança
+## Execução isolada
 
-```text
-Rate limit
-Validação real de MIME
-Validação de extensão
-Limite de tamanho
-Renomeação interna
-Erros sem stacktrace
-Logs com correlation_id
-Timeout por etapa
-Subprocess sem shell=True
-DTO público sem storage_key
-```
+OMR, rasterização e renderização ocorrem em processo/container separado, sem rede e com limites de recursos.
+
+## Decisões que continuam bloqueadas
+
+- engine OMR de produção;
+- engine de renderização;
+- limites exatos de páginas, tamanho e tempo;
+- suporte público a `.mxl`.

@@ -1,40 +1,30 @@
-# Backend — Guia detalhado canônico
+# Backend — guia de navegação canônico
 
-Este documento foi reduzido para evitar instruções duplicadas e conflitantes. A implementação do backend deve seguir os documentos canônicos abaixo:
+> Revisão: 2026-07-20.
 
-- Visão geral: `docs/backend/01-visao-geral.md`
-- Arquitetura API + worker: `docs/backend/02-arquitetura-api-worker.md`
-- Contratos de API: `docs/backend/03-endpoints-api.md`
-- Modelo de dados: `docs/backend/04-modelagem-banco.md`
-- Pipeline assíncrono: `docs/backend/05-pipeline-processamento.md`
-- Storage e retenção: `docs/backend/06-storage-e-retencao.md`
-- Fila e workers: `docs/backend/07-filas-e-workers.md`
-- Segurança backend: `docs/backend/08-seguranca-backend.md`
-- Estrutura de pastas: `docs/backend/13-estrutura-pastas.md`
-- Testes backend: `docs/backend/14-testes-backend.md`
-- Guia Codex: `docs/100-implementacao/guia-codex-app-wflyer.md`
+Este arquivo evita duplicar requisitos. A implementação deve consultar, nesta ordem:
 
-## Regra de uso
+1. `01-visao-geral.md`
+2. `02-arquitetura-api-worker.md`
+3. `03-endpoints-api.md`
+4. `04-modelagem-banco.md`
+5. `16-maquina-estados.md`
+6. `17-sessao-anonima-autorizacao.md`
+7. `05-pipeline-processamento.md`
+8. `06-storage-e-retencao.md`
+9. `07-filas-e-workers.md`
+10. `08-seguranca-backend.md`
+11. `18-taxonomia-erros.md`
+12. `09-observabilidade.md`
+13. `13-estrutura-pastas.md`
+14. `../music/01-modelo-transposicao.md`
+15. `../music/02-musicxml-canonico.md`
+16. `../qa/01-estrategia-testes.md`
 
-Se houver divergência entre este arquivo e os documentos listados acima, prevalecem os documentos canônicos específicos.
+## Regra de prevalência
 
-## Escopo backend do MVP
+Em divergência, valem a hierarquia de `../00-visao-geral/08-hierarquia-documental.md` e o documento mais específico/canônico. Não resolver conflito inventando um terceiro comportamento.
 
-- Instrumentos.
-- Uploads.
-- Transpositions.
-- Jobs.
-- Artifacts.
-- Music engine.
-- Security.
+## Fora do Core
 
-## Fora do backend MVP
-
-- Login obrigatório.
-- Biblioteca em nuvem.
-- Planos pagos.
-- Assinatura.
-- Dashboard administrativo.
-- Compartilhamento público.
-- Push notifications.
-- Integração Spotify.
+Admin, push e compartilhamento permanecem fora do MVP. Seus documentos não autorizam criar rotas, tabelas ou navegação nesta fase.

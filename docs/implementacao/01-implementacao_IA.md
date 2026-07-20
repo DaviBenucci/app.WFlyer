@@ -1,71 +1,41 @@
-# Implementação IA — instruções operacionais
+# Implementação por IA — instruções operacionais
 
-## Papel do Codex
+## Fonte de verdade
 
-Transformar a documentação técnica da aplicação `app.WFlyer` em código seguro, testado e incremental quando a fase de implementação começar.
+A IA deve seguir a hierarquia documental e o guia canônico. Código existente é inspecionado antes de alterar, mas não pode revogar requisito canônico silenciosamente.
 
-Nesta etapa, a fonte de verdade é:
+## Comportamento obrigatório
 
-```text
-docs/100-implementacao/guia-codex-app-wflyer.md
-```
+- identificar fase/gate;
+- ler documentos específicos afetados;
+- explicar arquivos e comportamento atual;
+- propor plano e testes antes de modificar;
+- implementar o menor corte completo;
+- atualizar contrato/teste/documentação na mesma mudança;
+- registrar evidência e pendências;
+- parar em decisão pendente/contradição.
 
-## Ordem obrigatória
-
-1. Auditoria documental.
-2. Estrutura base do projeto.
-3. Backend mínimo.
-4. Banco de dados.
-5. Catálogo de instrumentos.
-6. Regra musical e testes unitários.
-7. Upload e validação de arquivos.
-8. Fila e worker.
-9. API de jobs.
-10. Frontend funcional mínimo.
-11. Tela de processamento e resultado.
-12. Download de artefatos.
-13. Testes automatizados.
-14. Segurança e revisão técnica.
-15. Critérios finais do MVP.
-
-## Regra rígida
+## Não inventar
 
 ```text
-O Codex só poderá avançar para a próxima fase quando a fase anterior estiver concluída, testada e documentada.
+endpoints, DTOs, enums ou erros
+tabelas/campos/migrations
+presets/intervalos musicais
+capabilities ou formatos
+limites quantitativos finais
+engine OMR/renderer
+UX que contradiga segurança/escopo
 ```
 
-## Não inventar sem documentação
+## Regras de autenticidade
 
-- endpoints;
-- campos de DTO;
-- tabelas;
-- status de job;
-- regras de transposição;
-- rotas frontend;
-- estados do wizard;
-- mensagens públicas;
-- formatos de token;
-- funcionalidades futuras.
+- componentes respondem a tarefas musicais reais;
+- exemplos incluem instrumentos de oitava;
+- warnings são acionáveis;
+- não preencher tela com dashboard/card sem pergunta operacional;
+- linguagem musical correta sem expor diagnóstico interno;
+- efeito visual não substitui estado/feedback.
 
-## Nunca fazer no MVP
+## Registros
 
-- Processar transposição pesada dentro da request HTTP principal.
-- Expor stacktrace.
-- Expor path físico.
-- Expor `storage_key`.
-- Salvar segredos no frontend.
-- Criar login como dependência inicial.
-- Criar pagamento, planos, dashboard administrativo ou biblioteca em nuvem.
-- Criar integração Spotify.
-- Prometer OMR perfeito para qualquer PDF.
-
-## Registros obrigatórios
-
-Toda fase implementada deve registrar:
-
-- arquivos alterados;
-- testes executados;
-- resultado;
-- falhas e correções;
-- pendências;
-- decisão técnica nova, se houver.
+Cada tarefa atualiza logs aplicáveis e informa explicitamente testes não executados. Nunca afirmar que código, segurança ou música foram validados apenas por leitura documental.

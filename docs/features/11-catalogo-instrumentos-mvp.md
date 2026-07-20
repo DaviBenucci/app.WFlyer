@@ -1,59 +1,75 @@
-# Catálogo inicial de instrumentos do MVP
+# Catálogo de instrumentos do MVP
 
-## Objetivo
+> Status: canônico. Revisão: 2026-07-20.
 
-Definir o catálogo mínimo que o backend deve servir ao frontend e que o motor musical deve usar para calcular a transposição.
+## Modelo
 
-O campo central é `written_to_concert`: quantos semitons a nota real soa em relação à nota escrita.
+O intervalo declara o que deve ser adicionado à nota escrita para obter a nota de concerto:
 
-## Campos obrigatórios
+```text
+written_to_concert_diatonic
+written_to_concert_chromatic
+written_to_concert_octave
+```
+
+Derivado:
+
+```text
+total_semitones = chromatic + 12 * octave
+```
+
+Campos:
 
 ```text
 id
 name
 family
 key_name
-written_to_concert
-transposes_octave
-octave_offset
-observations
+written_to_concert_diatonic
+written_to_concert_chromatic
+written_to_concert_octave
+default_clef
+aliases
+is_pitched
 is_active
+catalog_version
 ```
 
-## Instrumentos mínimos
+## Presets iniciais
 
-| id | nome | família | afinação | written_to_concert | transpõe oitava | observações | casos de teste mínimos |
-|---|---|---|---:|---:|---|---|---|
-| `piano` | Piano | teclas | C | 0 | não | Som real. | Piano -> Trompete Bb; mesmo instrumento. |
-| `voice` | Voz | voz | C | 0 | não | Som real para canto. | Voz -> Clarinete Bb. |
-| `flute` | Flauta | madeiras | C | 0 | não | Som real. | Flauta -> Sax Alto Eb. |
-| `violin` | Violino | cordas | C | 0 | não | Som real. | Violino -> Trompa F. |
-| `guitar` | Violão | cordas | C | 0 | sim | Notação pode soar uma oitava abaixo; o MVP deve registrar a observação e não ignorar política de oitava. | Violão -> Piano sem mudar classe de altura. |
-| `trumpet-bb` | Trompete Bb | metais | Bb | -2 | não | Quando lê C, soa Bb. | Piano -> Trompete Bb; Trompete Bb -> Piano. |
-| `clarinet-bb` | Clarinete Bb | madeiras | Bb | -2 | não | Quando lê C, soa Bb. | Clarinete Bb -> Sax Alto Eb. |
-| `tenor-sax-bb` | Sax Tenor Bb | madeiras | Bb | -14 | sim | Soa nona maior abaixo do escrito. | Sax Tenor Bb -> Piano; Piano -> Sax Tenor Bb. |
-| `alto-sax-eb` | Sax Alto Eb | madeiras | Eb | -9 | não | Quando lê C, soa Eb abaixo. | Piano -> Sax Alto Eb; Sax Alto Eb -> Piano. |
-| `baritone-sax-eb` | Sax Barítono Eb | madeiras | Eb | -21 | sim | Soa décima terceira maior abaixo do escrito. | Sax Barítono Eb -> Piano. |
-| `horn-f` | Trompa F | metais | F | -7 | não | Quando lê C, soa F. | Trompa F -> Piano; Piano -> Trompa F. |
+| id | instrumento | família | key | diatonic | chromatic | octave | total | clave padrão |
+|---|---|---|---|---:|---:|---:|---:|---|
+| `piano` | Piano | teclas | C | 0 | 0 | 0 | 0 | treble |
+| `voice` | Voz | voz | C | 0 | 0 | 0 | 0 | treble |
+| `flute` | Flauta | madeiras | C | 0 | 0 | 0 | 0 | treble |
+| `violin` | Violino | cordas | C | 0 | 0 | 0 | 0 | treble |
+| `guitar` | Violão | cordas | C | 0 | 0 | -1 | -12 | treble-8 |
+| `trumpet-bb` | Trompete Bb | metais | Bb | -1 | -2 | 0 | -2 | treble |
+| `clarinet-bb` | Clarinete Bb | madeiras | Bb | -1 | -2 | 0 | -2 | treble |
+| `tenor-sax-bb` | Sax tenor Bb | madeiras | Bb | -1 | -2 | -1 | -14 | treble |
+| `alto-sax-eb` | Sax alto Eb | madeiras | Eb | -5 | -9 | 0 | -9 | treble |
+| `baritone-sax-eb` | Sax barítono Eb | madeiras | Eb | -5 | -9 | -1 | -21 | treble |
+| `horn-f` | Trompa F | metais | F | -4 | -7 | 0 | -7 | treble |
+
+`treble-8` é label de apresentação; a representação MusicXML de clave e a transposição instrumental não podem duplicar a oitava.
+
+O preset `piano` representa uma linha/parte melódica em C. Uma partitura típica de piano em grande pauta possui duas pautas e permanece fora do perfil Core.
 
 ## Regras
 
-- O catálogo deve ser a fonte de verdade para transposição.
-- O frontend não deve manter catálogo paralelo como regra final.
-- Instrumentos inativos não podem ser usados para criar job.
-- Alias e nomes alternativos podem existir, mas não substituem `id` estável.
-- A transposição não deve ser codificada por par de instrumentos.
+- total é calculado, não editado independentemente;
+- API retorna apenas ativos;
+- job salva snapshot completo do preset e versão;
+- frontend não mantém intervalos autoritativos;
+- presets não afinados/percussão ficam fora do Core;
+- ranges práticos são futuros e não alteram automaticamente oitavas;
+- qualquer correção exige ADR, atualização do corpus e migração/versionamento.
 
-## Casos de teste obrigatórios
+## Testes obrigatórios
 
-```text
-Piano C -> Trompete Bb: +2 semitons
-Trompete Bb -> Piano C: -2 semitons
-Piano C -> Sax Alto Eb: +9 semitons
-Sax Alto Eb -> Piano C: -9 semitons
-Clarinete Bb -> Sax Alto Eb: +7 semitons
-Trompa F -> Piano C: -7 semitons
-Mesmo instrumento -> 0 semitons
-```
-
-Também devem existir testes com acidentes, acordes e armadura de clave.
+- validar schema e total de cada preset;
+- todos os pares origem/destino preservam altura de concerto em property test;
+- A -> B e B -> A retornam semanticamente à origem;
+- cobrir instrumentos com oitava: violão, tenor e barítono;
+- conferir `<transpose>` emitido para cada destino;
+- detectar catálogo divergente entre banco e fixture versionada.

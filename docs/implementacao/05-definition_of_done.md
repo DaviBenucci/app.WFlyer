@@ -1,20 +1,21 @@
-# Definition of Done do MVP
+# Definition of Done
 
-Uma fase só pode ser considerada concluída quando:
+Uma tarefa/fase só está concluída quando:
 
-- [ ] Objetivo da fase foi atendido.
-- [ ] Arquivos criados/alterados estão coerentes com a estrutura documentada.
-- [ ] Testes obrigatórios da fase foram executados ou a ausência foi justificada.
-- [ ] Falhas encontradas foram corrigidas ou registradas como bloqueio.
-- [ ] Documentação afetada foi atualizada.
-- [ ] Contratos públicos continuam documentados.
-- [ ] Erros públicos não expõem detalhes internos.
-- [ ] Regra musical continua centralizada.
-- [ ] Não houve introdução de login, pagamento, dashboard administrativo, Spotify ou escopo futuro como dependência do MVP.
-- [ ] Próxima fase está desbloqueada por evidência.
+- [ ] comportamento atende escopo e matriz;
+- [ ] código de produção, migrations e contratos estão completos;
+- [ ] autorização, validação, erro e observabilidade foram tratados;
+- [ ] regra musical/invariantes afetados possuem testes;
+- [ ] happy path, bordas e falhas relevantes foram executados;
+- [ ] lint/typecheck/unit/integration/contract/E2E aplicáveis passam;
+- [ ] corpus hostil roda quando parser/arquivo/engine mudou;
+- [ ] performance roda quando limite, engine, bundle ou componente pesado mudou;
+- [ ] frontend alterado possui stories/estados, acessibilidade e visual regression aplicáveis;
+- [ ] motion alterado possui reduced motion, cleanup, interrupção, fallback e medição de bundle/runtime;
+- [ ] implementação visual não mantém tema padrão de biblioteca nem antipadrão bloqueante;
+- [ ] documentação canônica e logs foram atualizados;
+- [ ] nenhuma capability futura foi habilitada implicitamente;
+- [ ] testes não executados e riscos estão explícitos;
+- [ ] gate da fase possui evidência reproduzível.
 
-Critérios finais completos:
-
-```text
-docs/100-implementacao/criterios-aceite-mvp.md
-```
+Código compilando ou uma demonstração manual não satisfaz o DoD isoladamente.

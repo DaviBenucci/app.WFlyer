@@ -1,10 +1,6 @@
-# Política de logs e documentação
+# Política de logs de projeto e documentação
 
-## Objetivo
-
-Manter memória operacional do projeto para que o Codex não perca contexto entre sessões.
-
-## Arquivos obrigatórios
+## Arquivos
 
 ```text
 docs/logs/IMPLEMENTATION_LOG.md
@@ -13,63 +9,44 @@ docs/logs/DECISIONS.md
 docs/logs/CHANGELOG.md
 ```
 
-## IMPLEMENTATION_LOG.md
+## IMPLEMENTATION_LOG
 
-Registrar cada tarefa implementada:
+Registrar tarefa, fase, objetivo, comportamento anterior/novo, arquivos, contratos/migrations, riscos e pendências. Não copiar chain-of-thought; registrar somente justificativas técnicas verificáveis.
 
-```text
-Data
-Tarefa
-Objetivo
-Arquivos alterados
-Resumo técnico
-Riscos
-Pendências
-```
+## TEST_LOG
 
-## TEST_LOG.md
+Registrar comando exato, ambiente/versões, fixtures, resultado e falhas. “Testes passaram” sem comando/saída/evidência não é registro suficiente.
 
-Registrar:
+## DECISIONS
+
+Formato:
 
 ```text
-Data
-Comandos executados
-Resultado
-Falhas encontradas
-Correções aplicadas
-Testes não executados e motivo
-```
-
-## DECISIONS.md
-
-Registrar decisões novas:
-
-```text
-ID
-Status
-Contexto
-Decisão
-Consequências
-Documentos afetados
+ADR-ID / status
+contexto
+alternativas consideradas
+ decisao
+consequencias
+migracao/rollback
+documentos afetados
 ```
 
 Status:
 
 ```text
-ACEITA
-PENDENTE
-REVOGADA
+ACEITA | PENDENTE | REVOGADA | SUBSTITUIDA
 ```
 
-## CHANGELOG.md
+## CHANGELOG
 
-Registrar mudanças de comportamento percebidas pelo usuário ou contrato técnico.
+Registrar mudança de comportamento/contrato/capability percebida por usuário ou integrador. Alteração interna sem impacto pode permanecer apenas no implementation log.
 
-## Regra anti-alucinação
+## Anti-alucinação
 
-Quando a IA precisar decidir algo não documentado:
+Ao faltar decisão:
 
-1. preferir opção conservadora;
-2. registrar decisão como `PENDENTE`;
-3. não espalhar a decisão como se fosse definitiva;
-4. atualizar documentação se a decisão for aceita.
+1. não escolher silenciosamente;
+2. registrar pendência e alternativas;
+3. bloquear somente a capacidade dependente;
+4. continuar partes independentes quando seguro;
+5. após aprovação, atualizar primeiro o documento canônico.

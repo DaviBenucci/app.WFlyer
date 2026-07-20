@@ -1,13 +1,18 @@
 # Contratos de API
 
+> Status: canônico. Revisão: 2026-07-20.
+
 ## Convenções
 
-- Respostas JSON para endpoints de dados.
-- Upload por `multipart/form-data`.
-- Datas em ISO 8601 UTC.
-- IDs em UUID, exceto instrumentos, que usam slug estável.
-- Erros sempre usam envelope `{ "error": ... }`.
-- DTO público nunca retorna `storage_key`, path físico, stacktrace, segredo, log bruto ou detalhe interno do worker.
+- Base: `/api/v1`.
+- JSON para dados; `multipart/form-data` somente no upload.
+- IDs em UUID; instrumentos usam slug.
+- Datas ISO 8601 UTC.
+- Respostas sensíveis usam `Cache-Control: no-store`.
+- Toda resposta inclui `X-Correlation-ID`.
+- Métodos mutáveis após a criação da sessão exigem cookie de sessão e `X-CSRF-Token`.
+- Rotas protegidas sem sessão válida retornam `401`; objeto inexistente ou de outra sessão retorna `404` para evitar enumeração.
+- DTO público nunca contém `storage_key`, path, stacktrace, task id, hash de token ou log bruto.
 
 ## Erro padrão
 
@@ -15,38 +20,89 @@
 {
   "error": {
     "code": "INVALID_FILE_TYPE",
-    "message": "O arquivo enviado não é uma partitura válida.",
-    "correlation_id": "req_123"
+    "message": "O formato deste arquivo não é aceito.",
+    "correlation_id": "req_01J...",
+    "retryable": false,
+    "field_errors": []
   }
 }
 ```
 
+A taxonomia está em `18-taxonomia-erros.md`.
+
 ## GET /health
 
-Objetivo: confirmar que a API está viva.
+Liveness simples.
 
-Entrada: nenhuma.
+```json
+{ "status": "ok", "service": "wflyer-api" }
+```
 
-Resposta 200:
+Não expõe dependências.
+
+## GET /health/ready
+
+Readiness para operação interna. Pode verificar banco/Redis/storage, mas a resposta pública não inclui credenciais, hosts ou stacktraces.
+
+## POST /api/v1/sessions/anonymous
+
+Cria ou renova uma sessão vazia.
+
+Resposta `201` para criação ou `200` para renovação, com o mesmo corpo:
 
 ```json
 {
-  "status": "ok",
-  "service": "wflyer-api"
+  "session": {
+    "expires_at": "2026-08-04T12:00:00Z"
+  },
+  "csrf_token": "opaque-csrf-token"
 }
 ```
 
-Erros possíveis: indisponibilidade geral da API.
+Headers:
 
-Segurança: não retornar dependências internas, segredos ou stacktrace.
+```text
+Set-Cookie: wf_session=<opaque>; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=...
+Cache-Control: no-store
+```
 
-## GET /api/instruments
+O token da sessão não aparece no JSON.
 
-Objetivo: listar instrumentos ativos para origem e destino.
+## GET /api/v1/capabilities
 
-Entrada: nenhuma no MVP.
+Resposta `200`:
 
-Resposta 200:
+```json
+{
+  "input_formats": {
+    "musicxml": true,
+    "generic_xml_musicxml": true,
+    "mxl": false,
+    "pdf_omr": false
+  },
+  "output_formats": {
+    "musicxml": true,
+    "pdf": false
+  },
+  "profile": {
+    "max_parts": 1,
+    "max_staves_per_part": 1,
+    "microtones": false,
+    "unpitched_percussion": false
+  },
+  "limits": {
+    "max_upload_bytes": 10000000,
+    "max_musicxml_measures": 2000,
+    "max_musicxml_events": 100000
+  }
+}
+```
+
+Valores são configuração do ambiente, não hardcode de UI. Os números do exemplo são ilustrativos; os limites aprovados permanecem configuráveis até benchmark.
+
+## GET /api/v1/instruments
+
+Resposta `200`:
 
 ```json
 {
@@ -56,266 +112,224 @@ Resposta 200:
       "name": "Trompete Bb",
       "family": "metais",
       "key_name": "Bb",
-      "written_to_concert": -2,
-      "transposes_octave": false,
-      "is_active": true,
-      "notes": "Quando lê C, soa Bb."
+      "written_to_concert": {
+        "diatonic_steps": -1,
+        "chromatic_semitones": -2,
+        "octave_change": 0,
+        "total_semitones": -2
+      },
+      "default_clef": "treble",
+      "aliases": ["trompete em si bemol"],
+      "is_active": true
     }
   ]
 }
 ```
 
-Validações:
+A API retorna apenas instrumentos ativos e afinados suportados.
 
-- retornar apenas instrumentos ativos;
-- ordenar por família e nome;
-- não depender de catálogo hardcoded no frontend.
+## POST /api/v1/uploads
 
-Status codes:
-
-- `200 OK`.
-- `500 INTERNAL_ERROR` com envelope seguro.
-
-## POST /api/uploads
-
-Objetivo: receber arquivo de partitura e criar registro de upload.
-
-Entrada:
+Headers:
 
 ```text
 Content-Type: multipart/form-data
+X-CSRF-Token: <token>
+```
+
+Body:
+
+```text
 file=<arquivo>
 ```
 
-Tipos inicialmente permitidos:
-
-```text
-application/pdf
-application/vnd.recordare.musicxml+xml
-application/xml
-text/xml
-```
-
-Resposta 201:
+Resposta `201`:
 
 ```json
 {
   "upload_id": "7b2c89b2-7a7a-4e3e-a91d-6d0d9893a101",
-  "original_filename": "partitura.musicxml",
+  "original_filename": "melodia.musicxml",
+  "input_format": "musicxml",
   "mime_type": "application/vnd.recordare.musicxml+xml",
   "size_bytes": 123456,
-  "status": "uploaded",
-  "expires_at": "2026-07-16T12:00:00Z"
+  "sha256": "hex-opcional-na-resposta-conforme-politica",
+  "status": "validated",
+  "expires_at": "2026-08-04T12:00:00Z",
+  "warnings": []
 }
 ```
 
-Status codes:
+O hash pode ser omitido do DTO público; se exposto, não substitui autorização.
 
-- `201 CREATED`.
-- `400 INVALID_FILE`.
-- `413 FILE_TOO_LARGE`.
-- `415 INVALID_FILE_TYPE`.
-- `429 RATE_LIMITED`.
-- `500 UPLOAD_STORAGE_FAILED`.
+Erros principais:
 
-Validações:
+- `400 EMPTY_FILE`;
+- `413 FILE_TOO_LARGE`;
+- `415 INVALID_FILE_TYPE`;
+- `422 FORMAT_NOT_ENABLED`;
+- `422 FILE_SIGNATURE_MISMATCH`;
+- `429 RATE_LIMITED`;
+- `503 STORAGE_UNAVAILABLE`.
 
-- MIME real;
-- extensão;
-- tamanho;
-- arquivo vazio;
-- nome original apenas como metadado;
-- renomeação interna obrigatória.
+## DELETE /api/v1/uploads/{upload_id}
 
-Segurança:
+Exclui upload sem job associado ou marca para cleanup. Exige sessão/CSRF. Retorna `204` quando concluído ou `202` quando assíncrono. Upload associado a job retorna `409 UPLOAD_IN_USE`; o cliente deve apagar o job.
 
-- não retornar path físico;
-- não retornar `storage_key`;
-- não confiar no `Content-Type` enviado pelo navegador.
+## POST /api/v1/transpositions
 
-## POST /api/transpositions
+Headers:
 
-Objetivo: criar job assíncrono de transposição.
+```text
+Idempotency-Key: <uuid-ou-string-aleatoria>
+X-CSRF-Token: <token>
+```
 
-Entrada:
+Body:
 
 ```json
 {
   "upload_id": "7b2c89b2-7a7a-4e3e-a91d-6d0d9893a101",
   "source_instrument_id": "piano",
-  "target_instrument_id": "trumpet-bb"
+  "target_instrument_id": "trumpet-bb",
+  "output_formats": ["musicxml"],
+  "notation_policy": "preserve_source_clef"
 }
 ```
 
-Resposta 202:
+O cliente não envia intervalo calculado.
+
+Resposta `202`:
 
 ```json
 {
   "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
   "status": "queued",
-  "progress": 0,
+  "stage": "queued",
+  "progress_pct": 0,
+  "retention_status": "active",
   "source_instrument_id": "piano",
   "target_instrument_id": "trumpet-bb",
-  "transpose_interval": 2,
-  "expires_at": "2026-07-16T12:00:00Z"
+  "output_interval": {
+    "diatonic_steps": 1,
+    "chromatic_semitones": 2,
+    "octave_change": 0,
+    "total_semitones": 2,
+    "name": "M2"
+  },
+  "expires_at": null
 }
 ```
 
-Status codes:
+Headers:
 
-- `202 ACCEPTED`.
-- `404 UPLOAD_NOT_FOUND`.
-- `410 UPLOAD_EXPIRED`.
-- `404 INSTRUMENT_NOT_FOUND`.
-- `422 TRANSPOSITION_INVALID`.
-- `429 RATE_LIMITED`.
-- `503 QUEUE_UNAVAILABLE`.
+```text
+Location: /api/v1/jobs/{job_id}
+Retry-After: 1
+```
 
-Validações:
+A mesma `Idempotency-Key` com o mesmo payload retorna o mesmo job. Mesma chave com payload diferente retorna `409 IDEMPOTENCY_CONFLICT`. `expires_at` permanece `null` até o job concluir; então é definido a partir de `finished_at`.
 
-- upload existe;
-- upload não expirou;
-- instrumentos estão ativos;
-- intervalo foi calculado pela fórmula central.
+A resposta de criação é um resumo (`CreateTranspositionResponse`), não o DTO completo de consulta. O cliente deve seguir `Location` ou consultar o status para obter timestamps, warnings e erro público.
 
-Segurança:
+## GET /api/v1/jobs/{job_id}
 
-- não iniciar processamento pesado no endpoint;
-- não aceitar instrumento fora do catálogo;
-- registrar `correlation_id`.
-
-## GET /api/jobs/{job_id}
-
-Objetivo: retornar visão pública do job.
-
-Resposta 200:
+Resposta `200`:
 
 ```json
 {
   "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
-  "upload_id": "7b2c89b2-7a7a-4e3e-a91d-6d0d9893a101",
-  "status": "transposing",
-  "progress": 65,
+  "status": "running",
+  "stage": "transposing",
+  "progress_pct": 62,
+  "retention_status": "active",
   "source_instrument_id": "piano",
   "target_instrument_id": "trumpet-bb",
-  "transpose_interval": 2,
-  "public_error_message": null,
-  "created_at": "2026-07-01T12:00:00Z",
-  "updated_at": "2026-07-01T12:01:00Z",
-  "finished_at": null
+  "output_interval": {
+    "diatonic_steps": 1,
+    "chromatic_semitones": 2,
+    "octave_change": 0,
+    "total_semitones": 2,
+    "name": "M2"
+  },
+  "warnings": [],
+  "error": null,
+  "created_at": "2026-07-20T12:00:00Z",
+  "updated_at": "2026-07-20T12:01:00Z",
+  "finished_at": null,
+  "expires_at": null
 }
 ```
 
-Status codes:
+## GET /api/v1/jobs/{job_id}/status
 
-- `200 OK`.
-- `404 JOB_NOT_FOUND`.
-- `410 JOB_EXPIRED`.
-
-Segurança: não retornar erro interno, worker id, storage, stacktrace ou logs.
-
-## GET /api/jobs/{job_id}/status
-
-Objetivo: endpoint leve para polling do frontend.
-
-Resposta 200:
+Endpoint leve para polling:
 
 ```json
 {
   "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
-  "status": "rendering",
-  "progress": 82,
-  "message": "Gerando arquivo final.",
-  "updated_at": "2026-07-01T12:02:00Z"
+  "status": "running",
+  "stage": "validating",
+  "progress_pct": 78,
+  "retention_status": "active",
+  "message": "Validando o resultado musical.",
+  "warnings": [],
+  "error": null,
+  "finished_at": null,
+  "expires_at": null,
+  "updated_at": "2026-07-20T12:02:00Z"
 }
 ```
 
-Status codes:
+Pode retornar `Retry-After`. Em sucesso terminal, `finished_at` e `expires_at` são preenchidos. Polling para em `completed`, `completed_with_warnings`, `failed` ou `cancelled`.
 
-- `200 OK`.
-- `404 JOB_NOT_FOUND`.
-- `410 JOB_EXPIRED`.
+## GET /api/v1/jobs/{job_id}/artifacts
 
-Validações:
-
-- `progress` entre 0 e 100;
-- status pertence à lista oficial.
-
-## GET /api/jobs/{job_id}/artifacts
-
-Objetivo: listar artefatos gerados por job concluído.
-
-Resposta 200:
+Só lista artefatos públicos e disponíveis:
 
 ```json
 {
   "items": [
     {
       "artifact_id": "c9d3b87a-9c10-46ea-9db7-b76d99a4a01e",
-      "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
-      "artifact_type": "final_musicxml",
-      "filename": "partitura-transposta.musicxml",
+      "artifact_type": "transposed_musicxml",
+      "filename": "melodia-transposta.musicxml",
       "mime_type": "application/vnd.recordare.musicxml+xml",
       "size_bytes": 345678,
-      "expires_at": "2026-07-16T12:00:00Z"
+      "sha256": "...",
+      "expires_at": "2026-08-04T12:00:00Z"
     }
   ]
 }
 ```
 
-Status codes:
+Job não concluído retorna `409 JOB_NOT_COMPLETED`. Retenção expirada retorna `410 ARTIFACT_EXPIRED`.
 
-- `200 OK`.
-- `404 JOB_NOT_FOUND`.
-- `409 JOB_NOT_COMPLETED`.
-- `410 JOB_EXPIRED`.
+## GET /api/v1/artifacts/{artifact_id}/download
 
-Segurança: nunca retornar `storage_key`.
-
-## GET /api/artifacts/{artifact_id}/download
-
-Objetivo: permitir download controlado de artefato válido.
-
-Resposta 200:
+Valida sessão, propriedade, estado do job e retenção. Retorna stream com:
 
 ```text
-Arquivo binário em stream controlado pela API
+Content-Type: tipo validado
+Content-Disposition: attachment; filename="nome-sanitizado.musicxml"
+Cache-Control: private, no-store
+X-Content-Type-Options: nosniff
 ```
 
-Alternativa documentável antes da implementação: resposta JSON com URL temporária controlada.
+URLs permanentes públicas são proibidas. URL assinada curta só pode ser usada após autorização e decisão documentada.
 
-Status codes:
+## DELETE /api/v1/jobs/{job_id}
 
-- `200 OK`.
-- `404 ARTIFACT_NOT_FOUND`.
-- `410 ARTIFACT_EXPIRED`.
-- `403 DOWNLOAD_FORBIDDEN`.
-- `500 DOWNLOAD_UNAVAILABLE`.
+- job ativo: retorna `202`, status passa a `cancel_requested`;
+- job terminal: retorna `202` ou `204` e inicia/efetiva purge;
+- operação idempotente;
+- após purge, o objeto deixa de disponibilizar artefatos.
 
-Validações:
+## Códigos de status e autorização
 
-- artefato existe;
-- artefato não expirou;
-- job associado permite download;
-- arquivo físico/referência interna existe.
-
-Segurança:
-
-- bloquear artefato expirado;
-- não revelar path físico;
-- não revelar chave interna de storage;
-- não retornar logs do worker.
-
-## Status oficiais
-
-```text
-uploaded
-queued
-processing
-transposing
-rendering
-completed
-failed
-expired
-cancelled
-```
+- `401` somente para sessão ausente/inválida quando a rota exige sessão;
+- `403` para CSRF inválido ou operação proibida na própria sessão;
+- `404` para objeto inexistente ou não pertencente à sessão;
+- `409` para conflito de estado/idempotência;
+- `410` para conteúdo expirado;
+- `422` para regra de domínio/formato;
+- `429` para quota/rate limit.

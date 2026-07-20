@@ -1,5 +1,7 @@
 # Tela Como funciona
 
+> Revisão: 2026-07-20.
+
 ## Rota
 
 ```text
@@ -8,36 +10,59 @@
 
 ## Objetivo
 
-Explicar o fluxo técnico e musical da ferramenta sem virar material institucional.
+Explicar o fluxo real e as limitações com composição editorial e diagramas próprios, sem marketing vago.
 
-## Conteúdo do MVP
+## Shell
 
-1. O que a aplicação faz.
-2. Upload de partitura.
-3. Escolha manual de instrumento de origem.
-4. Escolha manual de instrumento de destino.
-5. Cálculo do intervalo.
-6. Processamento assíncrono.
-7. Resultado baixável.
-8. Limitações de PDF e OMR.
+`PublicShell`.
 
-## Exemplo obrigatório
+## Estrutura
 
 ```text
-Piano C -> Trompete Bb
-0 - (-2) = +2 semitons
-C maior -> D maior
+Introdução curta
+Diagrama 1: nota escrita e som de concerto
+Diagrama 2: origem -> intervalo -> destino
+Pipeline real do Core
+Exemplo Piano -> Trompete Bb
+Exemplo com instrumento de oitava
+Limitações e revisão
+CTA
 ```
 
-## Regras
+## Diagramas
 
-- Não prometer OMR perfeito.
-- Explicar que MusicXML é priorizado no início do desenvolvimento.
-- Explicar que PDFs ruins podem gerar erro amigável.
-- Orientar revisão musical do resultado.
+Usar SVG simples, acessível e determinístico. Cada diagrama possui legenda textual equivalente. Não usar imagem genérica de partitura como fundo.
 
-## Critérios de aceite
+## Conteúdo obrigatório
 
-- Usuário entende o fluxo em até 1 minuto.
-- Página explica o risco técnico de PDF.
-- Página direciona para `/transpor`.
+1. MusicXML como estrutura usada pelo Core;
+2. confirmação de origem e destino;
+3. preservação do som de concerto;
+4. transposição de notas, armaduras e cifras suportadas;
+5. processamento assíncrono;
+6. resultado disponível por janela de retenção;
+7. necessidade de revisão humana;
+8. PDF/OMR somente quando capability existir.
+
+## Exemplo principal
+
+```text
+Piano em C -> Trompete Bb
+C4 de concerto é escrito como D4 no trompete Bb.
+```
+
+## Estilo
+
+- largura de leitura controlada;
+- títulos editoriais;
+- diagramas inseridos no fluxo;
+- dividers inspirados em barras de compasso;
+- CTA final discreto.
+
+## Evitar
+
+- accordion para esconder todo o conteúdo;
+- cards iguais para cada etapa;
+- afirmação de precisão percentual sem corpus;
+- explicar tudo como “IA”;
+- prometer layout idêntico ao original.

@@ -2,41 +2,47 @@
 
 ## Objetivo
 
-Preservar metadados de transposições no dispositivo sem exigir conta.
+Facilitar o retorno a jobs recentes no mesmo navegador sem transformar armazenamento local em autenticação ou biblioteca em nuvem.
 
 ## Dados permitidos
 
 ```text
 job_id
-nome sanitizado da partitura
-instrumento origem
-instrumento destino
-intervalo
-data
-status final
+filename sanitizado
+source_instrument_id
+target_instrument_id
+output_interval resumido
+status observado
+retention_status observado
+warnings categóricos
+created_at
 expires_at
-estado local
+artifact_types
 ```
 
-## Estados
+Não guardar arquivo, XML, PDF, cookie, CSRF, token de sessão, URL assinada, `storage_key` ou erro interno.
 
-```text
-Disponível
-Expirado
-Removido localmente
-Armazenamento local indisponível
-```
+## Propriedade
 
-## Privacidade
+O acesso real depende do cookie `HttpOnly` da sessão. Um `job_id` no IndexedDB/localStorage não concede acesso. Após limpar cookies, o item pode permanecer localmente, mas deve ser marcado como sessão anterior/inacessível ao receber `401`/`404`.
 
-- Usuário pode limpar histórico.
-- Não salvar tokens permanentes.
-- Não sincronizar sem decisão futura.
-- Avisar que histórico é deste dispositivo.
+## Sincronização
+
+- histórico é deste navegador/dispositivo;
+- a UI atualiza status consultando a API enquanto autorizado;
+- `expires_at` local é indicativo; o servidor decide;
+- dados locais podem ser limpos sem apagar servidor;
+- purge no servidor deve atualizar/remover disponibilidade local.
+
+## Armazenamento
+
+Preferir IndexedDB para coleção estruturada. Falha, bloqueio ou modo privado não pode impedir o fluxo principal.
 
 ## Testes
 
-- Criar histórico após job concluído.
-- Atualizar estado expirado.
-- Limpar histórico remove registros.
-- Aplicação continua funcionando sem armazenamento local.
+- adicionar ao criar/concluir job;
+- recuperar após refresh com mesma sessão;
+- não acessar após troca de sessão;
+- limpar local não chama purge automaticamente;
+- apagar no servidor invalida downloads;
+- aplicação funciona com storage local indisponível.

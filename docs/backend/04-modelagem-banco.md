@@ -1,150 +1,222 @@
 # Modelo de dados do MVP
 
-## Tabelas mínimas
+> Status: canônico. Revisão: 2026-07-20.
+
+## Tabelas
 
 ```text
+anonymous_sessions
 instruments
 uploads
 processing_jobs
+processing_attempts
 generated_artifacts
 job_events
+outbox_events
 ```
+
+## anonymous_sessions
+
+```text
+id UUID PK
+token_hash BYTEA/STRING UNIQUE NOT NULL
+csrf_secret_hash BYTEA/STRING NOT NULL
+expires_at TIMESTAMPTZ NOT NULL
+last_seen_at TIMESTAMPTZ
+revoked_at TIMESTAMPTZ
+created_at TIMESTAMPTZ NOT NULL
+```
+
+Somente hashes são persistidos. O valor do cookie nunca aparece em log.
 
 ## instruments
 
 ```text
-id
+id SLUG PK
 name
 family
 key_name
-written_to_concert
-is_active
+written_to_concert_diatonic INT
+written_to_concert_chromatic INT
+written_to_concert_octave INT
+default_clef
+aliases_json
+is_pitched BOOL
+is_active BOOL
+catalog_version
 created_at
 updated_at
 ```
 
-Regras:
-
-- `id` deve ser slug estável.
-- `written_to_concert` é obrigatório.
-- Instrumento inativo não pode ser usado em novo job.
+`total_semitones` é derivado. O job guarda snapshot do preset para reprodutibilidade.
 
 ## uploads
 
 ```text
-id
-original_filename
-mime_type
+id UUID PK
+session_id FK
+original_filename_sanitized
+input_format
+reported_mime_type
+detected_mime_type
 size_bytes
+sha256 UNIQUE POR SESSAO OPCIONAL
 storage_key
 status
+validation_error_code
 expires_at
+validated_at
+deleted_at
 created_at
 updated_at
 ```
 
-Regras:
-
-- `storage_key` é interno e nunca aparece em DTO público.
-- `original_filename` não pode ser usado como path físico.
-- `status` inicial é `uploaded`.
+Status conforme `16-maquina-estados.md`.
 
 ## processing_jobs
 
 ```text
-id
-upload_id
-source_instrument_id
-target_instrument_id
+id UUID PK
+session_id FK
+upload_id FK
+idempotency_key_hash
+request_fingerprint
+source_instrument_id FK
+target_instrument_id FK
+source_instrument_snapshot_json
+target_instrument_snapshot_json
+interval_diatonic
+interval_chromatic
+interval_octave
+interval_total_semitones
+notation_policy
+requested_output_formats_json
 status
-progress
-error_code
-error_message
+stage
+progress_pct
+retention_status
+warning_count
+public_error_code
+public_error_message
 correlation_id
+engine_manifest_json
+cancel_requested_at
 started_at
 finished_at
+expires_at NULL ATE SUCESSO
+purged_at
 created_at
 updated_at
 ```
 
-Regras:
+Constraint única: `(session_id, idempotency_key_hash)`.
 
-- `progress` deve ficar entre 0 e 100.
-- `error_message` deve conter mensagem segura para suporte interno; a API pública deve filtrar o que for técnico.
-- `correlation_id` deve conectar API, worker e logs.
+## processing_attempts
+
+```text
+id UUID PK
+job_id FK
+attempt_number INT
+queue_task_id INTERNAL
+status
+worker_version
+music_engine_version
+omr_engine_version NULL
+renderer_version NULL
+started_at
+finished_at
+internal_error_class
+internal_error_fingerprint
+created_at
+```
+
+`queue_task_id` e detalhes internos nunca são públicos.
 
 ## generated_artifacts
 
 ```text
-id
-job_id
+id UUID PK
+job_id FK
+attempt_id FK
 artifact_type
-filename
+visibility ENUM(internal, public)
+filename_sanitized
 mime_type
 size_bytes
+sha256
 storage_key
+format_version
 expires_at
+purged_at
 created_at
 ```
 
-Regras:
+Constraint recomendada: um artefato público ativo por `(job_id, artifact_type)`; retries substituem por transação/reconciliação controlada.
 
-- `artifact_type` inicial: `final_musicxml`, `final_pdf` quando renderização PDF estiver disponível.
-- `storage_key` é interno.
-- Artefato expirado não pode ser baixado.
+Tipos iniciais:
+
+```text
+input_original
+raw_musicxml
+normalized_musicxml
+transposed_musicxml
+rendered_pdf
+processing_report
+```
 
 ## job_events
 
 ```text
-id
-job_id
+id UUID PK
+job_id FK
+attempt_id FK NULL
+visibility ENUM(internal, public)
 event_type
-message
+public_message NULL
 metadata_json
 created_at
 ```
 
-Regras:
+Eventos públicos usam payload allowlisted. Stacktrace e paths nunca entram em evento público.
 
-- Eventos públicos devem conter mensagem segura.
-- `metadata_json` não pode guardar stacktrace, segredo ou path físico quando puder aparecer em consulta pública.
+## outbox_events
 
-## Status possíveis
+Usada para publicar jobs sem perder consistência entre banco e Redis:
 
 ```text
-uploaded
-queued
-processing
-transposing
-rendering
-completed
-failed
-expired
-cancelled
+id UUID PK
+aggregate_type
+aggregate_id
+event_type
+payload_json
+published_at
+attempts
+created_at
 ```
 
-## Índices recomendados
+## Índices
 
 ```text
-uploads(status)
-uploads(expires_at)
-processing_jobs(upload_id)
-processing_jobs(status)
-processing_jobs(created_at)
+anonymous_sessions(token_hash)
+anonymous_sessions(expires_at)
+uploads(session_id, created_at)
+uploads(status, expires_at)
+processing_jobs(session_id, created_at)
+processing_jobs(status, stage)
+processing_jobs(retention_status, expires_at)
 processing_jobs(correlation_id)
-generated_artifacts(job_id)
-generated_artifacts(expires_at)
+processing_attempts(job_id, attempt_number)
+generated_artifacts(job_id, visibility)
+generated_artifacts(expires_at, purged_at)
 job_events(job_id, created_at)
+outbox_events(published_at, created_at)
 ```
 
-## Fora do modelo mínimo
+## Integridade
 
-As tabelas abaixo são futuras e não devem bloquear o MVP:
-
-- `users`;
-- `plans`;
-- `subscriptions`;
-- `cloud_library`;
-- `shared_scores`;
-- `admin_audit_logs`;
-- `push_subscriptions`.
+- `progress_pct` entre 0 e 100;
+- intervalos e snapshots imutáveis após criação do job;
+- sessão do job deve ser a mesma do upload;
+- artefato público só para job terminal de sucesso;
+- purge não apaga evidência mínima necessária imediatamente, mas remove bytes e dados sensíveis conforme política;
+- deleção física e status de retenção são reconciliáveis.

@@ -1,58 +1,68 @@
 # Testes E2E
 
-## Objetivo
+## Ferramenta
 
-Validar fluxos completos do ponto de vista do usuário.
+Playwright ou equivalente, contra API/banco/Redis/storage de teste reais. Engines musicais podem usar fixtures determinísticas, mas o fluxo HTTP não deve ser inteiramente mockado no gate principal.
 
-## Ferramenta sugerida
+## Fluxos Core
 
-Playwright.
-
-## Fluxos MVP
-
-### Fluxo principal
+### Sucesso MusicXML
 
 ```text
-Abrir Home
-Clicar Começar transposição
-Enviar PDF válido mockado
-Selecionar Piano
-Selecionar Trompete Bb
-Ver revisão
-Processar
-Acompanhar status
-Abrir resultado
-Baixar PDF/MusicXML mockados
+abrir /
+-> iniciar /transpor
+-> enviar fixture suportada
+-> escolher Piano e Trompete Bb
+-> revisar M2/+2
+-> criar job
+-> observar queued/running
+-> abrir resultado
+-> baixar MusicXML
+-> conferir nome/tipo e presença no histórico
 ```
 
-### Fluxo de erro de upload
+### Oitava
 
-```text
-Enviar arquivo inválido
-Ver mensagem clara
-Não avançar
-```
+Piano -> Sax tenor deve mostrar nona maior/+14 e produzir fixture semanticamente correta.
 
-### Fluxo de erro de processamento
+### Warning
 
-```text
-Criar job mockado que falha
-Ver mensagem musical clara
-Não exibir stacktrace
-```
+Job termina `completed_with_warnings`; tela mostra warning antes do download.
 
-### Fluxo histórico local
+### Erros
 
-```text
-Concluir job
-Abrir histórico local
-Ver item
-Remover item
-```
+- XML não MusicXML;
+- multiparte/multipauta;
+- origem divergente do `<transpose>`;
+- rate limit;
+- worker falha;
+- perda transitória de rede;
+- job cancelado;
+- artefato expirado.
 
-## Critérios
+### Autorização
 
-- Sem erros no console.
-- Sem navegação quebrada.
-- Sem confidence score público.
-- Estados terminais tratados.
+Dois contextos de navegador: B não acessa URL/IDs de A. Apagar cookies de A torna o histórico local insuficiente para acesso.
+
+### Retenção/deleção
+
+- limpar histórico não apaga servidor;
+- apagar servidor bloqueia download;
+- relógio avançado expira e depois purga.
+
+## UX/acessibilidade
+
+- viewport mobile, tablet, desktop e wide selecionados;
+- PublicShell, StudioShell e UtilityShell corretos;
+- fluxo por teclado;
+- foco não encoberto por navigation/action bar;
+- bottom nav e inspector responsivos;
+- reduced motion e forced colors quando suportado;
+- conteúdo longo e múltiplos warnings;
+- sem violações críticas automatizadas;
+- sem erro inesperado de console/rede;
+- diff visual revisado nas páginas principais.
+
+## PDF
+
+Nenhum E2E do Core presume PDF. A trilha PDF possui suíte separada e só roda quando a capability está ativa.

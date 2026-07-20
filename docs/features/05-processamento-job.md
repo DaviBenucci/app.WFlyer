@@ -2,64 +2,55 @@
 
 ## Objetivo
 
-Gerenciar transposição como job assíncrono, evitando processamento pesado na requisição HTTP principal.
+Expor um processamento assíncrono previsível, cancelável e observável sem confundir estado, etapa e retenção.
 
-## Fluxo
-
-```text
-POST /api/transpositions
-API cria processing_jobs
-API publica tarefa na fila
-Worker executa pipeline
-Worker registra job_events
-Worker atualiza progress/status
-Frontend acompanha status
-```
-
-## Status oficiais
+## Criação
 
 ```text
-uploaded
-queued
-processing
-transposing
-rendering
-completed
-failed
-expired
-cancelled
+POST /api/v1/transpositions
+Idempotency-Key + sessão + CSRF
+-> 202 + Location + job_id
 ```
 
-## Progresso sugerido
+A API não aguarda transposição.
+
+## Campos públicos
 
 ```text
-queued: 0
-processing: 20
-transposing: 60
-rendering: 85
-completed: 100
-failed: valor atual
-expired: valor atual
-cancelled: valor atual
+status
+stage
+progress_pct
+retention_status
+warnings
+error
+updated_at
+expires_at
 ```
 
-## Erros
+Enums canônicos: `../backend/16-maquina-estados.md`.
 
-Cada erro deve ter:
+## Polling
 
-```text
-error_code
-public_error_message
-correlation_id
-job_event
-```
+- respeitar `Retry-After`;
+- usar backoff com jitter;
+- pausar/reduzir em aba oculta;
+- parar em `completed`, `completed_with_warnings`, `failed` ou `cancelled`;
+- `expired` pertence à retenção e pode ocorrer depois da conclusão;
+- erros de rede transitórios não mudam o job local para `failed`.
 
-O público nunca recebe stacktrace, path físico ou log bruto.
+## Cancelamento
+
+A UI pode oferecer cancelar enquanto `queued`, `running` ou `cancel_requested`. A ação chama `DELETE /api/v1/jobs/{job_id}` com CSRF. O estado final pode demorar; não fingir cancelamento instantâneo.
+
+## Mensagens
+
+Mensagens vêm de mapeamento estável de stage/erro. Não mostrar stacktrace, engine, porcentagem de confiança ou log bruto. Warnings categóricos são exibidos com ação clara.
 
 ## Critérios de aceite
 
-- API responde rápido com `job_id`.
-- Worker processa fora da API.
-- Status atualiza por etapa.
-- Falha registra evento e mensagem pública segura.
-- Job finaliza em estado terminal.
+- criação idempotente não duplica job;
+- polling não continua após estado terminal;
+- progresso não retrocede;
+- cancelamento não disponibiliza artefato parcial;
+- refresh da página recupera o job enquanto a mesma sessão existir;
+- recurso de outra sessão retorna estado de não encontrado.

@@ -1,98 +1,101 @@
-# Fila e workers
+# Filas e workers
 
-## Objetivo
+> Status: canônico. Revisão: 2026-07-20.
 
-Processar transposições fora da API, com status, retentativas, falhas seguras, timeout e idempotência básica.
+## Tecnologia inicial
 
-## Fila inicial
+- Celery para execução de tarefas;
+- Redis como broker inicial;
+- PostgreSQL como fonte de verdade para estado;
+- outbox transacional para publicar jobs sem janela de perda entre banco e broker.
 
-```text
-transposition_default
-```
+Redis e Celery não são a fonte de verdade do status público.
 
-## Worker inicial
+## Semântica de entrega
 
-```text
-worker-transposition
-```
+A entrega deve ser tratada como **pelo menos uma vez**. Portanto, toda tarefa precisa ser idempotente e tolerar reentrega.
 
-O worker inicial pode executar o pipeline completo do MVP. Separar leitura, transposição e renderização em workers diferentes é evolução futura.
-
-## Payload da fila
+Payload da fila:
 
 ```json
 {
   "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
-  "correlation_id": "req_123"
+  "correlation_id": "req_01J..."
 }
 ```
 
-Não incluir path físico, segredo, token de download ou conteúdo do arquivo no payload.
+Não incluir conteúdo, path, `storage_key`, cookie, CSRF, token de download ou dados musicais no payload.
+
+## Aquisição do job
+
+Antes de processar, o worker:
+
+1. lê o job no banco;
+2. verifica estado e retenção;
+3. tenta adquirir lease/lock transacional;
+4. cria `processing_attempts` com número incremental;
+5. confirma que nenhum artefato público válido já satisfaz o job;
+6. inicia o primeiro stage.
+
+Job terminal não é reprocessado por simples reentrega. Reprocessamento explícito cria novo job ou operação administrativa futura.
 
 ## Retentativas
 
-- Não repetir erro determinístico, como MIME inválido ou MusicXML malformado.
-- Repetir de forma limitada falha transitória de storage, fila ou renderização.
-- Usar backoff.
-- Registrar cada tentativa em `job_events`.
+| Classe | Retry | Exemplo |
+|---|---|---|
+| determinística | não | XML malformado, estrutura não suportada, origem incompatível |
+| transitória | limitada, com backoff e jitter | storage temporariamente indisponível, broker instável |
+| recurso/timeout | conforme política; normalmente não cega | limite de memória, arquivo excessivo, OMR travado |
+| bug desconhecido | no máximo política conservadora | exceção não classificada |
 
-## Timeouts
+Cada tentativa registra classe, fingerprint e duração. O número máximo e backoff são configuração versionada, não números espalhados no código.
 
-Cada etapa deve ter timeout documentado antes da implementação:
+## Limites e isolamento
+
+- time limit global e por stage;
+- limite de memória, CPU, PIDs e arquivos para subprocessos;
+- diretório temporário por tentativa;
+- sem rede para processadores de documento;
+- processo não privilegiado;
+- limpeza em `finally` e job de recuperação para resíduos.
+
+## Heartbeat e jobs presos
+
+Workers atualizam lease/heartbeat. Um reconciliador identifica:
+
+- `running` sem heartbeat válido;
+- tentativa encerrada sem estado terminal;
+- outbox não publicada;
+- artefato provisório órfão.
+
+A recuperação é idempotente e registra evento. Não assumir que ausência de heartbeat significa automaticamente que é seguro executar duas instâncias em paralelo.
+
+## Cancelamento
+
+- `cancel_requested` é persistido no banco;
+- worker verifica o sinal entre stages;
+- tarefa em subprocesso recebe término controlado;
+- publicação final verifica novamente o cancelamento;
+- resultado terminal é `cancelled`, sem artefato público parcial.
+
+## Filas sugeridas
 
 ```text
-upload_validation
-musicxml_parse
-pdf_read
-transposition
-rendering
-artifact_storage
+wflyer.core       normalização/transposição/validação
+wflyer.render     renderização opcional
+wflyer.omr        PDF/OMR, somente quando habilitado
+wflyer.maintenance purge, reconciliação e outbox
 ```
 
-Ao estourar timeout:
+O MVP pode iniciar com menos workers físicos, desde que as rotas lógicas, limites e prioridades estejam preservados.
 
-- marcar job como `failed`;
-- usar erro público `PROCESSING_TIMEOUT`;
-- registrar `correlation_id`.
+## Testes obrigatórios
 
-## Falhas
-
-Falha do worker não pode derrubar a API.
-
-Fluxo de falha:
-
-```text
-capturar erro
-registrar log interno com correlation_id
-registrar job_event seguro
-atualizar processing_jobs.status = failed
-preencher error_code
-preencher mensagem pública segura
-```
-
-## Idempotência básica
-
-- Worker deve verificar status atual antes de processar.
-- Job `completed`, `failed`, `expired` ou `cancelled` não deve ser processado novamente sem decisão explícita.
-- Reentrega da fila não deve gerar artefatos duplicados sem controle.
-
-## Cancelamento futuro
-
-Cancelamento pode existir como status, mas execução cooperativa de cancelamento é evolução futura. O MVP deve ao menos não quebrar ao encontrar job `cancelled`.
-
-## Observabilidade interna
-
-- Logs com `job_id` e `correlation_id`.
-- Duração por etapa.
-- Erro categorizado por `error_code`.
-- Eventos públicos sem detalhes internos.
-
-## Critérios de aceite
-
-- API coloca job na fila.
-- Worker consome job.
-- Worker altera status.
-- Falha vira `failed`.
-- Retentativa é limitada.
-- Timeout é documentado.
-- Payload não contém segredo nem path físico.
+- reentrega do mesmo task não duplica artefato;
+- crash depois do storage e antes do commit é reconciliado;
+- erro determinístico não entra em loop;
+- falha transitória respeita máximo/backoff;
+- lease expirado é detectado;
+- cancelamento durante stage não publica resultado;
+- payload da fila não contém dados sensíveis;
+- falha do worker não derruba a API.

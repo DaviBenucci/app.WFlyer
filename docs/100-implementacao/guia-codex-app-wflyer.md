@@ -1,438 +1,311 @@
-# Guia de implementação para Codex — app.WFlyer
+# Guia de implementação para IA/Codex — W_Flyer
 
-## Regra rígida
+> Status: canônico para execução. Revisão: 2026-07-20.
+
+## Missão
+
+Implementar o MVP Core MusicXML em cortes verificáveis, sem inventar contrato, regra musical ou capacidade. PDF de entrada, PDF de saída e MXL seguem trilhas independentes e permanecem desabilitados até seus gates.
+
+## Leitura obrigatória
+
+Antes de qualquer código:
+
+1. `docs/README.md`
+2. `docs/00-visao-geral/08-hierarquia-documental.md`
+3. `docs/00-visao-geral/05-escopo-mvp-app-wflyer.md`
+4. `docs/00-visao-geral/06-matriz-suporte-mvp.md`
+5. `docs/00-visao-geral/09-decisoes-pendentes.md`
+6. `docs/music/01-modelo-transposicao.md`
+7. `docs/music/02-musicxml-canonico.md`
+8. `docs/backend/03-endpoints-api.md`
+9. `docs/backend/04-modelagem-banco.md`
+10. `docs/backend/16-maquina-estados.md`
+11. `docs/backend/17-sessao-anonima-autorizacao.md`
+12. `docs/security/02-checklist-seguranca.md`
+13. `docs/qa/01-estrategia-testes.md`
+14. `docs/frontend/00-direcao-visual-wflyer.md`
+15. `docs/frontend/05-design-system.md`
+16. `docs/frontend/09-guia_detalhado_frontend.md`
+17. `docs/frontend/14-antipadroes-interface-ia.md`
+18. `docs/frontend/15-arquitetura-motion-e-bibliotecas.md`
+19. `docs/frontend/16-animacao-assinatura-tinta-transposicao.md`
+20. `docs/frontend/17-catalogo-animacoes-interface.md`
+21. `docs/qa/09-testes-motion-performance.md`
+22. `docs/100-implementacao/criterios-aceite-mvp.md`
+
+## Protocolo de cada fase
+
+### Antes de alterar
+
+1. identificar a fase atual e o gate anterior;
+2. inspecionar código, migrations, contratos e testes existentes;
+3. listar arquivos afetados;
+4. descrever comportamento atual e divergências;
+5. declarar plano, riscos e testes;
+6. parar para decisão quando encontrar item pendente ou conflito canônico.
+
+### Durante
+
+- alterar somente o escopo da fase;
+- escrever teste junto da regra;
+- manter OpenAPI/cliente/docs sincronizados;
+- usar configuração/feature flag para capacidade condicional;
+- não ocultar falha com fallback silencioso;
+- não atualizar snapshot/golden sem revisar a mudança semântica.
+
+### Ao concluir
+
+1. executar testes aplicáveis;
+2. registrar comandos e resultados no `TEST_LOG`;
+3. atualizar `IMPLEMENTATION_LOG`, `CHANGELOG` e ADR quando necessário;
+4. listar riscos e testes não executados;
+5. provar cada item do gate;
+6. marcar a fase como `CONCLUIDA` somente com evidência.
+
+Estados de execução:
 
 ```text
-O Codex só poderá avançar para a próxima fase quando a fase anterior estiver concluída, testada e documentada.
+NAO_INICIADA | EM_ANDAMENTO | BLOQUEADA | CONCLUIDA
 ```
 
-Se surgir bloqueio ou erro, criar subetapa dentro da fase atual, corrigir, validar e registrar antes de avançar.
+## Proibições globais
 
-## Fase 0 — Auditoria documental
+- regra musical autoritativa no frontend;
+- semitone-only como modelo interno;
+- pares de instrumentos em `if/else`;
+- transposição direta de pixels/PDF;
+- processamento pesado na request;
+- UUID como única autorização;
+- cookie/token/CSRF em localStorage/log/URL;
+- parser XML permissivo;
+- `shell=True` com entrada do usuário;
+- path/`storage_key`/stacktrace/stderr em DTO;
+- aceitar PDF/MXL quando capability está off;
+- declarar sucesso sem invariantes;
+- iniciar login/pagamento/dashboard/Spotify para “preparar o futuro”.
 
-Objetivo: confirmar que o escopo técnico está claro e livre de mistura com site institucional, Spotify ou requisitos futuros obrigatórios.
+## Fases do MVP Core
 
-Arquivos envolvidos:
+## Fase 0 — Governança e baseline
 
-- `README.md`
-- `docs/00-visao-geral/05-escopo-mvp-app-wflyer.md`
-- `docs/100-implementacao/criterios-aceite-mvp.md`
+**Objetivo:** confirmar que documentação, repositório e ambiente não contradizem o Core.
 
-Criar ou alterar: apenas documentação.
+**Entregáveis:**
 
-Não alterar: código de produção.
+- inventário do código existente;
+- matriz de divergências documento↔código;
+- decisões pendentes sem resolução inventada;
+- comandos padrão de lint, typecheck, test e desenvolvimento;
+- baseline dos testes existentes.
 
-Testes obrigatórios: revisão de links internos e busca por termos fora de escopo.
+**Testes/evidências:** arquivos canônicos encontrados, links válidos, baseline executado ou motivo registrado.
 
-Critério de conclusão: documentação aprovada para iniciar estrutura base.
+**Gate:** nenhuma contradição crítica sem decisão; escopo Core confirmado.
 
-Riscos: iniciar código com requisitos contraditórios.
+## Fase 1 — Fundação, contratos e sessão
 
-Checklist final:
+**Objetivo:** criar a estrutura mínima operável.
 
-- [ ] Escopo do MVP está explícito.
-- [ ] Fora do MVP está explícito.
-- [ ] MusicXML-first está documentado.
-- [ ] Não há dependência de Spotify.
+**Entregáveis:**
 
-## Fase 1 — Estrutura base do projeto
+- monorepo conforme `../backend/13-estrutura-pastas.md`;
+- FastAPI e Next.js mínimos;
+- PostgreSQL, Redis e storage de desenvolvimento;
+- migrations iniciais;
+- OpenAPI versionado e cliente TypeScript gerado;
+- `/health`, `/health/ready`;
+- sessão anônima, cookie, CSRF e middleware de correlação;
+- envelope/taxonomia de erro.
 
-Objetivo: criar a organização inicial de pastas sem implementar fluxo musical completo.
+**Testes:** migration em banco vazio, sessão/flags/CSRF, readiness, erro sem stacktrace, geração de cliente sem diff.
 
-Arquivos envolvidos:
+**Gate:** uma sessão cria requisição mutável protegida; contratos e banco são reproduzíveis.
 
-- `apps/web/`
-- `apps/api/`
-- `packages/shared/`
-- `packages/ui/`
-- `docs/`
+## Fase 2 — Catálogo e modelo de intervalo
 
-Criar: estrutura base, configs mínimas, scripts de lint/test quando definidos.
+**Objetivo:** implementar presets e álgebra de transposição sem tocar MusicXML ainda.
 
-Alterar: README técnico se a estrutura final divergir da documentação.
+**Entregáveis:**
 
-Não alterar: regra musical sem testes.
+- seed/versionamento do catálogo;
+- schema vetorial diatonic/chromatic/octave;
+- snapshots de preset para job;
+- endpoint de instrumentos;
+- biblioteca Python de intervalo/nome/aplicação a pitch abstrato.
 
-Testes obrigatórios: validação de estrutura e comandos base existentes.
+**Testes:** schema/total de todos os presets, todos os pares A→B, inversão, instrumentos de oitava, endpoint/contrato.
 
-Critério de conclusão: frontend, backend, shared, UI e docs separados.
+**Gate:** properties preservam pitch de concerto para todo catálogo.
 
-Riscos: acoplar regra musical ao frontend ou duplicar tipos.
+## Fase 3 — Motor MusicXML seguro
 
-Checklist final:
+**Objetivo:** converter MusicXML suportado em representação normalizada, transpor e validar.
 
-- [ ] Frontend em `apps/web`.
-- [ ] Backend em `apps/api`.
-- [ ] Tipos compartilhados em `packages/shared`.
-- [ ] Componentes reutilizáveis em `packages/ui`.
+**Entregáveis:**
 
-## Fase 2 — Backend mínimo
+- parser XML seguro com limites;
+- detector do perfil Core;
+- normalizador e artefato determinístico/hasheado;
+- leitura/validação de `<transpose>` de origem;
+- transposição de pitch, key, accidental e harmony suportada;
+- escrita de `<transpose>` do destino;
+- comparador semântico/invariantes;
+- corpus Core positivo/negativo.
 
-Objetivo: criar a API base com saúde, erros padronizados e módulos vazios.
+**Testes:** fixtures de `qa/05`, round trip A→B→A, mudanças de tonalidade, vozes/ties/tuplets, rejeições e XML hostil.
 
-Arquivos envolvidos:
+**Gate:** corpus Core passa sem violar concerto/ritmo/estrutura; output é reparseado.
 
-- `apps/api/src/routes/`
-- `apps/api/src/modules/`
-- `apps/api/src/middlewares/`
-- `apps/api/src/validators/`
+## Fase 4 — Upload, storage, job e worker
 
-Criar: `GET /health`, tratamento de erro, `correlation_id`, validação de payload.
+**Objetivo:** executar o motor como pipeline assíncrono privado.
 
-Alterar: contratos em `docs/backend/03-endpoints-api.md` se houver ajuste necessário.
+**Entregáveis:**
 
-Não alterar: pipeline musical pesado.
+- streaming para quarentena, tipo/assinatura/hash;
+- tabelas/repositórios completos;
+- outbox e publicação;
+- Celery task idempotente;
+- lease/attempts/retries/timeouts/cancelamento;
+- artefatos internos/públicos atômicos;
+- máquinas de estado e reconciliação inicial.
 
-Testes obrigatórios: `/health` responde e erro segue envelope padrão.
+**Testes:** upload seguro, capability off, outbox, reentrega, crash points, retry determinístico/transitório, cancelamento, nenhuma duplicação.
 
-Critério de conclusão: API base testada.
+**Gate:** worker recebe apenas ID, conclui fixture e persiste resultado sem API bloqueada.
 
-Riscos: vazar stacktrace ou criar contratos não documentados.
+## Fase 5 — Corte vertical MusicXML
 
-Checklist final:
+**Objetivo:** entregar o primeiro fluxo real ponta a ponta.
 
-- [ ] `GET /health` existe.
-- [ ] Erro público usa `{ "error": ... }`.
-- [ ] `correlation_id` aparece em erros.
+**Entregáveis:**
 
-## Fase 3 — Banco de dados
+- capabilities, instrumentos, upload, create job, status e artifacts;
+- UI mínima: bootstrap, upload, seletores, resumo, polling, resultado;
+- download autorizado;
+- idempotency key no cliente;
+- warnings/erros públicos.
 
-Objetivo: criar modelo mínimo para instrumentos, uploads, jobs, artefatos e eventos.
+**Testes:** integração completa e E2E MusicXML, double click, refresh mesma sessão, B não acessa A.
 
-Arquivos envolvidos:
+**Gate:** usuário transpõe fixture Piano→Trompete e baixa MusicXML semanticamente correto.
 
-- `apps/api/src/repositories/`
-- `apps/api/src/modules/*`
-- migrations quando existirem.
+## Fase 6 — Segurança, quotas e retenção
 
-Criar: tabelas `instruments`, `uploads`, `processing_jobs`, `generated_artifacts`, `job_events`.
+**Objetivo:** fechar os riscos críticos do Core.
 
-Alterar: `docs/backend/04-modelagem-banco.md` se o nome de campo mudar.
+**Entregáveis:**
 
-Não alterar: login, planos ou biblioteca em nuvem.
+- rate limits/quotas configuráveis;
+- corpus hostil XML e autorização A/B;
+- headers de download;
+- expiração, purge antecipado e reconciliador;
+- redaction de logs;
+- hardening de containers/segredos/dependências;
+- alertas mínimos.
 
-Testes obrigatórios: migrations aplicam e repositórios básicos funcionam.
+**Testes:** `qa/08`, relógio controlado, purge idempotente, objeto órfão, logs sem segredo.
 
-Critério de conclusão: modelo mínimo persistente e documentado.
+**Gate:** checklist de segurança possui evidência; nenhuma falha crítica aberta.
 
-Riscos: armazenar binários no banco ou expor `storage_key`.
+## Fase 7 — UX, acessibilidade e histórico
 
-Checklist final:
+**Objetivo:** tornar o corte vertical utilizável e íntegro em condições reais.
 
-- [ ] Tabelas mínimas criadas.
-- [ ] Índices básicos documentados.
-- [ ] Status permitidos validados.
+**Entregáveis:**
 
-## Fase 4 — Catálogo de instrumentos
+- PublicShell, StudioShell e UtilityShell;
+- tokens semânticos e componentes próprios do domínio;
+- Storybook com estados reais e documentação;
+- página Transpor como workspace musical;
+- estados completos de rede/domínio/warning/cancelamento/expiração;
+- histórico local sem tokens;
+- ações local vs servidor;
+- mobile/desktop, container queries, teclado, foco, zoom, forced colors e reduced motion;
+- conteúdo “Como funciona” e catálogo;
+- revisão formal dos antipadrões de interface gerada por IA;
+- orçamento de bundle e regressão visual;
+- Motion for React aplicado conforme catálogo;
+- cena `Ink Transfer` com GSAP + `@gsap/react` lazy-loaded;
+- fallback estático, reduced motion, pause em background e cleanup;
+- teste de ausência de Anime.js/React Spring e GSAP fora das rotas de cena.
 
-Objetivo: implementar catálogo mínimo com `written_to_concert`.
+**Testes:** componentes, Storybook interactions, acessibilidade manual/automática, visual regression, motion/reduced motion, leak/cleanup, bundle por rota e E2E nos viewports.
 
-Arquivos envolvidos:
+**Gate:** fluxo completo é compreensível sem mouse/animação, possui identidade própria do W_Flyer, não mantém tema padrão de biblioteca, não promete capability off, não disputa engines e não mantém timeline/CPU após término ou navegação.
 
-- `packages/shared/src/music/`
-- `apps/api/src/modules/instruments/`
-- `docs/features/11-catalogo-instrumentos-mvp.md`
+## Fase 8 — Qualidade e operação
 
-Criar: seed/catálogo, endpoint `GET /api/instruments`, validação de instrumento ativo.
+**Objetivo:** preparar release do Core.
 
-Alterar: docs de catálogo apenas se houver decisão musical justificada.
+**Entregáveis:**
 
-Não alterar: cálculo por pares hardcoded.
+- CI com lint/typecheck/unit/property/integration/contract/E2E/security;
+- carga/soak Core e limites ajustados;
+- logs, métricas, traces e dashboards mínimos;
+- backup/restore e estratégia de migration;
+- runbook de fila, storage, purge e rollback;
+- manifest de versões/engines por artefato.
 
-Testes obrigatórios: catálogo retorna todos os instrumentos mínimos e rejeita instrumento inativo.
+**Testes:** instalação limpa, migration, restore, interrupção de worker/dependência, regressão completa.
 
-Critério de conclusão: frontend pode listar origem e destino pela API.
+**Gate:** operação reproduzível e falhas diagnosticáveis sem conteúdo sensível.
 
-Riscos: duplicar catálogo no frontend.
+## Fase 9 — Aceite do Core
 
-Checklist final:
+**Objetivo:** avaliar `criterios-aceite-mvp.md` item a item.
 
-- [ ] Instrumentos mínimos existem.
-- [ ] `written_to_concert` confere com a documentação.
-- [ ] Testes cobrem instrumentos principais.
+**Entregáveis:**
 
-## Fase 5 — Regra musical e testes unitários
+- relatório de evidências;
+- lista de riscos residuais;
+- pendências classificadas por severidade;
+- versão do corpus e resultados;
+- decisão `ACEITO` ou `BLOQUEADO`.
 
-Objetivo: implementar a fórmula central e fixtures MusicXML.
+**Gate:** todos os critérios aplicáveis atendidos; zero pendência crítica/alta sem aceite explícito.
 
-Arquivos envolvidos:
+## Trilhas opcionais
 
-- `packages/shared/src/music/`
-- `apps/api/src/modules/music-engine/`
-- `W-Flyer_Regra-Transposição.md`
-- `docs/qa/05-testes-musicais.md`
+## Trilha R — PDF de saída
 
-Criar: cálculo de intervalo, transposição de notas, acordes, acidentes e armadura sobre representação estruturada.
+Executar somente após Core estável:
 
-Alterar: apenas regra musical documentada quando houver correção validada.
+- R0: avaliar renderer/licença/determinismo;
+- R1: adapter em sandbox, validação do PDF e testes de falha;
+- R2: habilitar `output_formats.pdf` por configuração e E2E.
 
-Não alterar: PDF real antes de MusicXML estar coberto.
+Não acoplar renderer ao motor de domínio. Falha de PDF opcional não pode invalidar MusicXML correto sem política documentada.
 
-Testes obrigatórios: matriz musical mínima.
+## Trilha P — PDF de entrada/OMR
 
-Critério de conclusão: MusicXML controlado transpõe corretamente.
+- P0: spike e corpus/licença;
+- P1: rasterização + OMR em sandbox;
+- P2: métricas/limiares pré-definidos;
+- P3: UX de warnings/revisão;
+- P4: capability `pdf_omr` habilitada de forma controlada.
 
-Riscos: alterar só tonalidade e esquecer notas/acordes.
+OMR sempre produz `raw_musicxml`, que entra no normalizador do Core. Nunca criar pipeline musical paralelo.
 
-Checklist final:
+## Trilha M — MXL
 
-- [ ] Fórmula central testada.
-- [ ] Casos inversos testados.
-- [ ] Acidentes, acordes e armadura testados.
+Só iniciar após decisão PEND-005. Exige parser de container/ZIP seguro, corpus hostil, capability e contratos atualizados.
 
-## Fase 6 — Upload e validação de arquivos
+## Formato do relatório de fase
 
-Objetivo: aceitar arquivos permitidos com validação segura.
-
-Arquivos envolvidos:
-
-- `apps/api/src/modules/uploads/`
-- `apps/api/src/validators/`
-- `docs/security/02-checklist-seguranca.md`
-
-Criar: `POST /api/uploads`, validação de MIME, extensão e tamanho.
-
-Alterar: contratos de upload se necessário.
-
-Não alterar: armazenamento público direto.
-
-Testes obrigatórios: arquivo válido aceito, inválido rejeitado, grande rejeitado.
-
-Critério de conclusão: upload cria registro e não expõe path interno.
-
-Riscos: confiar no nome original ou no header do navegador.
-
-Checklist final:
-
-- [ ] MIME permitido validado.
-- [ ] Extensão validada.
-- [ ] Nome interno renomeado.
-
-## Fase 7 — Fila e worker
-
-Objetivo: garantir processamento fora da requisição HTTP principal.
-
-Arquivos envolvidos:
-
-- `apps/api/src/modules/jobs/`
-- `apps/api/src/workers/`
-- `docs/backend/07-filas-e-workers.md`
-
-Criar: publicação de job, worker consumidor, retentativas, timeout e eventos.
-
-Alterar: pipeline assíncrono se houver mudança de status.
-
-Não alterar: processamento síncrono no endpoint.
-
-Testes obrigatórios: job publicado, consumido e atualizado.
-
-Critério de conclusão: worker processa job simulado sem derrubar API.
-
-Riscos: request HTTP ficar presa em processamento pesado.
-
-Checklist final:
-
-- [ ] Job entra em `queued`.
-- [ ] Worker muda status.
-- [ ] Falha vira `failed` com erro seguro.
-
-## Fase 8 — API de jobs
-
-Objetivo: expor status, progresso, eventos públicos e artefatos do job.
-
-Arquivos envolvidos:
-
-- `apps/api/src/modules/jobs/`
-- `apps/api/src/modules/artifacts/`
-- `docs/backend/03-endpoints-api.md`
-
-Criar: `GET /api/jobs/{job_id}`, `GET /api/jobs/{job_id}/status`, `GET /api/jobs/{job_id}/artifacts`.
-
-Alterar: DTOs públicos documentados.
-
-Não alterar: campos internos em resposta pública.
-
-Testes obrigatórios: consulta de status, job inexistente, token inválido, job expirado.
-
-Critério de conclusão: frontend consegue acompanhar o processamento.
-
-Riscos: expor logs, stacktrace ou `storage_key`.
-
-Checklist final:
-
-- [ ] Status público funciona.
-- [ ] DTO público não vaza dado interno.
-- [ ] Eventos públicos são seguros.
-
-## Fase 9 — Frontend funcional mínimo
-
-Objetivo: implementar fluxo visual básico com backend real.
-
-Arquivos envolvidos:
-
-- `apps/web/src/app/`
-- `apps/web/src/features/transposition/`
-- `apps/web/src/services/`
-- `apps/web/src/components/`
-
-Criar: UploadDropzone, InstrumentSelector, TransposeSummary e estados básicos.
-
-Alterar: contratos frontend se backend mudar.
-
-Não alterar: funcionalidades futuras como login, planos ou painel administrativo.
-
-Testes obrigatórios: upload, seleção de origem, seleção de destino e erro amigável.
-
-Critério de conclusão: usuário cria job pelo frontend.
-
-Riscos: validação visual divergir da validação real do backend.
-
-Checklist final:
-
-- [ ] Upload funciona.
-- [ ] Instrumentos vêm da API.
-- [ ] Fluxo funciona com teclado.
-
-## Fase 10 — Tela de processamento e resultado
-
-Objetivo: mostrar progresso, resultado e erro de forma clara e acessível.
-
-Arquivos envolvidos:
-
-- `ProcessingStatus`
-- `ResultDownloadCard`
-- `ErrorState`
-- `LocalHistory`
-
-Criar: polling de status, `aria-live`, tela de sucesso e falha.
-
-Alterar: mensagens públicas se necessário.
-
-Não alterar: animações que prejudiquem clareza.
-
-Testes obrigatórios: completed, failed, expired e uso em mobile.
-
-Critério de conclusão: usuário entende o estado atual e próximos passos.
-
-Riscos: polling infinito ou status sem feedback textual.
-
-Checklist final:
-
-- [ ] Progresso acessível.
-- [ ] Erro amigável.
-- [ ] Resultado aparece quando job conclui.
-
-## Fase 11 — Download de artefatos
-
-Objetivo: permitir download controlado do resultado.
-
-Arquivos envolvidos:
-
-- `apps/api/src/modules/artifacts/`
-- `apps/web/src/services/artifacts`
-
-Criar: `GET /api/artifacts/{artifact_id}/download` e ação visual de download.
-
-Alterar: docs de artefatos se tipo de saída mudar.
-
-Não alterar: exposição direta de arquivo por path interno.
-
-Testes obrigatórios: download válido, artefato expirado, artefato inexistente.
-
-Critério de conclusão: resultado final pode ser baixado com segurança.
-
-Riscos: URL permanente ou acesso sem validação.
-
-Checklist final:
-
-- [ ] Download funciona para artefato válido.
-- [ ] Expirado é bloqueado.
-- [ ] Path interno não aparece.
-
-## Fase 12 — Testes automatizados
-
-Objetivo: consolidar suíte mínima para MVP.
-
-Arquivos envolvidos:
-
-- `apps/api/src/tests/`
-- `apps/web/src/tests/`
-- `packages/shared/src/**/tests/`
-- `docs/qa/`
-
-Criar: testes musicais, backend, frontend e segurança.
-
-Alterar: matriz de testes quando novos riscos surgirem.
-
-Não alterar: escopo do produto para fazer teste passar.
-
-Testes obrigatórios: todos os casos documentados em `docs/qa/01-estrategia-testes.md`.
-
-Critério de conclusão: suíte mínima passa.
-
-Riscos: falsa segurança sem fixtures musicais reais.
-
-Checklist final:
-
-- [ ] Testes musicais passam.
-- [ ] Backend passa.
-- [ ] Frontend passa.
-- [ ] Segurança básica passa.
-
-## Fase 13 — Segurança e revisão técnica
-
-Objetivo: revisar upload, erros, tokens, logs, CORS futuro, rate limit e timeout.
-
-Arquivos envolvidos:
-
-- `docs/security/`
-- `docs/backend/08-seguranca-backend.md`
-- módulos de upload, jobs e artifacts.
-
-Criar: checklist final de segurança executado.
-
-Alterar: docs quando uma validação for endurecida.
-
-Não alterar: segredos no frontend ou logs verbosos.
-
-Testes obrigatórios: stacktrace não exposto, MIME inválido rejeitado, payload malformado rejeitado.
-
-Critério de conclusão: riscos críticos do MVP mitigados.
-
-Riscos: vazamento de arquivo ou erro técnico para usuário.
-
-Checklist final:
-
-- [ ] Erros públicos seguros.
-- [ ] Rate limit documentado.
-- [ ] Timeout documentado.
-- [ ] Logs com `correlation_id`.
-
-## Fase 14 — Critérios finais do MVP
-
-Objetivo: validar que a aplicação está pronta para ser considerada MVP técnico.
-
-Arquivos envolvidos:
-
-- `docs/100-implementacao/criterios-aceite-mvp.md`
-- `docs/logs/CHANGELOG.md`
-- `docs/logs/TEST_LOG.md`
-
-Criar: registro final de aceite.
-
-Alterar: pendências objetivas, sem mascarar risco.
-
-Não alterar: escopo aprovado sem decisão explícita.
-
-Testes obrigatórios: checklist completo do MVP.
-
-Critério de conclusão: todos os critérios objetivos atendidos ou pendência formalmente bloqueante.
-
-Riscos: chamar de pronto sem teste musical ou sem pipeline assíncrono.
-
-Checklist final:
-
-- [ ] Critérios de aceite completos.
-- [ ] Documentação atualizada.
-- [ ] Testes registrados.
-- [ ] Próxima fase só começa após aprovação.
+```text
+Fase:
+Status:
+Objetivo:
+Código/arquivos alterados:
+Comportamento anterior:
+Comportamento novo:
+Contratos/migrations:
+Testes executados e comandos:
+Resultados:
+Falhas corrigidas:
+Testes não executados e motivo:
+Riscos/pendências:
+Evidência do gate:
+Próxima fase desbloqueada: sim|não
+```

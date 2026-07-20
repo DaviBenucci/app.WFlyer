@@ -1,81 +1,95 @@
-# Arquitetura API + Worker
+# Arquitetura API, fila e workers
 
-## Componentes internos
+> Status: canônico. Revisão: 2026-07-20.
 
-```text
-frontend
-api
-database
-storage_controlado
-queue
-worker
-music_engine
-```
-
-## Princípio
-
-O processamento musical não deve acontecer dentro da requisição HTTP principal. A API cria e consulta jobs; o worker processa.
-
-## Fluxo de criação de job
+## Topologia lógica
 
 ```text
-POST /api/transpositions
-  validar payload
-  validar upload existente e não expirado
-  validar instrumentos ativos
-  calcular intervalo_escrito
-  criar processing_jobs(status=queued)
-  registrar job_events(event_type=queued)
-  publicar job_id na fila
-  retornar 202 com job_id e status inicial
+Browser
+  -> Web Next.js
+  -> API FastAPI
+       -> PostgreSQL
+       -> Storage privado
+       -> Redis broker
+  -> Worker Celery
+       -> Music engine
+       -> OMR sandbox opcional
+       -> Renderer sandbox opcional
+       -> PostgreSQL / Storage
 ```
 
-## Fluxo de worker
+Web e API devem ser publicados sob o mesmo site lógico sempre que possível. Isso simplifica cookies de sessão, CORS e CSRF.
+
+## Criação de sessão
 
 ```text
-process_transposition(job_id)
-  carregar job
-  marcar processing
-  ler arquivo original ou MusicXML controlado
-  extrair representação musical
-  marcar transposing
-  aplicar regra musical central
-  validar resultado
-  marcar rendering
-  gerar artefato final
-  registrar generated_artifacts
-  marcar completed
+POST /api/v1/sessions/anonymous
+-> gerar token aleatório
+-> armazenar apenas hash
+-> definir cookie HttpOnly/Secure/SameSite
+-> retornar CSRF token e expiração
 ```
 
-## Status consultável
-
-O frontend deve consultar:
+## Upload
 
 ```text
-GET /api/jobs/{job_id}/status
+stream para quarentena
+-> aplicar limite enquanto recebe
+-> identificar formato por conteúdo + extensão
+-> calcular SHA-256
+-> validação superficial segura
+-> mover atomically para storage privado
+-> criar upload(validated)
 ```
 
-O polling para quando o job chegar em:
+Upload não executa OMR nem transposição.
+
+## Criação do job
 
 ```text
-completed
-failed
-expired
-cancelled
+POST /api/v1/transpositions
+-> validar sessão e CSRF
+-> validar Idempotency-Key
+-> autorizar upload
+-> validar capabilities e instrumentos
+-> calcular intervalo completo no backend
+-> criar processing_job(queued)
+-> criar evento de outbox
+-> publicar payload mínimo após commit
+-> responder 202 + Location + Retry-After
 ```
+
+A transação deve evitar job órfão. O padrão recomendado é outbox transacional ou publicação com reconciliação idempotente.
+
+## Execução
+
+```text
+adquirir job com lease
+-> criar processing_attempt
+-> check cancel/retention
+-> preprocessing
+-> recognizing, apenas PDF
+-> normalizing
+-> transposing
+-> validating
+-> rendering, se solicitado e habilitado
+-> finalizing
+-> completed ou completed_with_warnings
+```
+
+## Consistência
+
+- banco é a fonte do status;
+- cada attempt possui identidade própria;
+- artefatos usam chave determinística/única por job, tipo e versão;
+- reentrega não duplica resultado;
+- gravação de arquivo antecede publicação do artefato no banco;
+- falha após gravar deve ser reconciliável.
 
 ## Falhas
 
-- Erro determinístico não deve ser repetido indefinidamente.
-- Erro transitório pode ter retentativa limitada.
-- Falha permanente deve marcar job como `failed`.
-- Mensagem pública deve ser amigável.
-- Erro interno fica apenas em log controlado com `correlation_id`.
+Erros determinísticos não são repetidos. Erros transitórios usam backoff e limite. Falha de worker nunca derruba a API. O erro público é categorizado; detalhes ficam em log interno.
 
-## Critérios de aceite
+## Cancelamento e exclusão
 
-- API retorna `202 Accepted` ao criar job.
-- Worker consome job sem bloquear API.
-- Status muda durante processamento.
-- Falha no worker vira status seguro.
-- Frontend consegue acompanhar progresso.
+`DELETE /api/v1/jobs/{id}` marca `cancel_requested` se o job estiver ativo. Workers verificam o pedido entre etapas. Depois do cancelamento ou para jobs terminais, o cleanup remove artefatos e marca retenção como `purged`.
