@@ -1,0 +1,140 @@
+version: 1
+references:
+  WF-HOME-001:
+    required_states:
+    - default
+    - reduced_motion
+    - mobile
+    desktop: documented
+    mobile: documented
+    reduced_motion: required
+    production_test_status: not_implemented
+  WF-TRANSPOSE-001:
+    required_states:
+    - empty
+    - validated
+    - incompatible_texture
+    - processing
+    - failed
+    desktop: documented
+    mobile: documented
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-MELODY-REVIEW-001:
+    required_states:
+    - material_ambiguity
+    - blocking_ambiguity
+    - revision_conflict
+    desktop: documented
+    mobile: documented
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-DIFF-001:
+    required_states:
+    - complete_diff
+    - partial_diff
+    - creative_changes
+    desktop: documented
+    mobile: documented
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-HARMONY-001:
+    required_states:
+    - profile_incomplete
+    - variants_ready
+    - no_valid_variant
+    desktop: documented
+    mobile: documented
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-REHEARSAL-001:
+    required_states:
+    - ready
+    - playing
+    - mapping_partial
+    - offline_readonly
+    desktop: documented
+    mobile: documented
+    reduced_motion: required
+    production_test_status: not_implemented
+  WF-INSTRUMENT-PICKER-001:
+    required_states: []
+    desktop: component_story_required
+    mobile: component_story_required
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-MUSICAL-DIFF-001:
+    required_states: []
+    desktop: component_story_required
+    mobile: component_story_required
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-PLAYABILITY-001:
+    required_states: []
+    desktop: component_story_required
+    mobile: component_story_required
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-HARMONY-VARIANT-001:
+    required_states: []
+    desktop: component_story_required
+    mobile: component_story_required
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-MOTION-INK-001:
+    required_states: []
+    desktop: component_story_required
+    mobile: component_story_required
+    reduced_motion: required
+    production_test_status: not_implemented
+  WF-PROCESSING-001:
+    required_states:
+    - queued
+    - processing
+    - awaiting_review
+    - transient_failure
+    - deterministic_failure
+    - unknown_incident
+    - cancelled
+    - completed
+    desktop: documented
+    mobile: documented
+    reduced_motion: required
+    production_test_status: not_implemented
+  WF-UPLOAD-ERROR-001:
+    required_states:
+    - invalid_signature
+    - unsupported_structure
+    - too_large
+    - malicious_file
+    - capability_disabled
+    - session_lost
+    desktop: documented
+    mobile: documented
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-ENSEMBLE-001:
+    required_states:
+    - draft
+    - checking
+    - needs_review
+    - inconsistency
+    - building
+    - complete
+    - revoked
+    desktop: documented
+    mobile: documented
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-PLAYBACK-TRANSPORT-001:
+    required_states: []
+    desktop: component_story_required
+    mobile: component_story_required
+    reduced_motion: as_applicable
+    production_test_status: not_implemented
+  WF-PROCESSING-TIMELINE-001:
+    required_states: []
+    desktop: component_story_required
+    mobile: component_story_required
+    reduced_motion: as_applicable
+    production_test_status: not_implemented

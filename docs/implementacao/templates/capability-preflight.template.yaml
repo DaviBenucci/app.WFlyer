@@ -1,0 +1,49 @@
+capability_id: CAP-TBD
+status: draft
+owner: TBD
+operation_type: deterministic | inferential | creative | orchestration
+scope_in: []
+scope_out: []
+canonical_docs_read: []
+open_decisions: []
+input_contracts: []
+output_contracts: []
+invariants: []
+applicable_failure_mode_ids: []
+new_failure_modes: []
+public_errors: []
+security_privacy_review:
+  status: pending
+  notes: []
+corpus_and_licenses:
+  datasets: []
+  train_validation_test_separated: false
+  licenses_verified: false
+test_plan:
+  unit: []
+  property: []
+  integration: []
+  e2e: []
+  fault_injection: []
+  musical_review: []
+metrics_and_thresholds: []
+observability:
+  metrics: []
+  alerts: []
+  runbooks: []
+feature_flag:
+  key: TBD
+  default: false
+rollout_segments: []
+rollback:
+  method: TBD
+  artifact_compatibility_checked: false
+residual_risks: []
+evidence: []
+approvals:
+  product: pending
+  music: pending
+  backend: pending
+  security: pending
+  qa: pending
+  frontend: not_applicable

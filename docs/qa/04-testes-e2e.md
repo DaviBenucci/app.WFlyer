@@ -66,3 +66,34 @@ Dois contextos de navegador: B não acessa URL/IDs de A. Apagar cookies de A tor
 ## PDF
 
 Nenhum E2E do Core presume PDF. A trilha PDF possui suíte separada e só roda quando a capability está ativa.
+
+## Fluxos avançados condicionais
+
+### Polifônico para monofônico
+
+```text
+upload de teclado -> destino flauta
+-> Transpor todas bloqueado
+-> Extrair melodia
+-> revisar duas frases ambíguas
+-> confirmar
+-> reduzir/transpor
+-> resultado com provenance e garantia
+```
+
+### Harmonização
+
+```text
+melodia confirmada
+-> escolher perfil modal/popular
+-> gerar variantes
+-> comparar
+-> escolher uma
+-> baixar melodia e proposta harmonizada
+```
+
+### Watermark
+
+PDF final mostra token discreto, verificação por hash funciona e edição invalida assinatura.
+
+Esses E2E só entram quando a capability correspondente estiver ativa.

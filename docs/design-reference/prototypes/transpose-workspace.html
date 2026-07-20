@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>W_Flyer — Estúdio</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">♩</span> W_Flyer</a><div class="badge success">Arquivo validado</div><div class="actions"><button class="btn">Histórico</button><button class="btn primary">Transpor</button></div></header>
+<main class="workspace">
+  <section class="canvas">
+    <article class="paper score-surface">
+      <div class="score-header"><div><strong>estudo-em-do.musicxml</strong><div class="muted">1 parte · 1 pauta · 48 compassos</div></div><button class="btn">Substituir</button></div>
+      <div class="score-page">
+        <div class="score-title">Estudo em Dó</div>
+        <div class="staff"><div class="notes" aria-hidden="true">♩ ♫ ♪ ♩ ♩</div></div>
+        <div class="staff"><div class="notes" aria-hidden="true">♪ ♩ ♩ ♫ ♪</div></div>
+        <div class="staff"><div class="notes" aria-hidden="true">♩ ♪ ♫ ♩ ♪</div></div>
+        <div class="staff"><div class="notes" aria-hidden="true">♫ ♩ ♪ ♩ ♩</div></div>
+      </div>
+    </article>
+    <div class="paper timeline" aria-label="Etapas do processamento"><div class="step done">Validar</div><div class="step current">Configurar</div><div class="step">Transpor</div><div class="step">Verificar</div></div>
+  </section>
+  <aside class="paper inspector">
+    <div class="panel-header"><div><div class="eyebrow">Operação</div><h2>Transpor</h2></div><span class="badge">Core</span></div>
+    <div class="segmented" aria-label="Modo"><button class="active">Transpor</button><button>Melodia</button><button>Harmonia</button></div>
+    <div class="field"><label for="source">Instrumento da partitura</label><select id="source"><option>Piano em C</option></select></div>
+    <div class="field"><label for="target">Instrumento de destino</label><select id="target"><option>Trompete em Bb</option></select></div>
+    <div class="route"><span class="node origin">Piano C</span><span class="line"></span><span class="node target">Trompete Bb</span></div>
+    <p class="small"><strong>Segunda maior acima</strong><br>+2 semitons · oitava preservada</p>
+    <div class="notice">A clave será preservada neste perfil. O resultado poderá recomendar revisão de registro.</div>
+    <div class="field"><label for="output">Saída</label><select id="output"><option>MusicXML</option></select></div>
+    <button class="btn primary" style="width:100%">Criar transposição verificada</button>
+  </aside>
+</main>
+</body></html>

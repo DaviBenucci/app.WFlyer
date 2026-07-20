@@ -167,3 +167,38 @@ Após refresh, usar rota/estado e sessão existente. Sem sessão original, mostr
 - capabilities governam formatos/outputs;
 - loop de processamento não continua após conclusão/erro/cancelamento;
 - navegação e refresh não acumulam timelines.
+
+## Escolha do modo musical
+
+Quando capabilities avançadas estiverem ativas, o inspector inclui `OperationModePicker` depois da análise do arquivo:
+
+```text
+Transpor todas as notas
+Extrair a melodia principal
+Harmonizar a melodia
+```
+
+Opções incompatíveis permanecem visíveis com motivo. Para origem polifônica e destino monofônico, “Transpor todas” fica bloqueado e a UI recomenda extração; nunca descarta acordes por conveniência.
+
+Harmonização abre parâmetros essenciais e informa que novas notas serão criadas. A criação do job usa o resumo da operação, não apenas origem/destino.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Preflight musical antes do submit
+
+A tela deve mostrar:
+
+- operação exata;
+- estrutura detectada e suportada;
+- instrumento/revisão de origem;
+- instrumento/perfil de destino;
+- intervalo ou natureza criativa da operação;
+- incompatibilidades e necessidade de revisão;
+- outputs solicitados;
+- nível de garantia potencial, sem prometer resultado final.
+
+Para textura polifônica e destino monofônico, a UI não pode remover notas silenciosamente. Deve bloquear “transpor todas” e oferecer extração/redução apenas quando a capability estiver habilitada.
+
+## Referência
+
+`reference_id: WF-TRANSPOSE-001`. Divergência de composição precisa ser registrada no PR.

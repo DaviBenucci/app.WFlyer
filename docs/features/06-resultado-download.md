@@ -55,3 +55,16 @@ Não mostrar métricas brutas, hashes internos, paths, engine stderr ou artefato
 - sessão B não baixa artefato de A;
 - MusicXML baixado corresponde ao hash/metadado do job;
 - nenhum caminho interno aparece na resposta ou UI.
+
+## Garantia e conteúdo derivado
+
+A tela de resultado deve apresentar:
+
+- operação executada;
+- nível de garantia;
+- se a fonte foi confirmada pelo usuário;
+- se existem notas geradas;
+- link para relatório de garantia;
+- token de verificação quando PDF assinado estiver ativo.
+
+Harmonização deve exibir “proposta escolhida” e permitir baixar também a melodia original/confirmada. Não usar selo “100% correto”.

@@ -65,3 +65,17 @@ A mensagem geral não substitui avisos específicos.
 - score bruto não aparece;
 - violação semântica bloqueia publicação;
 - localização imprecisa não é apresentada como exata.
+
+## Nível de garantia público
+
+Além de warnings, a API retorna um dos níveis definidos em `../backend/19-confiabilidade-musical-fail-closed.md`. Warnings não elevam garantia. Uma ambiguidade que muda notas deve pausar o job; não pode virar apenas banner amarelo com download ativo.
+
+Para harmonização, separar:
+
+```text
+restrições validadas
+melodia preservada
+variante escolhida pelo usuário
+```
+
+Isso não equivale a afirmar intenção autoral ou superioridade estética.

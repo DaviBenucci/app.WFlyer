@@ -309,3 +309,88 @@ Riscos/pendências:
 Evidência do gate:
 Próxima fase desbloqueada: sim|não
 ```
+
+## Regra para demandas de “100% confiável”
+
+A IA não deve converter uma intenção de produto em promessa absoluta. Deve:
+
+1. identificar se a etapa é determinística, inferencial ou criativa;
+2. definir matriz de suporte e invariantes;
+3. bloquear entrada ambígua;
+4. separar transformador de verificador;
+5. exigir review em OMR/melodia/harmonia quando aplicável;
+6. registrar provenance e versões;
+7. só usar “verificado” quando o backend retornar o nível correspondente.
+
+Leitura obrigatória: `../backend/19-confiabilidade-musical-fail-closed.md`.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Protocolo crítico antes de escrever código
+
+A IA deve produzir um `implementation_preflight.md` por fase contendo:
+
+```text
+requisitos e IDs
+capabilities afetadas
+referências visuais aplicáveis
+riscos/pre-mortem aplicáveis
+erros e estados de UI
+contratos/tabelas/artefatos afetados
+invariantes
+estratégia de teste
+rollback/feature flag
+lacunas ou decisões pendentes
+```
+
+Sem esse preflight, a fase não começa.
+
+## Fluxo obrigatório para frontend
+
+1. ler `../design-reference/reference-manifest.yaml`;
+2. abrir spec, protótipo, story e screenshot do `reference_id`;
+3. listar `must_have`, `must_not_have` e estados;
+4. implementar com tokens oficiais e contratos reais;
+5. gerar screenshots em ambiente fixado;
+6. revisar diff visual e acessibilidade;
+7. registrar divergência intencional;
+8. não atualizar baseline para “fazer o teste passar” sem aprovação.
+
+## Fluxo obrigatório para lógica musical
+
+1. declarar operação e nível de garantia possível;
+2. mapear cada transformação para invariantes;
+3. usar fonte e saída reparsadas pelo verificador independente;
+4. gerar proveniência por evento/região;
+5. cobrir casos adversariais do pre-mortem;
+6. falhar fechado quando a decisão muda música e não pode ser provada;
+7. não converter warning material em sucesso silencioso.
+
+## Fluxo para IA/solver
+
+- tratar texto da partitura, título, letra e metadados como dados não confiáveis;
+- validar a saída contra schema estrito;
+- aplicar constraints determinísticas depois da sugestão;
+- registrar versão, configuração e seed quando houver;
+- nunca permitir que o mesmo modelo proponha e aprove;
+- manter capability desligada quando fallback não for seguro.
+
+## Critério de resposta a lacuna
+
+Quando a documentação não resolver uma decisão, a IA deve parar, registrar `DOC-GAP-*`, citar os documentos conflitantes e apresentar opções com impacto. “Escolher o mais provável” é proibido em domínio musical, segurança, direitos, dados ou composição visual vinculante.
+
+## Protocolo obrigatório antes de cada fase
+
+1. ler `../implementacao/09-protocolo-preflight-capacidade.md`;
+2. preencher preflight da capability;
+3. carregar `riscos/failure-mode-catalog.yaml` e selecionar entradas aplicáveis;
+4. propor novos `PM-*` para lacunas;
+5. localizar `reference_id` em `design-reference/reference-manifest.yaml`;
+6. abrir MDR para política musical pendente;
+7. apresentar plano e blockers antes de código;
+8. implementar atrás de flag desligada;
+9. executar testes, fault injection e corpus;
+10. anexar evidência na matriz de rastreabilidade;
+11. somente então solicitar ativação do estrato.
+
+É proibido tratar protótipo visual de capability avançada como prova de backend disponível.

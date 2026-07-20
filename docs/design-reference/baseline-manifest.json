@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "product": "W_Flyer",
+  "environment": {
+    "browser": "system Chromium headless",
+    "device_scale_factor": 1,
+    "note": "Baselines documentais de composição; não screenshots do aplicativo de produção."
+  },
+  "baselines": [
+    {
+      "path": "golden-pages/ensemble-package/desktop.png",
+      "sha256": "c5e149df07aeb6733e849b87767dbb5b9ff22099932366e828f24abc63f24345",
+      "width": 1440,
+      "height": 900,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/ensemble-package/mobile.png",
+      "sha256": "6628fc9fae0111610c99b265667f2b195e694279ebe82c53e2077bbcfbc49460",
+      "width": 466,
+      "height": 1489,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/harmonization-lab/desktop.png",
+      "sha256": "9fac96c3f69bdec3bf73c60b6431bf7e46066b697745d28a6b7527c2c9a582cc",
+      "width": 1536,
+      "height": 960,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/harmonization-lab/mobile.png",
+      "sha256": "74479f174e72a10a67bfcce0b64a056174101bb3bb5dd1a97fc7f5d86fc4703c",
+      "width": 504,
+      "height": 1867,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/home/desktop.png",
+      "sha256": "b357bc17117c89f485dc39ffe7bb1bc0916912e32ea25ad2e728bbd6a18515a5",
+      "width": 1440,
+      "height": 900,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/home/mobile.png",
+      "sha256": "03513577a641048432b14f92a5faba4c731765acca15d717442b058e002c6068",
+      "width": 390,
+      "height": 1113,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/melody-review/desktop.png",
+      "sha256": "1595cbcccd5addb31cfddebb4e1864eed4bf857c186fa911582f17a0f66f5bd5",
+      "width": 1440,
+      "height": 900,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/melody-review/mobile.png",
+      "sha256": "9b962ae38f0cff6c460d86b2cff28eea45abbda0c05a1bf7550b8db7305f4300",
+      "width": 469,
+      "height": 1551,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/processing/desktop.png",
+      "sha256": "ad0e0c08ed7e4250a8201d2e4a59b6a7c542dffaafafef041c0a6dbd4a12258a",
+      "width": 1440,
+      "height": 900,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/processing/mobile.png",
+      "sha256": "9262885965c510631b468c4960a91b0fef646d2a47b56a0b72d1002dd7871e29",
+      "width": 390,
+      "height": 1596,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/rehearsal-mode/desktop.png",
+      "sha256": "fc5a04807417a19628feff2c462c8c857523e2e2e0cadc1b2b546eeb0908613f",
+      "width": 1440,
+      "height": 900,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/rehearsal-mode/mobile.png",
+      "sha256": "4fa82b06703549199b32e89e9cd78086274782f21a26cfbff0393da27733abe2",
+      "width": 601,
+      "height": 1301,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/result-comparison/desktop.png",
+      "sha256": "69c4a00e4ee99a10e09e60051d8cbacd246be2da9b226e87064117c0b50e110f",
+      "width": 1536,
+      "height": 960,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/result-comparison/mobile.png",
+      "sha256": "c554d4102cb761bb8f394183dced7865f1e45e1c79275901753060f76a0249eb",
+      "width": 459,
+      "height": 1657,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/transpose-workspace/desktop.png",
+      "sha256": "0df443683ff6d07daebf00c86966dd2cca0e5fb133b89442be16afac9732264f",
+      "width": 1440,
+      "height": 900,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/transpose-workspace/mobile.png",
+      "sha256": "1e482307382830fe5afd434cd46590ca023bea432c21a664ff5400c6f88d2cb4",
+      "width": 459,
+      "height": 1541,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/upload-error/desktop.png",
+      "sha256": "74ea7663730b93048688ed73ae345fe2a5d4b74db7a24e0215af90ceac930040",
+      "width": 1440,
+      "height": 900,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    },
+    {
+      "path": "golden-pages/upload-error/mobile.png",
+      "sha256": "168ececb1664713523513bd3e86ef8c069ccf124b96d160eb2c9db6fa4fcdf68",
+      "width": 390,
+      "height": 1398,
+      "status": "candidate_human_review_required",
+      "generated_from": "internal_html_prototype",
+      "generated_at": "2026-07-20"
+    }
+  ]
+}

@@ -1,0 +1,2372 @@
+version: 1
+product: W_Flyer
+updated_at: '2026-07-20'
+source: ../qa/19-matriz-falhas-pre-mortem.md
+policy:
+  unknown_failure: fail_closed_when_musical_integrity_authorization_or_artifact_integrity_may_be_at_risk
+  new_incident_requires:
+  - incident_id
+  - new_PM_id
+  - minimal_fixture
+  - root_cause
+  - control_update
+  - regression_test
+  - documentation_update
+  default_auto_publish: false
+  activation_requires_all_applicable_entries_evidenced: true
+allowed_values:
+  severity:
+  - low
+  - medium
+  - high
+  - critical
+  handling:
+  - reject
+  - review
+  - retry
+  - degrade
+  - incident
+  retry_class:
+  - never
+  - transient
+  - after_user_action
+  - after_configuration_change
+  status:
+  - identified
+  - designed
+  - implemented
+  - evidenced
+  - accepted
+  - retired
+  residual_risk_status:
+  - not_assessed
+  - open
+  - accepted
+  - mitigated
+  - retired
+entries:
+- id: PM-001
+  category: acquisition_parsing
+  failure: arquivo vazio/truncado
+  detection: bytes/hash/parser
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-001
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-002
+  category: acquisition_parsing
+  failure: extensão correta, conteúdo incorreto
+  detection: assinatura/raiz
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-002
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-003
+  category: acquisition_parsing
+  failure: XXE/XInclude/URL externa
+  detection: parser seguro
+  safe_response: rejeitar/log seguro
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-003
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-004
+  category: acquisition_parsing
+  failure: XML profundo/excessivo
+  detection: limites
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-004
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-005
+  category: acquisition_parsing
+  failure: MXL zip bomb/path traversal
+  detection: container gate
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-005
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-006
+  category: acquisition_parsing
+  failure: PDF com conteúdo ativo/malformado
+  detection: sandbox/validator
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-006
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-007
+  category: acquisition_parsing
+  failure: arquivo muda entre upload/processamento
+  detection: hash
+  safe_response: falhar integridade
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-007
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-008
+  category: acquisition_parsing
+  failure: charset/texto inválido
+  detection: decoder/schema
+  safe_response: erro específico
+  severity: high
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-008
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-009
+  category: musical_structure
+  failure: measures com duração inconsistente
+  detection: normalizador
+  safe_response: review/rejeitar
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-009
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-010
+  category: musical_structure
+  failure: voices sem backup/forward coerente
+  detection: timeline validator
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-010
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-011
+  category: musical_structure
+  failure: ties órfãos
+  detection: tie graph
+  safe_response: rejeitar/warning conforme impacto
+  severity: high
+  handling: degrade
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-011
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-012
+  category: musical_structure
+  failure: tuplets inconsistentes
+  detection: duration invariant
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-012
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-013
+  category: musical_structure
+  failure: grace notes sem política
+  detection: profile detector
+  safe_response: desabilitar operação
+  severity: high
+  handling: degrade
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-013
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-014
+  category: musical_structure
+  failure: cross-staff perdido
+  detection: event graph
+  safe_response: review/block
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-014
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-015
+  category: musical_structure
+  failure: instrument change ignorado
+  detection: detector
+  safe_response: rejeitar perfil
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-015
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-016
+  category: musical_structure
+  failure: unpitched tratado como pitch
+  detection: notation detector
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-016
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-017
+  category: musical_structure
+  failure: microtom arredondado para semitom
+  detection: pitch validator
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-017
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-018
+  category: musical_structure
+  failure: cue notes confundidas com material principal
+  detection: cue metadata
+  safe_response: review
+  severity: high
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-018
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-019
+  category: musical_structure
+  failure: ossia/alternative staff processada como simultânea
+  detection: structure detector
+  safe_response: review/rejeitar
+  severity: high
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-019
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-020
+  category: musical_structure
+  failure: repeats expandidos duas vezes
+  detection: playback/semantic graph
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-020
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-021
+  category: transposition
+  failure: semitone-only gera grafia errada
+  detection: diatonic invariant
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-021
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-022
+  category: transposition
+  failure: oitava de instrumento ignorada
+  detection: interval vector
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-022
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-023
+  category: transposition
+  failure: '`<transpose>` de origem aplicado duas vezes'
+  detection: source normalization
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-023
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-024
+  category: transposition
+  failure: key signature não acompanha região
+  detection: key map diff
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-024
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-025
+  category: transposition
+  failure: harmony root/bass não transpostos
+  detection: harmony diff
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-025
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-026
+  category: transposition
+  failure: pitch de concerto muda
+  detection: independent checker
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-026
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-027
+  category: transposition
+  failure: nota fora do range após escrita
+  detection: playability preflight
+  safe_response: warning/block conforme operação
+  severity: high
+  handling: degrade
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-027
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-028
+  category: transposition
+  failure: enarmonia ilegível
+  detection: policy checker
+  safe_response: warning/review
+  severity: medium
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-028
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-029
+  category: omr
+  failure: clave reconhecida errada
+  detection: structural comparison/review
+  safe_response: origem não verificada
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-029
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-030
+  category: omr
+  failure: armadura omitida
+  detection: key consistency
+  safe_response: review
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-030
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-031
+  category: omr
+  failure: acidente perdido
+  detection: event confidence
+  safe_response: review/block
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-031
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-032
+  category: omr
+  failure: duração/beam incorreto
+  detection: measure invariant
+  safe_response: review/block
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-032
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-033
+  category: omr
+  failure: voz fundida/dividida
+  detection: voice analysis
+  safe_response: review
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-033
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-034
+  category: omr
+  failure: página fora de ordem/ausente
+  detection: page manifest
+  safe_response: review
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-034
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-035
+  category: omr
+  failure: texto/instrumento detectado errado
+  detection: user confirmation
+  safe_response: não assumir
+  severity: high
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-035
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-036
+  category: omr
+  failure: OMR exporta MusicXML incompleto
+  detection: schema + semantic gates
+  safe_response: não publicar verificado
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-036
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-037
+  category: melody_extraction
+  failure: nota mais aguda escolhida como regra
+  detection: benchmark adversarial
+  safe_response: modelo proibido
+  severity: high
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-037
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-038
+  category: melody_extraction
+  failure: acompanhamento arpejado entra na melodia
+  detection: candidate evidence
+  safe_response: review
+  severity: high
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-038
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-039
+  category: melody_extraction
+  failure: melodia em voz interna omitida
+  detection: labels/corpus
+  safe_response: review/block
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-039
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-040
+  category: melody_extraction
+  failure: troca de voz no meio da frase
+  detection: phrase continuity
+  safe_response: review
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-040
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-041
+  category: melody_extraction
+  failure: octave doubling vira acorde
+  detection: doubling policy
+  safe_response: escolher política
+  severity: high
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-041
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-042
+  category: melody_extraction
+  failure: ornamentação descartada
+  detection: ornament mode
+  safe_response: diff/review
+  severity: medium
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-042
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-043
+  category: melody_extraction
+  failure: anacruse perdida
+  detection: timeline invariant
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-043
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-044
+  category: melody_extraction
+  failure: notas simultâneas sem decisão
+  detection: monophony validator
+  safe_response: review
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-044
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-045
+  category: melody_extraction
+  failure: evento criado na extração
+  detection: provenance invariant
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-045
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-046
+  category: analysis_harmonization
+  failure: modo global ignora modulação
+  detection: tonal region map
+  safe_response: review
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-046
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-047
+  category: analysis_harmonization
+  failure: nota de suspensão tratada como chord tone
+  detection: non-chord analysis
+  safe_response: variante penalizada/rejeitada
+  severity: high
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-047
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-048
+  category: analysis_harmonization
+  failure: cadência estrutural destruída
+  detection: cadence invariant
+  safe_response: rejeitar no perfil
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-048
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-049
+  category: analysis_harmonization
+  failure: ritmo harmônico excessivo para andamento
+  detection: density policy
+  safe_response: warning/rejeitar
+  severity: medium
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-049
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-050
+  category: analysis_harmonization
+  failure: melodia alterada
+  detection: locked melody hash
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-050
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-051
+  category: analysis_harmonization
+  failure: vozes paralelas proibidas no perfil clássico
+  detection: voice-leading rules
+  safe_response: rejeitar variante
+  severity: high
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-051
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-052
+  category: analysis_harmonization
+  failure: regra clássica aplicada a jazz/modal
+  detection: profile mismatch
+  safe_response: bloquear policy
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-052
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-053
+  category: analysis_harmonization
+  failure: acorde sem pitch de melodia compatível
+  detection: vertical validator
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-053
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-054
+  category: analysis_harmonization
+  failure: modelo inventa símbolo/nota inválida
+  detection: schema/constraints
+  safe_response: rejeitar
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-054
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-055
+  category: analysis_harmonization
+  failure: todas variantes praticamente iguais
+  detection: semantic distance
+  safe_response: regenerar/avisar
+  severity: medium
+  handling: degrade
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-055
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-056
+  category: analysis_harmonization
+  failure: “sentimento” inferido como fato
+  detection: UX/content tests
+  safe_response: remover/confirmar usuário
+  severity: medium
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-056
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-057
+  category: playability_adaptation
+  failure: range absoluto cadastrado errado
+  detection: catalog review
+  safe_response: flag off/corrigir versão
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-057
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-058
+  category: playability_adaptation
+  failure: acorde impossível apesar de contagem válida
+  detection: instrument solver
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-058
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-059
+  category: playability_adaptation
+  failure: frase de sopro sem respiração
+  detection: tempo/phrase model
+  safe_response: finding
+  severity: medium
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-059
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-060
+  category: playability_adaptation
+  failure: registro sem projeção
+  detection: register profile
+  safe_response: warning
+  severity: medium
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-060
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-061
+  category: playability_adaptation
+  failure: dificuldade ignora andamento
+  detection: tempo-aware rules
+  safe_response: recalcular
+  severity: medium
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-061
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-062
+  category: playability_adaptation
+  failure: adaptação remove nota estrutural
+  detection: fidelity/diff
+  safe_response: review/block
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-062
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-063
+  category: playability_adaptation
+  failure: técnica não modelada tratada como segura
+  detection: unknown-technique rule
+  safe_response: expert review
+  severity: critical
+  handling: review
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-063
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-064
+  category: playability_adaptation
+  failure: nível iniciante usado como física absoluta
+  detection: profile separation
+  safe_response: corrigir severity
+  severity: medium
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-064
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-065
+  category: score_parts_engraving
+  failure: parte diverge do score
+  detection: consistency properties
+  safe_response: bloquear pacote
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-065
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-066
+  category: score_parts_engraving
+  failure: score em concert e parte written confundidos
+  detection: mode manifest
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-066
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-067
+  category: score_parts_engraving
+  failure: rehearsal marks divergentes
+  detection: ID check
+  safe_response: bloquear
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-067
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-068
+  category: score_parts_engraving
+  failure: page turn em passagem contínua
+  detection: layout analysis
+  safe_response: warning/block
+  severity: medium
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-068
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-069
+  category: score_parts_engraving
+  failure: colisão cobre acidente/dinâmica
+  detection: geometry detector
+  safe_response: bloquear PDF
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-069
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-070
+  category: score_parts_engraving
+  failure: fonte musical ausente troca glifo
+  detection: font manifest
+  safe_response: bloquear renderer
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-070
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-071
+  category: score_parts_engraving
+  failure: watermark atravessa nota
+  detection: safe-zone validator
+  safe_response: bloquear PDF
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-071
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-072
+  category: score_parts_engraving
+  failure: layout diff interpretado como musical
+  detection: diff classifier
+  safe_response: separar categorias
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-072
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-073
+  category: audio_rehearsal
+  failure: áudio usa pitch escrito
+  detection: pitch comparison
+  safe_response: bloquear áudio
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-073
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-074
+  category: audio_rehearsal
+  failure: repeat/endings fora de ordem
+  detection: occurrence corpus
+  safe_response: bloquear following
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-074
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-075
+  category: audio_rehearsal
+  failure: A/B desalinhado
+  detection: timestamp tolerance
+  safe_response: desabilitar toggle
+  severity: critical
+  handling: degrade
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-075
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-076
+  category: audio_rehearsal
+  failure: volume diferente influencia avaliação
+  detection: loudness normalization
+  safe_response: normalizar
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-076
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-077
+  category: audio_rehearsal
+  failure: cursor atualiza DOM inteiro
+  detection: performance test
+  safe_response: refatorar camada
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-077
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-078
+  category: audio_rehearsal
+  failure: autoplay sem consentimento
+  detection: E2E/a11y
+  safe_response: impedir
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-078
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-079
+  category: audio_rehearsal
+  failure: sample sem licença
+  detection: dependency inventory
+  safe_response: não distribuir
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-079
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-080
+  category: audio_rehearsal
+  failure: anotação perde âncora após reflow
+  detection: remap check
+  safe_response: marcar órfã
+  severity: medium
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-080
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-081
+  category: backend_operations
+  failure: double click cria jobs duplicados
+  detection: idempotency test
+  safe_response: mesmo job
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-081
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-082
+  category: backend_operations
+  failure: worker crash após upload de artefato
+  detection: atomic publish test
+  safe_response: reconciliar/não público
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-082
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-083
+  category: backend_operations
+  failure: retry de erro determinístico
+  detection: taxonomy test
+  safe_response: não retry
+  severity: high
+  handling: retry
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-083
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-084
+  category: backend_operations
+  failure: job preso por lease expirado
+  detection: reconciler
+  safe_response: retomar/falhar seguro
+  severity: critical
+  handling: retry
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-084
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-085
+  category: backend_operations
+  failure: cache usa versão antiga de modelo
+  detection: dependency hash
+  safe_response: invalidar
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-085
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-086
+  category: backend_operations
+  failure: flag UI on/backend off
+  detection: capability contract
+  safe_response: UI obedece backend
+  severity: high
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-086
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-087
+  category: backend_operations
+  failure: progresso inventado
+  detection: stage contract
+  safe_response: sem percentual falso
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-087
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-088
+  category: backend_operations
+  failure: purge remove manifesto antes da política
+  detection: retention tests
+  safe_response: ordem correta
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-088
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-089
+  category: security_privacy_authorship
+  failure: sessão B acessa artefato A
+  detection: IDOR test
+  safe_response: '404'
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-089
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-090
+  category: security_privacy_authorship
+  failure: metadado musical injeta prompt
+  detection: adversarial fixture
+  safe_response: tratar como dado
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-090
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-091
+  category: security_privacy_authorship
+  failure: log contém letra/partitura
+  detection: log scanner
+  safe_response: bloquear CI/incidente
+  severity: critical
+  handling: incident
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-091
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-092
+  category: security_privacy_authorship
+  failure: upload usado para treino sem opt-in
+  detection: data lineage audit
+  safe_response: proibido
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-092
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-093
+  category: security_privacy_authorship
+  failure: crédito do autor removido
+  detection: metadata diff
+  safe_response: bloquear exportação
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-093
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-094
+  category: security_privacy_authorship
+  failure: watermark contém PII
+  detection: payload policy
+  safe_response: rejeitar token
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-094
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-095
+  category: security_privacy_authorship
+  failure: link compartilhado sem revogação
+  detection: security test
+  safe_response: não habilitar
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-095
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-096
+  category: security_privacy_authorship
+  failure: comentário com script/URL perigosa
+  detection: sanitização
+  safe_response: neutralizar
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-096
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-097
+  category: frontend_visual_reference
+  failure: IA substitui workspace por dashboard
+  detection: golden review
+  safe_response: rejeitar PR
+  severity: high
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-097
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-098
+  category: frontend_visual_reference
+  failure: only-happy-path
+  detection: state coverage
+  safe_response: bloquear DoD
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-098
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-099
+  category: frontend_visual_reference
+  failure: warning em toast desaparece
+  detection: story/E2E
+  safe_response: painel persistente
+  severity: high
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-099
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-100
+  category: frontend_visual_reference
+  failure: baseline atualizado sem revisão
+  detection: CI policy
+  safe_response: bloquear
+  severity: high
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-100
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-101
+  category: frontend_visual_reference
+  failure: referência externa copiada
+  detection: provenance review
+  safe_response: remover/refazer
+  severity: high
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-101
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-102
+  category: frontend_visual_reference
+  failure: animação bloqueia CTA
+  detection: motion test
+  safe_response: fallback/imediato
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-102
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-103
+  category: frontend_visual_reference
+  failure: reduced motion apenas acelera
+  detection: accessibility test
+  safe_response: variante reduzida
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-103
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-104
+  category: frontend_visual_reference
+  failure: GSAP permanece ativo após navegação
+  detection: leak test
+  safe_response: cleanup
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-104
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-105
+  category: session_api_contracts
+  failure: sessão expira enquanto job válido ainda executa
+  detection: integração sessão/job
+  safe_response: renovar dentro da política ou orientar recuperação; nunca tornar público
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-105
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-106
+  category: session_api_contracts
+  failure: token CSRF expirado, ausente ou reutilizado
+  detection: middleware/nonce
+  safe_response: '`403`, renovar página/token, nenhuma mutação'
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-106
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-107
+  category: session_api_contracts
+  failure: mesma idempotency key usada com payload diferente
+  detection: hash de request
+  safe_response: '`409 IDEMPOTENCY_CONFLICT`'
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-107
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-108
+  category: session_api_contracts
+  failure: rate limit ocorre após bytes já escritos em quarentena
+  detection: teste upload/cleanup
+  safe_response: abortar e remover temporário
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-108
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-109
+  category: session_api_contracts
+  failure: clock skew altera expiração ou URL assinada
+  detection: teste com relógio controlado
+  safe_response: usar horário do servidor e tolerância documentada
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-109
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-110
+  category: session_api_contracts
+  failure: nome Unicode/confusável ou path-like chega ao storage
+  detection: normalização/chave gerada
+  safe_response: ignorar path do cliente e preservar display name sanitizado
+  severity: medium
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-110
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-111
+  category: session_api_contracts
+  failure: upload multipart/chunk duplicado ou fora de ordem
+  detection: manifest/hash
+  safe_response: abortar ou reconstruir somente pelo protocolo suportado
+  severity: high
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-111
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-112
+  category: session_api_contracts
+  failure: capability muda entre configuração e submit
+  detection: capability snapshot
+  safe_response: rejeitar configuração obsoleta e recarregar opções
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-112
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-113
+  category: session_api_contracts
+  failure: cookie anônimo é perdido e resultado fica órfão
+  detection: fluxo de recuperação
+  safe_response: não contornar autorização; aplicar mecanismo de recuperação aprovado
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-113
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-114
+  category: session_api_contracts
+  failure: cliente envia revisão antiga após nova confirmação
+  detection: '`expected_revision_id`'
+  safe_response: '`409 REVISION_CONFLICT`, preservar ambas'
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-114
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-115
+  category: infrastructure_concurrency_publish
+  failure: banco indisponível antes do commit
+  detection: fault injection
+  safe_response: não responder como aceito
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-115
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-116
+  category: infrastructure_concurrency_publish
+  failure: commit ocorre, mas outbox demora/falha ao publicar
+  detection: reconciler/outbox age
+  safe_response: manter job persistido e publicar posteriormente
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-116
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-117
+  category: infrastructure_concurrency_publish
+  failure: Redis/broker indisponível
+  detection: health/fault injection
+  safe_response: manter outbox pendente; não perder job
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-117
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-118
+  category: infrastructure_concurrency_publish
+  failure: mensagem é entregue mais de uma vez
+  detection: duplicate delivery test
+  safe_response: mesma tentativa lógica/sem artefato duplicado
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-118
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-119
+  category: infrastructure_concurrency_publish
+  failure: worker cai antes/depois de atualizar stage
+  detection: kill-point tests
+  safe_response: lease/reconcile e estado monotônico
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-119
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-120
+  category: infrastructure_concurrency_publish
+  failure: upload ao storage termina parcialmente
+  detection: temp key/checksum
+  safe_response: não promover chave final
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-120
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-121
+  category: infrastructure_concurrency_publish
+  failure: storage fica indisponível depois da transformação
+  detection: fault injection
+  safe_response: retry transitório; resultado não concluído
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-121
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-122
+  category: infrastructure_concurrency_publish
+  failure: checksum do artefato diverge do manifesto
+  detection: verificação antes de publish/download
+  safe_response: bloquear e abrir incidente
+  severity: critical
+  handling: incident
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-122
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-123
+  category: infrastructure_concurrency_publish
+  failure: cancelamento concorre com publicação
+  detection: compare-and-set terminal
+  safe_response: um único estado terminal; cancelado não publica
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-123
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-124
+  category: infrastructure_concurrency_publish
+  failure: purge concorre com download
+  detection: lock/version/retention tests
+  safe_response: resposta consistente, sem download parcial
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-124
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-125
+  category: infrastructure_concurrency_publish
+  failure: purge aponta para artefato de sessão errada
+  detection: ownership + manifest
+  safe_response: bloquear, incidente de segurança
+  severity: critical
+  handling: incident
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-125
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-126
+  category: infrastructure_concurrency_publish
+  failure: mensagem vai para dead-letter sem alerta
+  detection: DLQ monitor
+  safe_response: alertar owner e estado público não fica eternamente processando
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-126
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-127
+  category: infrastructure_concurrency_publish
+  failure: workers com versões diferentes processam o mesmo job
+  detection: manifest/version policy
+  safe_response: fixar versão por job ou rejeitar worker incompatível
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-127
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-128
+  category: infrastructure_concurrency_publish
+  failure: app e banco executam schemas incompatíveis durante deploy
+  detection: migration compatibility test
+  safe_response: bloquear deploy/worker; nunca adivinhar coluna
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-128
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-129
+  category: infrastructure_concurrency_publish
+  failure: jobs caros causam starvation dos simples
+  detection: métricas de fila/quotas
+  safe_response: filas e pesos por complexidade
+  severity: medium
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-129
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-130
+  category: infrastructure_concurrency_publish
+  failure: partitura válida provoca explosão combinatória
+  detection: complexity budget
+  safe_response: pausar/rejeitar com limite explicável
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-130
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-131
+  category: review_collaboration_versioning
+  failure: dois revisores alteram a mesma região
+  detection: optimistic concurrency
+  safe_response: conflito explícito e merge humano
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-131
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-132
+  category: review_collaboration_versioning
+  failure: anotação perde âncora após nova revisão
+  detection: anchor remap
+  safe_response: marcar `orphaned`, não mover silenciosamente
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-132
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-133
+  category: review_collaboration_versioning
+  failure: aprovação é aplicada sobre parent obsoleto
+  detection: parent/revision check
+  safe_response: rejeitar e solicitar nova revisão
+  severity: critical
+  handling: review
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-133
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-134
+  category: review_collaboration_versioning
+  failure: link revogado continua válido por cache
+  detection: auth no fetch/cache policy
+  safe_response: negar acesso e invalidar cache
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-134
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-135
+  category: review_collaboration_versioning
+  failure: comentário/metadado renderiza HTML/script
+  detection: sanitização/CSP
+  safe_response: neutralizar e preservar texto seguro
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-135
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-136
+  category: release_models_corpus_supply_chain
+  failure: feature flag é ligada antes do gate de corpus
+  detection: policy-as-code
+  safe_response: bloquear rollout
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-136
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-137
+  category: release_models_corpus_supply_chain
+  failure: rollback não consegue ler artefato de schema novo
+  detection: backward compatibility fixture
+  safe_response: manter reader compatível ou impedir rollback inseguro
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-137
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-138
+  category: release_models_corpus_supply_chain
+  failure: provedor/modelo fica indisponível
+  detection: circuit breaker
+  safe_response: fallback aprovado ou capability indisponível; sem troca silenciosa
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-138
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-139
+  category: release_models_corpus_supply_chain
+  failure: mesma variante muda sem novo ID por não determinismo
+  detection: artifact immutability
+  safe_response: preservar output concreto e gerar nova revisão
+  severity: critical
+  handling: review
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-139
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-140
+  category: release_models_corpus_supply_chain
+  failure: licença/dependência muda e invalida distribuição
+  detection: SBOM/licence gate
+  safe_response: bloquear release e substituir/comprovar direito
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-140
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-141
+  category: release_models_corpus_supply_chain
+  failure: corpus de release vaza para treino/tuning
+  detection: data-lineage audit
+  safe_response: invalidar benchmark e reconstruir split
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-141
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-142
+  category: release_models_corpus_supply_chain
+  failure: equipe ajusta algoritmo repetidamente contra test set
+  detection: governance audit
+  safe_response: congelar holdout novo e registrar contaminação
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-142
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-143
+  category: release_models_corpus_supply_chain
+  failure: métrica agregada mascara falha em instrumento/textura
+  detection: relatório estratificado
+  safe_response: não ativar estrato reprovado
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-143
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-144
+  category: release_models_corpus_supply_chain
+  failure: logs/telemetria capturam conteúdo musical ou PII
+  detection: scanner/amostragem
+  safe_response: remover, rotacionar e abrir incidente
+  severity: critical
+  handling: incident
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-144
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-145
+  category: frontend_offline_accessibility
+  failure: UI mostra sucesso antes do estado terminal verificado
+  detection: contract/E2E
+  safe_response: exibir aceito/processando, nunca concluído otimista
+  severity: critical
+  handling: reject
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-145
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-146
+  category: frontend_offline_accessibility
+  failure: rede cai depois que o backend aceitou o job
+  detection: E2E offline
+  safe_response: recuperar pelo job/session; não criar duplicado
+  severity: critical
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-146
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-147
+  category: frontend_offline_accessibility
+  failure: ação feita offline parece enviada
+  detection: PWA/E2E
+  safe_response: declarar local/não enviado; não enfileirar mutação sem protocolo
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-147
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-148
+  category: frontend_offline_accessibility
+  failure: viewport/zoom esconde CTA, warning ou inspector
+  detection: visual/a11y matrix
+  safe_response: reflow e ação acessível
+  severity: medium
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-148
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-149
+  category: frontend_offline_accessibility
+  failure: teclado/leitor de tela não consegue selecionar evento musical
+  detection: interaction/a11y test
+  safe_response: oferecer lista textual e controles equivalentes
+  severity: critical
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-149
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-150
+  category: frontend_offline_accessibility
+  failure: ruído de antialiasing causa atualização indiscriminada de baseline
+  detection: deterministic visual env
+  safe_response: tolerância controlada e revisão humana
+  severity: medium
+  handling: review
+  retry_class: never
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-150
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-151
+  category: frontend_offline_accessibility
+  failure: nomes de notas/instrumentos mudam significado por locale
+  detection: locale fixtures
+  safe_response: armazenar IDs canônicos e localizar apenas apresentação
+  severity: medium
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-151
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-152
+  category: frontend_offline_accessibility
+  failure: tempo decimal/locale é interpretado incorretamente
+  detection: parser/locale tests
+  safe_response: schema numérico canônico e validação
+  severity: medium
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-152
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-153
+  category: frontend_offline_accessibility
+  failure: áudio perde sincronização após background/resume
+  detection: lifecycle test
+  safe_response: recalibrar relógio ou desabilitar following
+  severity: medium
+  handling: retry
+  retry_class: transient
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-153
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-154
+  category: frontend_offline_accessibility
+  failure: service worker entrega capability/API schema antigo
+  detection: version handshake
+  safe_response: invalidar cache e bloquear submit obsoleto
+  severity: critical
+  handling: reject
+  retry_class: after_configuration_change
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-154
+  evidence_required: true
+  residual_risk_status: not_assessed
+- id: PM-155
+  category: frontend_offline_accessibility
+  failure: reduced motion é respeitado na UI, mas ignorado em canvas/SVG
+  detection: a11y motion test
+  safe_response: substituir por estado estático
+  severity: medium
+  handling: reject
+  retry_class: after_user_action
+  auto_publish_allowed: false
+  status: designed
+  owner: TBD
+  test_ids:
+  - TBD-PM-155
+  evidence_required: true
+  residual_risk_status: not_assessed

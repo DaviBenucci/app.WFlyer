@@ -1,0 +1,44 @@
+id: WF-UPLOAD-ERROR-001
+status: binding
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+purpose:
+  primary: Explicar por que um arquivo não pode entrar e como corrigir.
+layout:
+  shell: studio
+  score_area: safe_empty_state
+  inspector: validation_report
+must_have:
+- nome do arquivo sanitizado
+- código público e explicação acionável
+- formatos/capability suportados
+- opção de substituir ou remover
+- nenhuma alegação de que o conteúdo foi processado
+must_not_have:
+- stack trace
+- PM id público
+- retry automático para formato incompatível
+- erro somente por cor
+states:
+- invalid_signature
+- unsupported_structure
+- too_large
+- malicious_file
+- capability_disabled
+- session_lost
+accessibility:
+  focus_moves_to_error_summary: true
+  error_list_textual: true
+  keyboard_complete: true
+  reduced_motion_required: true
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: desktop
+  width: 1440
+  height: 900
+baselines:
+- golden-pages/upload-error/desktop.png
+- golden-pages/upload-error/mobile.png

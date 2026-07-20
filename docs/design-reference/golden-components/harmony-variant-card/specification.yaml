@@ -1,0 +1,16 @@
+id: WF-HARMONY-VARIANT-001
+status: binding
+component: HarmonyVariantCard
+purpose: Comparar propostas sem ranking mágico.
+required:
+  - neutral name
+  - fidelity profile
+  - semantic change summary
+  - playability state
+  - warnings
+  - listen compare action when available
+states: [ready, selected, invalid, audio_unavailable, source_changed]
+forbidden:
+  - stars
+  - generic quality percentage
+  - best badge without user criteria

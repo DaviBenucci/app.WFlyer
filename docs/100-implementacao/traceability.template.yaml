@@ -1,0 +1,21 @@
+version: 1
+product: W_Flyer
+rows:
+  - requirement_id: REQ-TBD
+    capability_id: CAP-TBD
+    source_documents: []
+    mdr_ids: []
+    api_schema_refs: []
+    migration_refs: []
+    backend_modules: []
+    frontend_reference_ids: []
+    public_error_codes: []
+    failure_mode_ids: []
+    test_ids: []
+    metrics: []
+    runbook: TBD
+    feature_flag: TBD
+    evidence_links: []
+    owner: TBD
+    status: planned
+    residual_risk: not_assessed

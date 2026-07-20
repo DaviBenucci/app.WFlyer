@@ -106,3 +106,73 @@ Eventos de segurança e ciclo de vida devem permitir responder:
 - qual erro/warning categórico ocorreu.
 
 Auditoria não é um espelho de logs brutos e respeita retenção/minimização.
+
+## Métricas musicais avançadas
+
+Internas e sem labels de alta cardinalidade:
+
+```text
+wflyer_assurance_failure_total{check,operation}
+wflyer_review_required_total{kind}
+wflyer_review_resolution_seconds{kind}
+wflyer_melody_ambiguity_total{band}
+wflyer_harmony_variant_rejected_total{constraint}
+wflyer_target_capability_violation_total{type}
+wflyer_watermark_failure_total{stage}
+wflyer_signature_failure_total{key_id}
+```
+
+Não colocar título, nome do arquivo, pitch sequence, token completo ou hash inteiro em labels. Dashboards separam falha operacional de falha musical determinística.
+
+## Métricas da visão crítica
+
+### Integridade e revisão
+
+```text
+verified_false_positive_rate{capability,instrument,texture}
+review_required_rate{reason}
+rejection_rate{failure_mode_id}
+unknown_failure_rate{stage}
+provenance_coverage_ratio
+musical_diff_unmapped_event_count
+stale_revision_conflict_rate
+```
+
+### Musicalidade aplicada
+
+```text
+melody_event_precision/recall/f1{texture}
+melody_boundary_f1
+playability_false_negative_rate{instrument}
+harmonization_hard_constraint_rejection_rate
+variant_semantic_distance
+score_part_inconsistency_count
+playback_mapping_error_rate
+```
+
+### Operação
+
+```text
+outbox_oldest_pending_seconds
+job_lease_recovery_count
+artifact_checksum_failure_count
+cancel_publish_race_count
+dlq_depth
+worker_version_mismatch_count
+capability_rollback_count
+```
+
+Métricas agregadas sempre devem ser quebradas por formato, instrumento, textura, complexidade, versão de engine e capability. Uma média boa não autoriza rollout de um estrato reprovado.
+
+## Alertas críticos
+
+Alertar imediatamente quando houver:
+
+- resultado revogado após publicação;
+- checksum/provenance inconsistente;
+- IDOR/autorização;
+- `verified_false_positive` confirmado;
+- score/parte divergente;
+- unknown failure em estágio de publicação;
+- conteúdo musical/PII detectado em log;
+- capability ligada sem gate aprovado.

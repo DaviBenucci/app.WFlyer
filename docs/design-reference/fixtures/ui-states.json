@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "files": {
+    "valid_musicxml": {"name": "estudo-em-do.musicxml", "size_bytes": 184220, "format": "musicxml"},
+    "long_name": {"name": "arranjo-completo-ensaio-geral-revisao-finalissima-03.musicxml", "size_bytes": 998220, "format": "musicxml"},
+    "unsupported_score": {"name": "piano-duas-pautas.musicxml", "reason": "UNSUPPORTED_SCORE_STRUCTURE"}
+  },
+  "warnings": [
+    {"code": "TARGET_CLEF_REVIEW_RECOMMENDED", "measure": "18"},
+    {"code": "COMFORTABLE_RANGE_WARNING", "measure": "24-27"}
+  ],
+  "job_states": ["queued", "running", "awaiting_user_input", "completed", "completed_with_warnings", "failed", "cancelled"],
+  "review_cases": {
+    "melody_ambiguity": {"phrases": 4, "candidate_count": 2, "blocking_regions": ["m. 17-20"]},
+    "harmony_variants": {"count": 3, "selected": null},
+    "playability": {"blocking": 1, "warnings": 3, "suggestions": 2}
+  }
+}

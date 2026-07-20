@@ -23,3 +23,16 @@ A matriz executável está em:
 - falhas são categorizadas e observáveis.
 
 Nenhum teste de aplicação é considerado executado apenas porque a documentação existe.
+
+## Operações avançadas
+
+- `operation` discriminada rejeita parâmetros de outro modo;
+- review é versionado, idempotente e autorizado;
+- `awaiting_user_input` libera lease e não progride sozinho;
+- evento de saída possui provenance;
+- harmonização preserva melodia bloqueada;
+- verificador independente detecta mutações do transformador;
+- falha de assinatura não publica PDF;
+- token de verificação não concede acesso;
+- seed/versão reproduzem variante;
+- capability desligada rejeita endpoint e UI não a anuncia.

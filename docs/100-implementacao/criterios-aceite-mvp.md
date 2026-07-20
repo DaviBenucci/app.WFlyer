@@ -113,3 +113,34 @@ Se algum desses itens for habilitado, deve satisfazer seu gate adicional antes d
 ## Regra final
 
 O Core só recebe status **ACEITO** quando todos os itens aplicáveis acima possuem evidência. Item “não testado” é pendência; não é aprovação tácita.
+
+## Não expansão acidental do Core
+
+O MVP Core não é reprovado por não conter extração, harmonização ou watermark. Ele é reprovado se tentar simular essas capacidades sem gates. Qualquer implementação antecipada deve permanecer feature-flagged, sem promessa pública e fora do caminho crítico do Core.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## 10. Fundação crítica e pre-mortem
+
+- [ ] `design-reference/reference-manifest.yaml` e seus schemas validam.
+- [ ] Golden references do fluxo Core possuem estados desktop, mobile, erro e reduced motion documentados.
+- [ ] Nenhuma referência externa foi copiada como branding, código ou asset.
+- [ ] Eventos musicais suportados recebem IDs estáveis durante a execução e aparecem no manifesto/mapeamento.
+- [ ] O relatório de garantia aponta checks realmente executados, sem percentuais inventados.
+- [ ] Riscos críticos do gate pré-código possuem owner, teste planejado e comportamento seguro.
+- [ ] Cada erro público possui estado de UI e não depende apenas de toast.
+- [ ] A matriz de falhas conhecida está vinculada a testes implementados ou backlog bloqueante.
+- [ ] Existe procedimento testado para transformar incidente desconhecido em fixture de regressão.
+
+Esses itens fortalecem o Core sem habilitar as trilhas L, H, I, A, E ou C.
+
+## Critério de não-regressão por capacidades futuras
+
+A documentação avançada não expande o aceite do Core. O MVP somente é aprovado quando:
+
+- capabilities avançadas aparecem `disabled` no contrato;
+- UI não oferece ação sem backend/corpus aprovados;
+- protótipos não entram acidentalmente no bundle de produção;
+- failure catalog do Core possui owner/teste/evidência para entradas aplicáveis;
+- qualquer exceção desconhecida no pipeline crítico termina sem artefato público;
+- referência visual do Core passou por estados negativos, mobile, zoom e reduced motion.

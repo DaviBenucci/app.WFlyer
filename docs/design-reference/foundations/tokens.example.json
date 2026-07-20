@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "note": "Baseline de referência; os valores canônicos continuam em frontend/05-design-system.md.",
+  "color": {
+    "background": "oklch(0.982 0.008 86)",
+    "foreground": "oklch(0.19 0.025 278)",
+    "paper": "oklch(0.995 0.004 88)",
+    "border": "oklch(0.875 0.018 278)",
+    "primary": "oklch(0.55 0.22 291)",
+    "origin": "oklch(0.58 0.17 250)",
+    "target": "oklch(0.70 0.13 196)",
+    "danger": "oklch(0.57 0.21 27)"
+  },
+  "space": [4, 8, 12, 16, 24, 32, 48, 64, 96],
+  "radius": {"xs": 4, "sm": 8, "md": 12, "lg": 18},
+  "motion_ms": {"instant": 80, "fast": 140, "standard": 220, "slow": 320, "scene_max": 1800}
+}

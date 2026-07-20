@@ -1,0 +1,84 @@
+version: 1
+updated_at: '2026-07-20'
+policy: No reference becomes production-approved without explicit human sign-off.
+references:
+  WF-HOME-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-TRANSPOSE-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-MELODY-REVIEW-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-DIFF-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-HARMONY-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-REHEARSAL-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-INSTRUMENT-PICKER-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-MUSICAL-DIFF-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-PLAYABILITY-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-HARMONY-VARIANT-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-MOTION-INK-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-PROCESSING-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-UPLOAD-ERROR-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-ENSEMBLE-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-PLAYBACK-TRANSPORT-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.
+  WF-PROCESSING-TIMELINE-001:
+    status: pending_product_owner
+    approved_by: null
+    approved_at: null
+    notes: Original W_Flyer documentation baseline; not production UI.

@@ -90,3 +90,43 @@ OMR, rasterização e renderização ocorrem em processo/container separado, sem
 - engine de renderização;
 - limites exatos de páginas, tamanho e tempo;
 - suporte público a `.mxl`.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Extensões arquiteturais críticas
+
+### Modelo de domínio
+
+O processamento deve usar um modelo interno tipado de eventos, relações e regiões. MusicXML continua sendo o artefato canônico de interoperabilidade. Não acoplar IDs de domínio a posição no XML ou ao DOM de um renderer.
+
+### Qualidade visual
+
+```text
+Storybook para estados isolados
+Testing Library/Vitest para comportamento
+axe ou equivalente para checks automatizados
+Playwright para E2E e screenshots em ambiente fixado
+JSON Schema/YAML validation para design-reference
+```
+
+Baseline visual deve ser gerado em container/CI estável. Diferença de pixels é sinal, não aprovação automática.
+
+### Áudio futuro
+
+No navegador, Web Audio pode coordenar transporte, ganho, metrônomo e reprodução derivada. O motor e o banco de samples continuam decisão pendente. Samples e soundfonts exigem inventário de licença; nenhuma URL externa é carregada silenciosamente em runtime.
+
+### Notação e engraving
+
+Renderer e fonte musical ficam atrás de adapter. Fontes/glifos devem ter versão e hash registrados. SMuFL pode orientar interoperabilidade de glifos quando o renderer escolhido o suportar. MEI pode ser avaliado para pesquisa/análise, mas não substitui MusicXML como formato público canônico sem ADR.
+
+### IA e solvers
+
+Qualquer modelo/solver deve ter:
+
+- interface determinística de entrada e saída;
+- timeout e sandbox;
+- validação de schema;
+- restrições rígidas fora do modelo;
+- versão, seed/configuração e licença registradas;
+- política de dados e opt-in separados;
+- fallback seguro sem publicação.

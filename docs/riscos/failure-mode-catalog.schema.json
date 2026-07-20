@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wflyer.local/schemas/failure-mode-catalog.schema.json",
+  "type": "object",
+  "required": [
+    "version",
+    "product",
+    "updated_at",
+    "policy",
+    "entries"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "product": {
+      "const": "W_Flyer"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "policy": {
+      "type": "object"
+    },
+    "allowed_values": {
+      "type": "object"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "failure",
+          "detection",
+          "safe_response",
+          "severity",
+          "handling",
+          "retry_class",
+          "auto_publish_allowed",
+          "status",
+          "owner",
+          "test_ids",
+          "evidence_required",
+          "residual_risk_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^PM-[0-9]{3}$"
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "failure": {
+            "type": "string",
+            "minLength": 3
+          },
+          "detection": {
+            "type": "string",
+            "minLength": 2
+          },
+          "safe_response": {
+            "type": "string",
+            "minLength": 2
+          },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "handling": {
+            "enum": [
+              "reject",
+              "review",
+              "retry",
+              "degrade",
+              "incident"
+            ]
+          },
+          "retry_class": {
+            "enum": [
+              "never",
+              "transient",
+              "after_user_action",
+              "after_configuration_change"
+            ]
+          },
+          "auto_publish_allowed": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "identified",
+              "designed",
+              "implemented",
+              "evidenced",
+              "accepted",
+              "retired"
+            ]
+          },
+          "owner": {
+            "type": "string"
+          },
+          "test_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_required": {
+            "type": "boolean"
+          },
+          "residual_risk_status": {
+            "enum": [
+              "not_assessed",
+              "open",
+              "accepted",
+              "mitigated",
+              "retired"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": true
+}

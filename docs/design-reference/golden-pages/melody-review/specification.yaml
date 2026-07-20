@@ -1,0 +1,44 @@
+id: WF-MELODY-REVIEW-001
+status: binding
+purpose:
+  primary: Confirmar a linha melódica por frase/região.
+layout:
+  shell: studio
+  score_panes: source_with_candidate_overlay
+  inspector: candidate_and_evidence
+  timeline: phrase_segments
+must_have:
+- candidatos claramente diferenciados
+- região atual e alternativas
+- evidências e impacto
+- reprodução isolada quando disponível
+- desfazer e confirmar
+must_not_have:
+- confidence global como única explicação
+- seleção automática irreversível
+- nota mais aguda como rótulo de verdade
+states:
+- material_ambiguity
+- blocking_ambiguity
+- candidate_selected
+- submitting
+- revision_conflict
+- confirmed
+accessibility:
+  keyboard_note_selection: true
+  non_color_encoding: true
+  textual_event_list: true
+  reduced_motion_required: true
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: desktop
+  width: 1440
+  height: 900
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+baselines:
+- golden-pages/melody-review/desktop.png
+- golden-pages/melody-review/mobile.png

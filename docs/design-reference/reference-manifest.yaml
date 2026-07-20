@@ -1,0 +1,245 @@
+version: 1
+product: W_Flyer
+updated_at: 2026-07-20
+precedence:
+- domain_security_accessibility_contracts
+- internal_executable_reference
+- approved_storybook_story
+- machine_readable_specification
+- internal_golden_screenshot
+- external_inspiration
+rules:
+  require_reference_id: true
+  require_mobile_reference: true
+  require_error_states: true
+  require_reduced_motion: true
+  require_accessibility_review: true
+  require_visual_diff: true
+  external_products:
+    may_extract_patterns: true
+    may_copy_branding: false
+    may_copy_source_code: false
+    may_copy_layout_exactly: false
+    may_store_assets_without_license: false
+references:
+  WF-HOME-001:
+    status: binding-composition
+    kind: page
+    specification: golden-pages/home/specification.yaml
+    prototype: prototypes/index.html
+    required_states:
+    - default
+    - reduced_motion
+    - mobile
+    screenshots:
+    - golden-pages/home/desktop.png
+    - golden-pages/home/mobile.png
+    approval: pending_product_owner
+    baseline_kind: original_wflyer_documentation_candidate
+    baselines:
+    - golden-pages/home/desktop.png
+    - golden-pages/home/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+  WF-TRANSPOSE-001:
+    status: binding
+    kind: page
+    specification: golden-pages/transpose-workspace/specification.yaml
+    prototype: prototypes/transpose-workspace.html
+    required_states:
+    - empty
+    - validated
+    - incompatible_texture
+    - processing
+    - failed
+    screenshots:
+    - golden-pages/transpose-workspace/desktop.png
+    - golden-pages/transpose-workspace/mobile.png
+    approval: pending_product_owner
+    baseline_kind: original_wflyer_documentation_candidate
+    baselines:
+    - golden-pages/transpose-workspace/desktop.png
+    - golden-pages/transpose-workspace/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+  WF-MELODY-REVIEW-001:
+    status: binding
+    kind: page
+    specification: golden-pages/melody-review/specification.yaml
+    prototype: prototypes/melody-review.html
+    required_states:
+    - material_ambiguity
+    - blocking_ambiguity
+    - revision_conflict
+    screenshots:
+    - golden-pages/melody-review/desktop.png
+    - golden-pages/melody-review/mobile.png
+    approval: pending_product_owner
+    baseline_kind: original_wflyer_documentation_candidate
+    baselines:
+    - golden-pages/melody-review/desktop.png
+    - golden-pages/melody-review/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+  WF-DIFF-001:
+    status: binding
+    kind: page
+    specification: golden-pages/result-comparison/specification.yaml
+    prototype: prototypes/result-comparison.html
+    required_states:
+    - complete_diff
+    - partial_diff
+    - creative_changes
+    screenshots:
+    - golden-pages/result-comparison/desktop.png
+    - golden-pages/result-comparison/mobile.png
+    approval: pending_product_owner
+    baseline_kind: original_wflyer_documentation_candidate
+    baselines:
+    - golden-pages/result-comparison/desktop.png
+    - golden-pages/result-comparison/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+  WF-HARMONY-001:
+    status: binding-composition
+    kind: page
+    specification: golden-pages/harmonization-lab/specification.yaml
+    prototype: prototypes/harmonization-lab.html
+    required_states:
+    - profile_incomplete
+    - variants_ready
+    - no_valid_variant
+    screenshots:
+    - golden-pages/harmonization-lab/desktop.png
+    - golden-pages/harmonization-lab/mobile.png
+    approval: pending_product_owner
+    baseline_kind: original_wflyer_documentation_candidate
+    baselines:
+    - golden-pages/harmonization-lab/desktop.png
+    - golden-pages/harmonization-lab/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+  WF-REHEARSAL-001:
+    status: binding-composition
+    kind: page
+    specification: golden-pages/rehearsal-mode/specification.yaml
+    prototype: prototypes/rehearsal-mode.html
+    required_states:
+    - ready
+    - playing
+    - mapping_partial
+    - offline_readonly
+    screenshots:
+    - golden-pages/rehearsal-mode/desktop.png
+    - golden-pages/rehearsal-mode/mobile.png
+    approval: pending_product_owner
+    baseline_kind: original_wflyer_documentation_candidate
+    baselines:
+    - golden-pages/rehearsal-mode/desktop.png
+    - golden-pages/rehearsal-mode/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+  WF-INSTRUMENT-PICKER-001:
+    status: binding
+    kind: component
+    specification: golden-components/instrument-picker/specification.yaml
+    approval: pending_product_owner
+  WF-MUSICAL-DIFF-001:
+    status: binding
+    kind: component
+    specification: golden-components/musical-diff/specification.yaml
+    approval: pending_product_owner
+  WF-PLAYABILITY-001:
+    status: binding
+    kind: component
+    specification: golden-components/playability-report/specification.yaml
+    approval: pending_product_owner
+  WF-HARMONY-VARIANT-001:
+    status: binding
+    kind: component
+    specification: golden-components/harmony-variant-card/specification.yaml
+    approval: pending_product_owner
+  WF-MOTION-INK-001:
+    status: binding
+    kind: motion
+    specification: motion/ink-transfer/specification.yaml
+    approval: pending_product_owner
+  WF-PROCESSING-001:
+    status: binding
+    kind: page
+    specification: golden-pages/processing/specification.yaml
+    prototype: prototypes/processing.html
+    required_states:
+    - queued
+    - processing
+    - awaiting_review
+    - transient_failure
+    - deterministic_failure
+    - unknown_incident
+    - cancelled
+    - completed
+    baselines:
+    - golden-pages/processing/desktop.png
+    - golden-pages/processing/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+    approval: pending_product_owner
+    screenshots:
+    - golden-pages/processing/desktop.png
+    - golden-pages/processing/mobile.png
+    baseline_kind: original_wflyer_documentation_candidate
+  WF-UPLOAD-ERROR-001:
+    status: binding
+    kind: page
+    specification: golden-pages/upload-error/specification.yaml
+    prototype: prototypes/upload-error.html
+    required_states:
+    - invalid_signature
+    - unsupported_structure
+    - too_large
+    - malicious_file
+    - capability_disabled
+    - session_lost
+    baselines:
+    - golden-pages/upload-error/desktop.png
+    - golden-pages/upload-error/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+    approval: pending_product_owner
+    screenshots:
+    - golden-pages/upload-error/desktop.png
+    - golden-pages/upload-error/mobile.png
+    baseline_kind: original_wflyer_documentation_candidate
+  WF-ENSEMBLE-001:
+    status: binding-composition
+    kind: page
+    specification: golden-pages/ensemble-package/specification.yaml
+    prototype: prototypes/ensemble-package.html
+    required_states:
+    - draft
+    - checking
+    - needs_review
+    - inconsistency
+    - building
+    - complete
+    - revoked
+    baselines:
+    - golden-pages/ensemble-package/desktop.png
+    - golden-pages/ensemble-package/mobile.png
+    pixel_baseline_status: candidate_human_review_required
+    approval: pending_product_owner
+    screenshots:
+    - golden-pages/ensemble-package/desktop.png
+    - golden-pages/ensemble-package/mobile.png
+    baseline_kind: original_wflyer_documentation_candidate
+  WF-PLAYBACK-TRANSPORT-001:
+    status: binding
+    kind: component
+    specification: golden-components/playback-transport/specification.yaml
+    approval: pending_product_owner
+  WF-PROCESSING-TIMELINE-001:
+    status: binding
+    kind: component
+    specification: golden-components/processing-timeline/specification.yaml
+    approval: pending_product_owner
+baseline_policy:
+  composition_status: binding_as_documented
+  pixel_status: candidate_human_review_required
+  production_code: false
+  regeneration_requires:
+  - deterministic_environment
+  - reason
+  - human_review
+  - updated_hash_manifest

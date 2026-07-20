@@ -1,0 +1,14 @@
+id: WF-PROCESSING-TIMELINE-001
+status: binding
+purpose: Mostrar estágios reais e recuperação.
+required_props: [stage, job_status, retry_class, review_task, public_error]
+must_have:
+  - estágio atual
+  - etapas concluídas
+  - estado sem percentual quando duração é desconhecida
+  - ação coerente com retry_class
+states: [queued, running, awaiting_user, retryable, blocked, incident, completed, cancelled]
+prohibitions:
+  - progresso artificial
+  - animação infinita sem texto
+  - retry para ambiguidade

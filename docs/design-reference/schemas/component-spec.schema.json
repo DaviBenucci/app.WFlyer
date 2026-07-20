@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wflyer.local/schemas/component-spec.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "status",
+    "purpose",
+    "states"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^WF-"
+    },
+    "status": {
+      "enum": [
+        "binding",
+        "binding-composition",
+        "reference",
+        "draft"
+      ]
+    },
+    "component": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_props": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "must_have": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prohibitions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "required": [
+        "required"
+      ]
+    },
+    {
+      "required": [
+        "must_have"
+      ]
+    },
+    {
+      "required": [
+        "required_props"
+      ]
+    }
+  ],
+  "additionalProperties": true
+}

@@ -145,3 +145,65 @@ Exemplo:
 - dependência de browser fica confinada a Client Components;
 - `SignatureTranspositionScene` possui fallback estático e boundary próprio;
 - a rota não importa GSAP diretamente; importa o componente de cena de forma dinâmica.
+
+## Componentes de revisão musical
+
+```text
+OperationModePicker
+CapabilityReason
+AssuranceBadge
+MelodyCandidateOverlay
+PhraseReviewRail
+HarmonyProfileEditor
+HarmonyVariantCompare
+GeneratedNoteLegend
+VerificationToken
+WatermarkPreview
+```
+
+`AssuranceBadge` usa texto e ícone, nunca apenas cor. Componentes não calculam teoria musical; recebem DTOs explicáveis da API.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Camadas para partitura interativa
+
+```text
+ScoreRendererAdapter
+-> GeometryMapAdapter
+-> InteractionOverlay
+-> DiffOverlay / ReviewOverlay / PlaybackOverlay
+```
+
+O overlay não altera o DOM interno do renderer e não usa seletores frágeis de glifos. Ele recebe IDs e geometria versionada. Quando a geometria não existir, a UI oferece lista/compasso e não inventa highlight.
+
+## Propriedade de estado
+
+- TanStack Query: jobs, revisions, diff, findings, comments;
+- estado local: seleção visual e viewport;
+- URL: revisão/compasso/filtro compartilhável quando autorizado;
+- backend: decisão musical, guarantee, capability e progresso;
+- audio transport store: tempo efêmero, nunca fonte da revisão.
+
+## Fronteira de engines visuais
+
+Motion controla layout/presença. GSAP controla somente cenas com lifecycle isolado. Cursor de playback usa transform otimizado e scheduler de áudio; não deve re-renderizar a árvore da partitura a cada frame.
+
+## Limites de adapters musicais
+
+```text
+OpenAPI client
+  → domain view models
+  → score renderer adapter
+  → geometry/event overlay adapter
+  → playback adapter
+  → product components
+```
+
+- renderer desenha; não decide teoria;
+- overlay recebe `event_id` e geometria estável;
+- player recebe ocorrência/tempo do backend;
+- Musical Diff recebe relações do backend;
+- feature gates são avaliados no servidor e confirmados no cliente;
+- protótipos em `design-reference/prototypes` nunca são importados pelo app.
+
+Canvas/SVG/AudioContext precisam de cleanup, pausa em background e fallback textual.

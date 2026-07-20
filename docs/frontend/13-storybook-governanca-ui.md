@@ -86,3 +86,53 @@ A Fase 7 não termina sem:
 - acessibilidade automatizada;
 - visual regression revisada;
 - estados de erro e conteúdo extremo demonstrados.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Referências e matriz de estados
+
+Cada story crítica deve declarar:
+
+```text
+reference_id
+capability
+fixture_id
+state
+viewport
+expected_warnings
+keyboard_path
+reduced_motion_behavior
+```
+
+Stories obrigatórias adicionais:
+
+- diff completo, parcial e criativo;
+- melodia com ambiguidade material/bloqueante;
+- tocabilidade `UNKNOWN`, warning e blocking;
+- variantes iguais/sem variante válida;
+- áudio sem mapa compatível;
+- conflito de revisão;
+- anotação órfã;
+- score/parte divergente.
+
+## Política de baseline
+
+- baseline é gerado em ambiente fixado;
+- atualização exige reviewer e motivo;
+- mudança de token pode atualizar várias imagens, mas não elimina revisão;
+- antialiasing/fonte podem causar ruído; limiar automatizado não decide qualidade;
+- screenshot não substitui teste de teclado, foco, leitura de tela e estado.
+
+## Stories mínimas da expansão crítica
+
+- `TransposeWorkspace`: incompatibilidade, review, falha transitória, expiração;
+- `MelodyReview`: candidatos, cross-staff, conflito de revisão;
+- `MusicalDiff`: determinístico, criativo, parcial, revogado;
+- `HarmonyLab`: profile incompleto, variantes, nenhuma válida;
+- `PlayabilityReport`: warning, blocking, explicação e alternativa;
+- `PlaybackTransport`: ready, mapping partial, audio unavailable, background resume;
+- `EnsemblePackage`: building, inconsistency, complete, revoked;
+- `PersistentRecoveryPanel`: retry, user action, configuration change, incident;
+- todos em mobile, 200% zoom, forced colors e reduced motion.
+
+Stories devem usar fixtures versionadas; não mockar estado “bonito” que a API não consegue produzir.

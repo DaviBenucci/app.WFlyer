@@ -82,3 +82,32 @@ PDF e MXL ficam desabilitados até os gates específicos.
 ## Evidência obrigatória
 
 Cada item marcado deve apontar para teste, configuração ou revisão. “Documentado” sem implementação/teste não satisfaz o gate de produção.
+
+## Inteligência musical e watermark
+
+- [ ] operação e parâmetros usam schema allowlisted;
+- [ ] review referencia somente eventos do job/sessão;
+- [ ] fonte e decisões são imutáveis/versionadas;
+- [ ] modelo externo não recebe arquivo sem política aprovada;
+- [ ] assinatura usa KMS/HSM e key id versionado;
+- [ ] token não contém PII nem autoriza download;
+- [ ] watermark não altera conteúdo musical;
+- [ ] endpoint de verificação possui rate limit e resposta neutra;
+- [ ] remoção de metadata não é tratada como remoção da prova server-side.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Dados musicais, IA e colaboração
+
+- [ ] metadados e letras são tratados como dados, não instruções;
+- [ ] provider de IA não retém/treina com upload sem consentimento e contrato;
+- [ ] output de modelo passa por schema e constraints;
+- [ ] corpus de release-hidden não está acessível ao pipeline de treino;
+- [ ] comentários são sanitizados e links tratados com política segura;
+- [ ] revisão/mutação usa versão/ETag;
+- [ ] diff, findings e playback map obedecem autorização e retenção;
+- [ ] samples/fontes possuem licença, hash e inventário;
+- [ ] créditos e avisos são preservados ou alteração é bloqueada;
+- [ ] pacote score/partes valida hashes e mesma revisão-base;
+- [ ] kill switch por capability está testado;
+- [ ] logs não contêm conteúdo musical, prompt ou resposta bruta de modelo.

@@ -52,3 +52,60 @@ Cada execução registra comando, commit, ambiente, versões, fixtures, resultad
 ## PDF/OMR
 
 Possui gate separado com corpus representativo, métricas definidas antes da avaliação, sandbox, performance e revisão de falsos positivos/negativos. Aprovar Core não aprova PDF.
+
+## Quinta propriedade: proveniência e decisão explícita
+
+O W_Flyer também precisa provar:
+
+5. nenhuma nota é descartada ou criada sem operação, proveniência e regra explícitas;
+6. conteúdo criativo só é publicado após restrições e escolha do usuário;
+7. watermark/prova não alteram a música.
+
+Consultar `10-gates-confiabilidade-avancada.md`.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Dimensões adicionais
+
+A pirâmide deve cobrir quatro produtos diferentes:
+
+```text
+semântica musical
+artefato visual/áudio
+sistema distribuído
+experiência e decisão humana
+```
+
+Uma suíte verde em apenas uma dimensão não aprova a capability.
+
+## Rastreabilidade
+
+Todo teste crítico referencia ao menos um `REQ-*`, `RISK-*` ou `PM-*`. Todo incidente crítico adiciona fixture e teste de regressão. Métrica sem corpus versionado não vale como gate.
+
+## Testes metamórficos
+
+Exemplos:
+
+- A→B→A preserva semântica suportada;
+- transpor em duas etapas equivale ao intervalo composto quando a política é igual;
+- mudar apenas layout não altera Musical Diff semântico;
+- gerar score e extrair partes mantém os mesmos eventos;
+- áudio A/B usa alturas de concerto equivalentes em transposição;
+- reordenar metadados XML não muda o resultado.
+
+## Camadas críticas adicionadas
+
+Além dos testes existentes, toda capability avançada exige:
+
+```text
+properties/invariantes
++ corpus estratificado
++ metamorphic tests
++ differential checker quando possível
++ fault injection
++ human review cega
++ regressão por incidente
++ rollout shadow/canary
+```
+
+Cobertura de linhas não substitui cobertura de modos de falha. A matriz de `PM-*` é uma dimensão obrigatória do relatório de teste.

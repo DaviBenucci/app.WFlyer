@@ -93,3 +93,24 @@ Erros determinísticos não são repetidos. Erros transitórios usam backoff e l
 ## Cancelamento e exclusão
 
 `DELETE /api/v1/jobs/{id}` marca `cancel_requested` se o job estiver ativo. Workers verificam o pedido entre etapas. Depois do cancelamento ou para jobs terminais, o cleanup remove artefatos e marca retenção como `purged`.
+
+## Pipeline avançado por operação
+
+```text
+API
+-> job + operation + snapshots
+-> outbox
+-> orchestrator worker
+-> canonical source
+-> operation worker
+   -> transpose
+   -> melody extraction/reduction
+   -> harmony generation
+-> independent assurance worker
+-> renderer/watermark/signing
+-> atomic publication
+```
+
+Jobs que precisam de confirmação entram em `awaiting_user_input`; não mantêm subprocesso ou lease ativo. A resposta do usuário cria uma revisão versionada e reenfileira a continuação.
+
+Filas de OMR, harmonização e renderização devem ter quotas/circuit breakers independentes para não bloquear transposição Core.

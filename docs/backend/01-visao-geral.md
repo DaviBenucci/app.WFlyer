@@ -89,3 +89,24 @@ O frontend não executa uma cópia autoritativa do algoritmo.
 - regra musical em React/TypeScript;
 - aceitar PDF quando `pdf_omr=false`;
 - declarar sucesso sem validar invariantes.
+
+## Camada de inteligência musical
+
+Módulos adicionais, ativados por capability:
+
+```text
+score_analysis
+melody_extraction
+monophonic_reduction
+harmony_planning
+instrument_adaptation
+assurance
+provenance
+watermarking
+```
+
+O domínio recebe uma `operation` explícita. `transpositions` não deve se tornar um módulo genérico que descarta ou cria notas sem contrato.
+
+## Regra de confiança
+
+Toda saída passa por `assurance`, que reparsa fonte e resultado, avalia invariantes e produz `assurance_report`. O worker transformador não autoaprova o próprio resultado.

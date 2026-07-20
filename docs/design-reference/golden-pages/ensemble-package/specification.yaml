@@ -1,0 +1,46 @@
+id: WF-ENSEMBLE-001
+status: binding-composition
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+purpose:
+  primary: Configurar formação, acompanhar verificações e publicar score/partes como pacote coerente.
+layout:
+  shell: studio
+  main: part_matrix_and_score_summary
+  inspector: package_policy
+  action_bar: sticky
+must_have:
+- formação e papel de cada parte
+- written/concert mode explícito
+- status por parte e status do pacote
+- tocabilidade e transposição por instrumento
+- bloqueio quando score e partes divergem
+must_not_have:
+- pacote completo com parte faltando
+- PDF como fonte canônica das partes
+- instrumento atribuído apenas pelo nome do arquivo
+- substituição silenciosa de formação
+states:
+- draft
+- checking
+- needs_review
+- inconsistency
+- building
+- complete
+- revoked
+accessibility:
+  table_has_headers: true
+  status_not_color_only: true
+  keyboard_complete: true
+  reduced_motion_required: true
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: desktop
+  width: 1440
+  height: 900
+baselines:
+- golden-pages/ensemble-package/desktop.png
+- golden-pages/ensemble-package/mobile.png

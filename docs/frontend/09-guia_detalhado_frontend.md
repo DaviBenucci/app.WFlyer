@@ -229,3 +229,62 @@ Cada corte inclui estados em Storybook e testes de integração aplicáveis.
 - animação de entrada não bloqueia conteúdo e toca no máximo uma vez por sessão;
 - GSAP não está presente em rotas sem cena e nenhuma engine disputa propriedades;
 - reduced motion, interrupção de rota e cleanup foram testados.
+
+## UX das capacidades avançadas
+
+- mostrar modos por significado musical, não por termo “IA”;
+- destacar diferença entre notas originais e geradas;
+- não esconder acompanhamento descartado em extração;
+- review deve funcionar por teclado e sem drag;
+- harmonização oferece comparação e retorno à melodia;
+- watermark não aparece como barreira para leitura no preview final.
+
+Consultar `../features/12-modos-operacao-musical.md` e `../pages/11-revisao-musical.md`.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Corte 0 — referências internas antes dos componentes
+
+Antes do Corte 1:
+
+- validar `../design-reference/reference-manifest.yaml`;
+- converter cada protótipo aplicável em story controlada por fixtures;
+- produzir screenshots em viewports documentados;
+- aprovar estados de erro, vazio, loading, revisão e reduced motion;
+- registrar referências externas apenas como estudos de padrão.
+
+## Cortes de diferenciação após o Core
+
+```text
+D1 Musical Diff navegável
+L1 Revisão de melodia por frase
+I1 Relatório de tocabilidade
+H1 Laboratório de variantes
+A1 Playback A/B e modo de ensaio
+E1 Score/partes e pacote ensemble
+C1 Revisão colaborativa versionada
+```
+
+Cada corte depende do endpoint/capability real e deve continuar oculto/desabilitado antes do gate.
+
+## Regra de estado completo
+
+Toda página deve documentar e testar:
+
+```text
+initial
+loading
+empty
+ready
+partial
+warning
+blocking_error
+awaiting_user_input
+conflict
+offline_readonly
+expired
+permission_denied
+reduced_motion
+```
+
+Somente estados aplicáveis entram no bundle, mas ausência deve ser justificada.

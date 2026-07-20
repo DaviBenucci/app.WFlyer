@@ -103,3 +103,36 @@ Após `completed`/`completed_with_warnings`, uma revelação curta pode recompor
 - resultado mantém identidade do workspace sem virar página de “sucesso” genérica;
 - timeline de processamento foi encerrada antes da revelação;
 - warnings entram de forma legível e não ficam aguardando animação.
+
+## Resultado avançado
+
+A hierarquia passa a incluir, quando aplicável:
+
+1. operação e nível de garantia;
+2. fonte confirmada ou pendência resolvida;
+3. melodia preservada;
+4. notas geradas e variante escolhida;
+5. watermark/token de verificação;
+6. artefatos fonte, intermediários públicos permitidos e resultado.
+
+PDF identificado usa uma mensagem discreta: “Arquivo personalizado e verificável — WF-…”. Não afirmar que a marca é irremovível.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Prova e comparação
+
+Resultado verificado deve permitir acessar:
+
+- garantia e gates executados;
+- warnings persistentes;
+- Musical Diff/resumo de cobertura;
+- revisão de origem e saída;
+- relatório de tocabilidade quando aplicável;
+- metadados e créditos preservados;
+- manifesto/token quando habilitado.
+
+O botão de download não pode sugerir aprovação de uma variante ainda não aceita. Para transformação criativa, exibir “variante validada” ou “aprovada pelo usuário”, nunca `TRANSFORMATION_VERIFIED`.
+
+## Referência
+
+`reference_id: WF-DIFF-001` para o modo de comparação.

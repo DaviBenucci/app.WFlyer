@@ -179,3 +179,27 @@ Se a resposta for sim, a página ainda não expressa o domínio do W_Flyer.
 - o sistema visual é consistente sem parecer o tema padrão de uma biblioteca;
 - movimento e cor continuam opcionais para compreensão;
 - a interface continua clara com conteúdo real, nomes longos e warnings múltiplos.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Referência visual vinculante
+
+A identidade só é considerada especificada quando a página possui `reference_id`, estados e composição em `../design-reference/reference-manifest.yaml`. O pacote atual inclui protótipos originais para home, workspace, revisão de melodia, comparação, harmonização e ensaio.
+
+## Interface de confiança musical
+
+A hierarquia visual deve responder, nesta ordem:
+
+1. qual operação será executada;
+2. sobre qual revisão e instrumento;
+3. o que o sistema sabe e não sabe;
+4. o que mudou ou será criado;
+5. qual decisão é necessária do músico;
+6. qual nível de garantia pode ser atribuído;
+7. quais artefatos podem ser usados.
+
+Decoração nunca pode competir com pauta, warning, decisão ou ação principal.
+
+## Diferenciação funcional
+
+O W_Flyer deve parecer um estúdio de preparação musical por meio de componentes de domínio — partitura, rota instrumental, diff, regiões, variantes, tocabilidade, transporte e revisão — e não por ícones de nota espalhados ou metáforas de “IA mágica”.

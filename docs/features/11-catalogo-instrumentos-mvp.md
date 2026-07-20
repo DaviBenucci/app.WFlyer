@@ -73,3 +73,7 @@ O preset `piano` representa uma linha/parte melódica em C. Uma partitura típic
 - cobrir instrumentos com oitava: violão, tenor e barítono;
 - conferir `<transpose>` emitido para cada destino;
 - detectar catálogo divergente entre banco e fixture versionada.
+
+## Expansão de capacidades instrumentais
+
+O catálogo futuro adiciona `capabilities_snapshot` conforme `../music/09-perfis-instrumentais-polifonia-extensao.md`. Afinação e família continuam insuficientes para decidir harmonização, redução ou tocabilidade. Alterações de faixa/polifonia exigem nova `capability_version` e reexecução do corpus.

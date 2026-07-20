@@ -1,0 +1,47 @@
+id: WF-PROCESSING-001
+status: binding
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+purpose:
+  primary: Acompanhar estágio real, responder a falha e retomar sem duplicar job.
+layout:
+  shell: studio
+  score: retained_context
+  inspector: stage_and_recovery
+  progress: stage_based_not_fake_percentage
+must_have:
+- estágio real vindo da API
+- operation_id e arquivo contextualizados
+- separação entre falha transitória, revisão e falha definitiva
+- ação de recuperação idempotente
+- correlation id quando houver incidente
+must_not_have:
+- porcentagem inventada
+- animação como única indicação
+- retry para erro determinístico
+- toast como único erro
+states:
+- queued
+- processing
+- awaiting_review
+- transient_failure
+- deterministic_failure
+- unknown_incident
+- cancelled
+- completed
+accessibility:
+  aria_live_polite_for_stage: true
+  persistent_error_heading: true
+  keyboard_complete: true
+  reduced_motion_required: true
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: desktop
+  width: 1440
+  height: 900
+baselines:
+- golden-pages/processing/desktop.png
+- golden-pages/processing/mobile.png

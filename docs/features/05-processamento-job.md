@@ -54,3 +54,7 @@ Mensagens vêm de mapeamento estável de stage/erro. Não mostrar stacktrace, en
 - cancelamento não disponibiliza artefato parcial;
 - refresh da página recupera o job enquanto a mesma sessão existir;
 - recurso de outra sessão retorna estado de não encontrado.
+
+## Jobs com revisão
+
+Um job avançado pode pausar em `awaiting_user_input`. A UI para polling e notificações deve tratar esse estado como ação necessária, não como falha ou processamento ativo. A revisão possui URL própria e expiração documentada.

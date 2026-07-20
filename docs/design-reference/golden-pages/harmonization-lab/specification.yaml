@@ -1,0 +1,46 @@
+id: WF-HARMONY-001
+status: binding-composition
+purpose:
+  primary: Configurar, comparar e aprovar propostas harmônicas.
+layout:
+  shell: studio
+  main: score_with_locked_melody
+  inspector: harmony_profile
+  variant_rail: bottom_or_left
+must_have:
+- melodia bloqueada visível
+- perfil de fidelidade
+- variantes comparáveis
+- Musical Diff e audição quando disponíveis
+- tensão como curva relativa/editável
+must_not_have:
+- botão mágico sem parâmetros
+- ranking por estrelas
+- afirmação de emoção como fato
+- variante única chamada correta
+states:
+- analysis_required
+- profile_incomplete
+- generating
+- variants_ready
+- no_valid_variant
+- source_changed
+- approved
+accessibility:
+  controls_have_help: true
+  variants_keyboard_comparable: true
+  audio_optional: true
+  reduced_motion_required: true
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: desktop
+  width: 1536
+  height: 960
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+baselines:
+- golden-pages/harmonization-lab/desktop.png
+- golden-pages/harmonization-lab/mobile.png

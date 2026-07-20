@@ -28,3 +28,16 @@ Em divergência, valem a hierarquia de `../00-visao-geral/08-hierarquia-document
 ## Fora do Core
 
 Admin, push e compartilhamento permanecem fora do MVP. Seus documentos não autorizam criar rotas, tabelas ou navegação nesta fase.
+
+## Regra adicional para capacidades musicais avançadas
+
+Antes de codificar OMR complexo, extração, harmonização, arranjo ou watermark, ler:
+
+- `../music/06-taxonomia-transformacoes-musicais.md`;
+- `../music/07-extracao-melodia-polifonica.md`;
+- `../music/08-motor-harmonizacao-arranjo.md`;
+- `19-confiabilidade-musical-fail-closed.md`;
+- `20-manifesto-prova-reprodutibilidade.md`;
+- `../qa/10-gates-confiabilidade-avancada.md`.
+
+É proibido criar um “algoritmo inteligente” diretamente no controller ou em uma task Celery sem domínio, manifest, invariantes e corpus.

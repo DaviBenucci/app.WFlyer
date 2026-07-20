@@ -1,0 +1,13 @@
+risk_id: RISK-DOMAIN-NNN
+title: ''
+owner: TBD
+status: identified
+impact: 4
+likelihood: 2
+affected_capabilities: []
+failure_mode_ids: []
+controls: []
+test_ids: []
+metrics: []
+residual_risk: not_assessed
+review_date: YYYY-MM-DD

@@ -50,3 +50,61 @@ São canônicos:
 ## Estado dos documentos antigos
 
 Arquivos com título “substituído” permanecem apenas como ponte histórica. Eles não devem ser usados como fonte normativa.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Precedência específica do frontend
+
+Depois dos contratos de domínio, segurança e acessibilidade, a composição visual segue:
+
+```text
+referência executável interna
+> story aprovada
+> especificação machine-readable
+> screenshot golden interno
+> descrição textual
+> inspiração externa
+```
+
+A fonte operacional é `../design-reference/reference-manifest.yaml`. Um screenshot não pode contradizer estado, erro, foco, capacidade ou microcopy canônica.
+
+## Precedência específica de resultados musicais
+
+```text
+invariantes determinísticos
+> decisão humana explícita
+> regras de perfil aprovadas
+> ranking/heurística
+> sugestão de modelo
+```
+
+Um modelo não pode superar uma restrição rígida nem reinterpretar decisão bloqueada do usuário.
+
+## Regra para documentos futuros
+
+Todo novo documento deve declarar:
+
+- status (`canônico`, `proposta`, `histórico` ou `referência`);
+- capability/gate ao qual pertence;
+- documentos que pode complementar, mas não contradizer;
+- decisão pendente quando faltar evidência.
+
+## Contratos especializados adicionados
+
+Para seu domínio específico, os seguintes artefatos são vinculantes:
+
+```text
+riscos/failure-mode-catalog.yaml
+  → modos de falha, resposta segura e teste planejado
+
+design-reference/reference-manifest.yaml
+  → precedência e referências visuais
+
+100-implementacao/matriz-rastreabilidade-requisitos.md
+  → requisito, risco, teste e evidência
+
+Musical Decision Record aprovado
+  → decisão musical que não pode ser inferida apenas por arquitetura
+```
+
+Esses artefatos não podem contrariar segurança, escopo e invariantes canônicos. Quando houver conflito, a implementação deve pausar e abrir decisão; não escolher silenciosamente o documento mais conveniente.

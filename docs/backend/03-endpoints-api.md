@@ -203,8 +203,11 @@ Resposta `202`:
 ```json
 {
   "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
+  "operation": "TRANSPOSE",
   "status": "queued",
   "stage": "queued",
+  "review_kind": null,
+  "assurance_level": "UNVERIFIED_SOURCE",
   "progress_pct": 0,
   "retention_status": "active",
   "source_instrument_id": "piano",
@@ -238,8 +241,11 @@ Resposta `200`:
 ```json
 {
   "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
+  "operation": "TRANSPOSE",
   "status": "running",
   "stage": "transposing",
+  "review_kind": null,
+  "assurance_level": "STRUCTURALLY_VALID",
   "progress_pct": 62,
   "retention_status": "active",
   "source_instrument_id": "piano",
@@ -267,8 +273,11 @@ Endpoint leve para polling:
 ```json
 {
   "job_id": "4986c7e5-47c6-4a4c-9988-d8b0a558fc72",
+  "operation": "TRANSPOSE",
   "status": "running",
   "stage": "validating",
+  "review_kind": null,
+  "assurance_level": "STRUCTURALLY_VALID",
   "progress_pct": 78,
   "retention_status": "active",
   "message": "Validando o resultado musical.",
@@ -280,7 +289,7 @@ Endpoint leve para polling:
 }
 ```
 
-Pode retornar `Retry-After`. Em sucesso terminal, `finished_at` e `expires_at` são preenchidos. Polling para em `completed`, `completed_with_warnings`, `failed` ou `cancelled`.
+Pode retornar `Retry-After`. Em sucesso terminal, `finished_at` e `expires_at` são preenchidos. Polling para em `completed`, `completed_with_warnings`, `failed` ou `cancelled`; em `awaiting_user_input`, o cliente pausa o polling de progresso e abre o contrato de revisão.
 
 ## GET /api/v1/jobs/{job_id}/artifacts
 
@@ -333,3 +342,195 @@ URLs permanentes públicas são proibidas. URL assinada curta só pode ser usada
 - `410` para conteúdo expirado;
 - `422` para regra de domínio/formato;
 - `429` para quota/rate limit.
+
+## Extensões de capacidades musicais
+
+Enquanto desabilitadas, as operações abaixo não aparecem como ativas e seus endpoints retornam `FORMAT_NOT_ENABLED` ou `OPERATION_NOT_ENABLED` conforme o contrato.
+
+`GET /api/v1/capabilities` deve evoluir com:
+
+```json
+{
+  "operations": {
+    "transpose": true,
+    "melody_extraction": false,
+    "harmonization": false,
+    "instrument_arrangement": false
+  },
+  "provenance": {
+    "pdf_watermark": false,
+    "signed_manifest": false,
+    "verification_endpoint": false
+  }
+}
+```
+
+## POST /api/v1/operations
+
+Endpoint futuro unificado para operações avançadas. `POST /transpositions` permanece compatível com o Core e cria `operation = TRANSPOSE`.
+
+```json
+{
+  "upload_id": "uuid",
+  "operation": "EXTRACT_MELODY",
+  "source_instrument_id": "piano",
+  "target_instrument_id": "flute-c",
+  "parameters": {
+    "allow_octave_adaptation": false
+  },
+  "output_formats": ["musicxml"]
+}
+```
+
+`parameters` é discriminado por `operation`; objeto arbitrário sem schema é proibido.
+
+## GET /api/v1/jobs/{job_id}/review
+
+Disponível somente em `awaiting_user_input`:
+
+```json
+{
+  "review_id": "uuid",
+  "review_kind": "melody_selection",
+  "revision": 3,
+  "regions": [],
+  "allowed_actions": ["select_candidate", "edit_selection", "confirm", "cancel"]
+}
+```
+
+## PUT /api/v1/jobs/{job_id}/review
+
+Exige `If-Match`/revision, `Idempotency-Key` e CSRF. Submete decisões tipadas; conflito retorna `409 REVIEW_VERSION_CONFLICT`. Em sucesso, cria nova revisão imutável e reenfileira o job.
+
+## GET /api/v1/jobs/{job_id}/assurance
+
+Retorna o relatório público allowlisted e somente para a sessão proprietária.
+
+## GET /api/v1/verifications/{token}
+
+Capability futura e pública com rate limit. Confirma hash/assinatura e nível de garantia sem conceder acesso ao arquivo ou revelar dados musicais.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Contratos avançados reservados
+
+> Estes endpoints são drafts normativos para evolução. Devem retornar `CAPABILITY_DISABLED` enquanto a capability correspondente estiver desligada.
+
+### GET `/api/v1/jobs/{job_id}/musical-diff`
+
+Retorna resumo e páginas de mudanças sem expor o documento inteiro quando não necessário.
+
+```json
+{
+  "job_id": "uuid",
+  "base_revision_id": "uuid",
+  "result_revision_id": "uuid",
+  "coverage": {"source_events": 126, "mapped": 126, "unresolved": 0},
+  "entries": [
+    {
+      "source_event_id": "ev-12",
+      "result_event_id": "ev-12-r1",
+      "category": "PITCH_TRANSPOSED",
+      "reason_code": "TARGET_INSTRUMENT_INTERVAL",
+      "before": {"written_pitch": "C4"},
+      "after": {"written_pitch": "D4"}
+    }
+  ]
+}
+```
+
+### GET `/api/v1/jobs/{job_id}/playability`
+
+Retorna findings versionados por instrumento, região e severidade. `UNKNOWN` é distinto de `PASS`.
+
+### POST `/api/v1/jobs/{job_id}/audio-renders`
+
+Cria render derivado de uma revisão e de um `playback_map_version`. Não aceita conteúdo musical arbitrário no payload.
+
+### GET `/api/v1/audio-renders/{audio_render_id}/map`
+
+Retorna ocorrências com `event_id`, `occurrence_id`, `start_ms`, `end_ms`, compasso e página/sistema quando disponíveis.
+
+### POST `/api/v1/ensemble-packages`
+
+Recebe revisão-base, formação versionada e perfil de geração. Cria job separado; não reutiliza endpoint de transposição.
+
+### Revisões e colaboração
+
+```text
+GET  /api/v1/projects/{project_id}/revisions
+POST /api/v1/projects/{project_id}/revisions/{revision_id}/decisions
+GET  /api/v1/review-sessions/{review_session_id}
+POST /api/v1/review-sessions/{review_session_id}/annotations
+PATCH /api/v1/annotations/{annotation_id}
+```
+
+Mutações exigem `If-Match`/versão e autorização. Conflito retorna `409 REVISION_CONFLICT`; não há last-write-wins para decisão musical.
+
+## Regra de paginação e privacidade
+
+Diffs, findings e comentários podem conter informação musical. Devem ser paginados, autorizados por sessão/projeto, excluídos de logs e submetidos à mesma retenção do artefato associado.
+
+## Contratos de capacidades avançadas — reservados e gated
+
+Os recursos abaixo não pertencem ao Core. Seus paths e DTOs somente podem ser expostos quando a capability correspondente estiver ativa. Enquanto desabilitados, `/api/v1/capabilities` é a fonte de verdade e a UI não deve simular disponibilidade.
+
+### Operação e revisão
+
+```http
+POST /api/v1/operations
+GET  /api/v1/operations/{operation_id}
+POST /api/v1/reviews/{review_id}/decisions
+GET  /api/v1/revisions/{revision_id}
+```
+
+`POST /operations` recebe um discriminated union por `operation_type`:
+
+```text
+TRANSPOSE
+EXTRACT_MELODY
+REDUCE_TO_MONOPHONIC
+ARRANGE_FOR_INSTRUMENT
+HARMONIZE
+GENERATE_ENSEMBLE_PACKAGE
+```
+
+A API rejeita campos de outra operação; não existe DTO genérico com opções ignoradas.
+
+### Diff e análise
+
+```http
+GET /api/v1/revisions/{revision_id}/musical-diff?against={parent_revision_id}
+GET /api/v1/revisions/{revision_id}/analysis-regions
+GET /api/v1/revisions/{revision_id}/playability-findings
+```
+
+### Áudio e ensaio
+
+```http
+POST /api/v1/revisions/{revision_id}/playback-manifest
+GET  /api/v1/playback-manifests/{manifest_id}
+POST /api/v1/rehearsal-packages
+```
+
+Áudio não é gerado sem `PlaybackManifest` validado.
+
+### Ensemble
+
+```http
+POST /api/v1/ensemble-packages
+GET  /api/v1/ensemble-packages/{package_id}
+GET  /api/v1/ensemble-packages/{package_id}/artifacts
+```
+
+O pacote só fica `completed` quando score, partes, manifestos e verificações do conjunto estiverem publicados atomicamente.
+
+### Concorrência
+
+Mutações de revisão exigem:
+
+```http
+If-Match: "<revision-etag>"
+```
+
+ou campo `expected_revision_id`. Divergência retorna `409 REVISION_CONFLICT`.

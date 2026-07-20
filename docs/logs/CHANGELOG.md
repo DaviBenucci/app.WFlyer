@@ -109,3 +109,59 @@ Nenhum código de aplicação foi implementado nesta alteração.
 ### Observação
 
 Nenhum código final de aplicação foi criado nesta etapa.
+
+## 2026-07-20 — confiabilidade musical avançada
+
+- separadas transposição, extração, redução, harmonização e arranjo;
+- adicionada política fail-closed e verificador independente;
+- criado modelo de provenance, manifesto e níveis de garantia;
+- documentados perfis instrumentais, workspace de revisão e harmonização modal/tonal;
+- criada estratégia de watermark distribuído e assinatura;
+- adicionadas trilhas M/L/H/W e gates de QA/segurança.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## 2026-07-20 — Integração da visão crítica e pre-mortem
+
+### Adicionado
+
+- visão de produto como preparação musical verificável;
+- pacote interno de referências visuais e protótipos;
+- Musical Diff, tocabilidade, áudio/ensaio, score/partes, ensemble e colaboração como trilhas separadas;
+- registro de riscos, matriz de 104 falhas conhecidas e política para falhas desconhecidas;
+- ADRs de grafo semântico, IA como propositora, revisão imutável, direitos e rollout;
+- benchmarks e gates por capacidade;
+- contratos avançados, modelos de dados e estados reservados.
+
+### Alterado
+
+- leitura obrigatória e hierarquia;
+- roadmap e decisões pendentes;
+- critérios de aceite e guia Codex;
+- frontend, backend, música, QA e segurança para refletir falhas e controles.
+
+### Limite
+
+A entrega é documental e inclui protótipos estáticos. Não comprova motores musicais, áudio, renderer ou aplicação funcionando.
+
+## 2026-07-20 — visão crítica, referências executáveis e pre-mortem
+
+### Adicionado
+
+- tese profissional do produto e princípios de controle humano;
+- referências visuais internas com YAML, protótipos HTML e baselines PNG;
+- Musical Diff, audição A/B, modo de ensaio, tocabilidade, adaptação, ensemble e revisão;
+- análise de forma, cadência, tensão e representação harmônica;
+- backend de revisões, playback manifest, score/partes, feature flags e governança de modelos;
+- 155 modos de falha em matriz e catálogo legível por máquina;
+- política fail-closed para falhas desconhecidas e incidentes;
+- preflight por capability, MDR e matriz de rastreabilidade;
+- benchmarks musicais, fault injection, regressão visual e gate de conselho musical.
+
+### Alterado
+
+- índices, ADRs, escopo, roadmap, API, modelo, estados, erros, observabilidade, frontend, QA, DoD e guia Codex foram integrados à visão crítica.
+
+### Observação
+
+A entrega é documental. Protótipos e baselines não são código de produção; capabilities avançadas permanecem desabilitadas até seus gates.

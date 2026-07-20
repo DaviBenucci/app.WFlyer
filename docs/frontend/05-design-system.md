@@ -249,3 +249,70 @@ Um componente só é “pronto” quando possui:
 - loading, erro e conteúdo longo;
 - teste de interação;
 - aprovação visual fora do tema padrão da biblioteca.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Tokens e componentes de análise musical
+
+Adicionar tokens semânticos para:
+
+```text
+--diff-preserved
+--diff-transformed
+--diff-generated
+--diff-removed
+--review-ambiguous
+--review-blocking
+--playability-impossible
+--playability-difficult
+--playability-unknown
+--playback-cursor
+--locked-melody
+```
+
+A cor nunca é o único canal; cada estado inclui label, ícone/forma e texto acessível.
+
+## Componentes críticos
+
+- `MusicalDiffNavigator`;
+- `EventChangeInspector`;
+- `AssuranceSummary`;
+- `MelodyCandidatePanel`;
+- `AnalysisRegionRail`;
+- `PlayabilityReport`;
+- `HarmonyVariantCard`;
+- `ScorePartConsistencyNotice`;
+- `PlaybackTransport`;
+- `RehearsalOverlay`;
+- `RevisionTimeline`;
+- `AnnotationAnchor`.
+
+Esses componentes não podem ser reduzidos a `Card` genérico sem API de domínio.
+
+## Golden examples
+
+Tokens e componentes devem ser demonstrados com fixtures reais/sintéticas controladas em Storybook. O arquivo `../design-reference/fixtures/ui-states.json` é ponto de partida; produção deverá usar mocks gerados do OpenAPI.
+
+## Componentes profissionais adicionados
+
+```text
+MusicalDiffNavigator
+EventProvenancePopover
+ConfidenceRegionOverlay
+MelodyCandidateLane
+HarmonyVariantRail
+TensionCurveEditor
+PlayabilityFindingPanel
+PlaybackTransport
+ScoreFollowingCursor
+RehearsalToolbar
+EnsemblePartMatrix
+ReviewThread
+RevisionBadge
+CapabilityGateNotice
+PersistentRecoveryPanel
+```
+
+Cada componente deve possuir estados no `design-reference`/Storybook. Cores não são o único canal; eventos e findings têm rótulo, ícone/forma e texto.
+
+`ScoreSurface` não pode depender da estrutura DOM privada de um renderer para identidade musical. Event IDs e geometria entram por adapter explícito.

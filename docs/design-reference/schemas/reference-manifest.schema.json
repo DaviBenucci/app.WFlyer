@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wflyer.local/schemas/reference-manifest.schema.json",
+  "type": "object",
+  "required": [
+    "version",
+    "product",
+    "precedence",
+    "rules",
+    "references"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "product": {
+      "const": "W_Flyer"
+    },
+    "precedence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "rules": {
+      "type": "object"
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "status",
+          "kind",
+          "specification"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "binding",
+              "binding-composition",
+              "reference",
+              "illustrative",
+              "draft"
+            ]
+          },
+          "kind": {
+            "enum": [
+              "page",
+              "component",
+              "motion"
+            ]
+          },
+          "specification": {
+            "type": "string"
+          },
+          "prototype": {
+            "type": "string"
+          },
+          "required_states": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "baselines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pixel_baseline_status": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "baseline_policy": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

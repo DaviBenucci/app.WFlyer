@@ -70,7 +70,7 @@ rendered_pdf, somente quando o adapter de renderização estiver aprovado
 
 ## Garantia do produto
 
-O W_Flyer garante correção dentro da matriz suportada e dos testes aprovados. Para entradas OMR, o produto deve comunicar incerteza e recomendar revisão. Não deve prometer leitura perfeita de todo PDF.
+O W_Flyer pode declarar uma **transformação verificada dentro da matriz suportada** quando a fonte simbólica foi validada e todos os invariantes independentes passaram. Para entradas OMR, extração de melodia ou harmonização, o produto deve expor o nível de garantia e exigir revisão quando houver ambiguidade. Não deve prometer leitura perfeita de todo PDF, melodia infalível em toda polifonia ou uma harmonização universalmente correta.
 
 ## Fluxo principal
 
@@ -89,3 +89,61 @@ upload validado
 ## Critério de não ambiguidade
 
 Quando uma entrada não estiver na matriz suportada, o sistema deve rejeitá-la de modo explícito. Processamento parcial silencioso não é aceitável.
+
+## Trilhas avançadas preservadas para evolução
+
+Não fazem parte do aceite do MVP Core, mas possuem arquitetura própria:
+
+- multipauta/multiparte;
+- extração de melodia e redução monofônica;
+- harmonização e arranjo;
+- perfis instrumentais de tocabilidade;
+- watermark, manifesto e verificação de PDF.
+
+Essas capacidades não devem ser implementadas como exceções dentro do motor Core. Seguem `../music/06-taxonomia-transformacoes-musicais.md` e `02-roadmap-fases.md`.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Fundação obrigatória para não bloquear a evolução
+
+Mesmo sem expor recursos avançados, o Core deve nascer com:
+
+- IDs internos estáveis para eventos suportados;
+- manifesto de processamento e hashes de artefatos;
+- mapeamento de origem e saída suficiente para auditoria;
+- `operation` explícita no job;
+- capabilities vindas do backend;
+- revisão visual baseada no pacote `../design-reference/`;
+- catálogo de riscos e códigos de erro extensível;
+- versões de parser, catálogo, política e motor registradas.
+
+Esses itens não significam que extração, harmonização, áudio ou ensemble estejam habilitados.
+
+## Limites da promessa
+
+O Core pode provar uma transposição dentro do perfil suportado. Ele não pode prometer:
+
+- reconhecer toda partitura de imagem/PDF;
+- localizar melodia em qualquer textura;
+- adaptar automaticamente qualquer obra a qualquer instrumento;
+- produzir harmonia que represente a intenção subjetiva do autor;
+- gerar engraving profissional sem gate do renderer;
+- detectar todos os defeitos possíveis.
+
+Quando uma capability futura for ativada, a promessa pública deve nomear matriz, nível de garantia e necessidade de revisão.
+
+## Proteção contra expansão por documentação futura
+
+A expansão crítica descreve a arquitetura futura para evitar decisões irreversíveis, mas não altera o MVP Core. Permanecem fora do Core até gates próprios:
+
+- extração automática de melodia polifônica;
+- harmonização e arranjo;
+- adaptação idiomática automática;
+- análise de forma/cadência/tensão;
+- áudio sincronizado e score following;
+- modo de ensaio completo;
+- score multiparte e geração de partes;
+- colaboração e aprovação multiusuário;
+- OMR/PDF público.
+
+Protótipos visuais dessas capacidades são referências de arquitetura e UX, não evidência de que o backend esteja pronto.

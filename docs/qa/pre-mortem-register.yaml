@@ -1,0 +1,1089 @@
+version: 1
+updated_at: '2026-07-20'
+policy: Living register; unknown failures must be added with fixture and regression test.
+failure_modes:
+- id: PM-001
+  family: Aquisição e parsing
+  failure: arquivo vazio/truncado
+  detection: bytes/hash/parser
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-002
+  family: Aquisição e parsing
+  failure: extensão correta, conteúdo incorreto
+  detection: assinatura/raiz
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-003
+  family: Aquisição e parsing
+  failure: XXE/XInclude/URL externa
+  detection: parser seguro
+  safe_behavior: rejeitar/log seguro
+  status: documented
+  test_status: planned
+- id: PM-004
+  family: Aquisição e parsing
+  failure: XML profundo/excessivo
+  detection: limites
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-005
+  family: Aquisição e parsing
+  failure: MXL zip bomb/path traversal
+  detection: container gate
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-006
+  family: Aquisição e parsing
+  failure: PDF com conteúdo ativo/malformado
+  detection: sandbox/validator
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-007
+  family: Aquisição e parsing
+  failure: arquivo muda entre upload/processamento
+  detection: hash
+  safe_behavior: falhar integridade
+  status: documented
+  test_status: planned
+- id: PM-008
+  family: Aquisição e parsing
+  failure: charset/texto inválido
+  detection: decoder/schema
+  safe_behavior: erro específico
+  status: documented
+  test_status: planned
+- id: PM-009
+  family: Estrutura musical
+  failure: measures com duração inconsistente
+  detection: normalizador
+  safe_behavior: review/rejeitar
+  status: documented
+  test_status: planned
+- id: PM-010
+  family: Estrutura musical
+  failure: voices sem backup/forward coerente
+  detection: timeline validator
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-011
+  family: Estrutura musical
+  failure: ties órfãos
+  detection: tie graph
+  safe_behavior: rejeitar/warning conforme impacto
+  status: documented
+  test_status: planned
+- id: PM-012
+  family: Estrutura musical
+  failure: tuplets inconsistentes
+  detection: duration invariant
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-013
+  family: Estrutura musical
+  failure: grace notes sem política
+  detection: profile detector
+  safe_behavior: desabilitar operação
+  status: documented
+  test_status: planned
+- id: PM-014
+  family: Estrutura musical
+  failure: cross-staff perdido
+  detection: event graph
+  safe_behavior: review/block
+  status: documented
+  test_status: planned
+- id: PM-015
+  family: Estrutura musical
+  failure: instrument change ignorado
+  detection: detector
+  safe_behavior: rejeitar perfil
+  status: documented
+  test_status: planned
+- id: PM-016
+  family: Estrutura musical
+  failure: unpitched tratado como pitch
+  detection: notation detector
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-017
+  family: Estrutura musical
+  failure: microtom arredondado para semitom
+  detection: pitch validator
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-018
+  family: Estrutura musical
+  failure: cue notes confundidas com material principal
+  detection: cue metadata
+  safe_behavior: review
+  status: documented
+  test_status: planned
+- id: PM-019
+  family: Estrutura musical
+  failure: ossia/alternative staff processada como simultânea
+  detection: structure detector
+  safe_behavior: review/rejeitar
+  status: documented
+  test_status: planned
+- id: PM-020
+  family: Estrutura musical
+  failure: repeats expandidos duas vezes
+  detection: playback/semantic graph
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-021
+  family: Transposição
+  failure: semitone-only gera grafia errada
+  detection: diatonic invariant
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-022
+  family: Transposição
+  failure: oitava de instrumento ignorada
+  detection: interval vector
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-023
+  family: Transposição
+  failure: '`<transpose>` de origem aplicado duas vezes'
+  detection: source normalization
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-024
+  family: Transposição
+  failure: key signature não acompanha região
+  detection: key map diff
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-025
+  family: Transposição
+  failure: harmony root/bass não transpostos
+  detection: harmony diff
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-026
+  family: Transposição
+  failure: pitch de concerto muda
+  detection: independent checker
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-027
+  family: Transposição
+  failure: nota fora do range após escrita
+  detection: playability preflight
+  safe_behavior: warning/block conforme operação
+  status: documented
+  test_status: planned
+- id: PM-028
+  family: Transposição
+  failure: enarmonia ilegível
+  detection: policy checker
+  safe_behavior: warning/review
+  status: documented
+  test_status: planned
+- id: PM-029
+  family: OMR
+  failure: clave reconhecida errada
+  detection: structural comparison/review
+  safe_behavior: origem não verificada
+  status: documented
+  test_status: planned
+- id: PM-030
+  family: OMR
+  failure: armadura omitida
+  detection: key consistency
+  safe_behavior: review
+  status: documented
+  test_status: planned
+- id: PM-031
+  family: OMR
+  failure: acidente perdido
+  detection: event confidence
+  safe_behavior: review/block
+  status: documented
+  test_status: planned
+- id: PM-032
+  family: OMR
+  failure: duração/beam incorreto
+  detection: measure invariant
+  safe_behavior: review/block
+  status: documented
+  test_status: planned
+- id: PM-033
+  family: OMR
+  failure: voz fundida/dividida
+  detection: voice analysis
+  safe_behavior: review
+  status: documented
+  test_status: planned
+- id: PM-034
+  family: OMR
+  failure: página fora de ordem/ausente
+  detection: page manifest
+  safe_behavior: review
+  status: documented
+  test_status: planned
+- id: PM-035
+  family: OMR
+  failure: texto/instrumento detectado errado
+  detection: user confirmation
+  safe_behavior: não assumir
+  status: documented
+  test_status: planned
+- id: PM-036
+  family: OMR
+  failure: OMR exporta MusicXML incompleto
+  detection: schema + semantic gates
+  safe_behavior: não publicar verificado
+  status: documented
+  test_status: planned
+- id: PM-037
+  family: Extração de melodia
+  failure: nota mais aguda escolhida como regra
+  detection: benchmark adversarial
+  safe_behavior: modelo proibido
+  status: documented
+  test_status: planned
+- id: PM-038
+  family: Extração de melodia
+  failure: acompanhamento arpejado entra na melodia
+  detection: candidate evidence
+  safe_behavior: review
+  status: documented
+  test_status: planned
+- id: PM-039
+  family: Extração de melodia
+  failure: melodia em voz interna omitida
+  detection: labels/corpus
+  safe_behavior: review/block
+  status: documented
+  test_status: planned
+- id: PM-040
+  family: Extração de melodia
+  failure: troca de voz no meio da frase
+  detection: phrase continuity
+  safe_behavior: review
+  status: documented
+  test_status: planned
+- id: PM-041
+  family: Extração de melodia
+  failure: octave doubling vira acorde
+  detection: doubling policy
+  safe_behavior: escolher política
+  status: documented
+  test_status: planned
+- id: PM-042
+  family: Extração de melodia
+  failure: ornamentação descartada
+  detection: ornament mode
+  safe_behavior: diff/review
+  status: documented
+  test_status: planned
+- id: PM-043
+  family: Extração de melodia
+  failure: anacruse perdida
+  detection: timeline invariant
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-044
+  family: Extração de melodia
+  failure: notas simultâneas sem decisão
+  detection: monophony validator
+  safe_behavior: review
+  status: documented
+  test_status: planned
+- id: PM-045
+  family: Extração de melodia
+  failure: evento criado na extração
+  detection: provenance invariant
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-046
+  family: Análise/harmonização
+  failure: modo global ignora modulação
+  detection: tonal region map
+  safe_behavior: review
+  status: documented
+  test_status: planned
+- id: PM-047
+  family: Análise/harmonização
+  failure: nota de suspensão tratada como chord tone
+  detection: non-chord analysis
+  safe_behavior: variante penalizada/rejeitada
+  status: documented
+  test_status: planned
+- id: PM-048
+  family: Análise/harmonização
+  failure: cadência estrutural destruída
+  detection: cadence invariant
+  safe_behavior: rejeitar no perfil
+  status: documented
+  test_status: planned
+- id: PM-049
+  family: Análise/harmonização
+  failure: ritmo harmônico excessivo para andamento
+  detection: density policy
+  safe_behavior: warning/rejeitar
+  status: documented
+  test_status: planned
+- id: PM-050
+  family: Análise/harmonização
+  failure: melodia alterada
+  detection: locked melody hash
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-051
+  family: Análise/harmonização
+  failure: vozes paralelas proibidas no perfil clássico
+  detection: voice-leading rules
+  safe_behavior: rejeitar variante
+  status: documented
+  test_status: planned
+- id: PM-052
+  family: Análise/harmonização
+  failure: regra clássica aplicada a jazz/modal
+  detection: profile mismatch
+  safe_behavior: bloquear policy
+  status: documented
+  test_status: planned
+- id: PM-053
+  family: Análise/harmonização
+  failure: acorde sem pitch de melodia compatível
+  detection: vertical validator
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-054
+  family: Análise/harmonização
+  failure: modelo inventa símbolo/nota inválida
+  detection: schema/constraints
+  safe_behavior: rejeitar
+  status: documented
+  test_status: planned
+- id: PM-055
+  family: Análise/harmonização
+  failure: todas variantes praticamente iguais
+  detection: semantic distance
+  safe_behavior: regenerar/avisar
+  status: documented
+  test_status: planned
+- id: PM-056
+  family: Análise/harmonização
+  failure: “sentimento” inferido como fato
+  detection: UX/content tests
+  safe_behavior: remover/confirmar usuário
+  status: documented
+  test_status: planned
+- id: PM-057
+  family: Tocabilidade/adaptação
+  failure: range absoluto cadastrado errado
+  detection: catalog review
+  safe_behavior: flag off/corrigir versão
+  status: documented
+  test_status: planned
+- id: PM-058
+  family: Tocabilidade/adaptação
+  failure: acorde impossível apesar de contagem válida
+  detection: instrument solver
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-059
+  family: Tocabilidade/adaptação
+  failure: frase de sopro sem respiração
+  detection: tempo/phrase model
+  safe_behavior: finding
+  status: documented
+  test_status: planned
+- id: PM-060
+  family: Tocabilidade/adaptação
+  failure: registro sem projeção
+  detection: register profile
+  safe_behavior: warning
+  status: documented
+  test_status: planned
+- id: PM-061
+  family: Tocabilidade/adaptação
+  failure: dificuldade ignora andamento
+  detection: tempo-aware rules
+  safe_behavior: recalcular
+  status: documented
+  test_status: planned
+- id: PM-062
+  family: Tocabilidade/adaptação
+  failure: adaptação remove nota estrutural
+  detection: fidelity/diff
+  safe_behavior: review/block
+  status: documented
+  test_status: planned
+- id: PM-063
+  family: Tocabilidade/adaptação
+  failure: técnica não modelada tratada como segura
+  detection: unknown-technique rule
+  safe_behavior: expert review
+  status: documented
+  test_status: planned
+- id: PM-064
+  family: Tocabilidade/adaptação
+  failure: nível iniciante usado como física absoluta
+  detection: profile separation
+  safe_behavior: corrigir severity
+  status: documented
+  test_status: planned
+- id: PM-065
+  family: Score, partes e engraving
+  failure: parte diverge do score
+  detection: consistency properties
+  safe_behavior: bloquear pacote
+  status: documented
+  test_status: planned
+- id: PM-066
+  family: Score, partes e engraving
+  failure: score em concert e parte written confundidos
+  detection: mode manifest
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-067
+  family: Score, partes e engraving
+  failure: rehearsal marks divergentes
+  detection: ID check
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-068
+  family: Score, partes e engraving
+  failure: page turn em passagem contínua
+  detection: layout analysis
+  safe_behavior: warning/block
+  status: documented
+  test_status: planned
+- id: PM-069
+  family: Score, partes e engraving
+  failure: colisão cobre acidente/dinâmica
+  detection: geometry detector
+  safe_behavior: bloquear PDF
+  status: documented
+  test_status: planned
+- id: PM-070
+  family: Score, partes e engraving
+  failure: fonte musical ausente troca glifo
+  detection: font manifest
+  safe_behavior: bloquear renderer
+  status: documented
+  test_status: planned
+- id: PM-071
+  family: Score, partes e engraving
+  failure: watermark atravessa nota
+  detection: safe-zone validator
+  safe_behavior: bloquear PDF
+  status: documented
+  test_status: planned
+- id: PM-072
+  family: Score, partes e engraving
+  failure: layout diff interpretado como musical
+  detection: diff classifier
+  safe_behavior: separar categorias
+  status: documented
+  test_status: planned
+- id: PM-073
+  family: Áudio/ensaio
+  failure: áudio usa pitch escrito
+  detection: pitch comparison
+  safe_behavior: bloquear áudio
+  status: documented
+  test_status: planned
+- id: PM-074
+  family: Áudio/ensaio
+  failure: repeat/endings fora de ordem
+  detection: occurrence corpus
+  safe_behavior: bloquear following
+  status: documented
+  test_status: planned
+- id: PM-075
+  family: Áudio/ensaio
+  failure: A/B desalinhado
+  detection: timestamp tolerance
+  safe_behavior: desabilitar toggle
+  status: documented
+  test_status: planned
+- id: PM-076
+  family: Áudio/ensaio
+  failure: volume diferente influencia avaliação
+  detection: loudness normalization
+  safe_behavior: normalizar
+  status: documented
+  test_status: planned
+- id: PM-077
+  family: Áudio/ensaio
+  failure: cursor atualiza DOM inteiro
+  detection: performance test
+  safe_behavior: refatorar camada
+  status: documented
+  test_status: planned
+- id: PM-078
+  family: Áudio/ensaio
+  failure: autoplay sem consentimento
+  detection: E2E/a11y
+  safe_behavior: impedir
+  status: documented
+  test_status: planned
+- id: PM-079
+  family: Áudio/ensaio
+  failure: sample sem licença
+  detection: dependency inventory
+  safe_behavior: não distribuir
+  status: documented
+  test_status: planned
+- id: PM-080
+  family: Áudio/ensaio
+  failure: anotação perde âncora após reflow
+  detection: remap check
+  safe_behavior: marcar órfã
+  status: documented
+  test_status: planned
+- id: PM-081
+  family: Backend e operação
+  failure: double click cria jobs duplicados
+  detection: idempotency test
+  safe_behavior: mesmo job
+  status: documented
+  test_status: planned
+- id: PM-082
+  family: Backend e operação
+  failure: worker crash após upload de artefato
+  detection: atomic publish test
+  safe_behavior: reconciliar/não público
+  status: documented
+  test_status: planned
+- id: PM-083
+  family: Backend e operação
+  failure: retry de erro determinístico
+  detection: taxonomy test
+  safe_behavior: não retry
+  status: documented
+  test_status: planned
+- id: PM-084
+  family: Backend e operação
+  failure: job preso por lease expirado
+  detection: reconciler
+  safe_behavior: retomar/falhar seguro
+  status: documented
+  test_status: planned
+- id: PM-085
+  family: Backend e operação
+  failure: cache usa versão antiga de modelo
+  detection: dependency hash
+  safe_behavior: invalidar
+  status: documented
+  test_status: planned
+- id: PM-086
+  family: Backend e operação
+  failure: flag UI on/backend off
+  detection: capability contract
+  safe_behavior: UI obedece backend
+  status: documented
+  test_status: planned
+- id: PM-087
+  family: Backend e operação
+  failure: progresso inventado
+  detection: stage contract
+  safe_behavior: sem percentual falso
+  status: documented
+  test_status: planned
+- id: PM-088
+  family: Backend e operação
+  failure: purge remove manifesto antes da política
+  detection: retention tests
+  safe_behavior: ordem correta
+  status: documented
+  test_status: planned
+- id: PM-089
+  family: Segurança, privacidade e autoria
+  failure: sessão B acessa artefato A
+  detection: IDOR test
+  safe_behavior: '404'
+  status: documented
+  test_status: planned
+- id: PM-090
+  family: Segurança, privacidade e autoria
+  failure: metadado musical injeta prompt
+  detection: adversarial fixture
+  safe_behavior: tratar como dado
+  status: documented
+  test_status: planned
+- id: PM-091
+  family: Segurança, privacidade e autoria
+  failure: log contém letra/partitura
+  detection: log scanner
+  safe_behavior: bloquear CI/incidente
+  status: documented
+  test_status: planned
+- id: PM-092
+  family: Segurança, privacidade e autoria
+  failure: upload usado para treino sem opt-in
+  detection: data lineage audit
+  safe_behavior: proibido
+  status: documented
+  test_status: planned
+- id: PM-093
+  family: Segurança, privacidade e autoria
+  failure: crédito do autor removido
+  detection: metadata diff
+  safe_behavior: bloquear exportação
+  status: documented
+  test_status: planned
+- id: PM-094
+  family: Segurança, privacidade e autoria
+  failure: watermark contém PII
+  detection: payload policy
+  safe_behavior: rejeitar token
+  status: documented
+  test_status: planned
+- id: PM-095
+  family: Segurança, privacidade e autoria
+  failure: link compartilhado sem revogação
+  detection: security test
+  safe_behavior: não habilitar
+  status: documented
+  test_status: planned
+- id: PM-096
+  family: Segurança, privacidade e autoria
+  failure: comentário com script/URL perigosa
+  detection: sanitização
+  safe_behavior: neutralizar
+  status: documented
+  test_status: planned
+- id: PM-097
+  family: Frontend e referência visual
+  failure: IA substitui workspace por dashboard
+  detection: golden review
+  safe_behavior: rejeitar PR
+  status: documented
+  test_status: planned
+- id: PM-098
+  family: Frontend e referência visual
+  failure: only-happy-path
+  detection: state coverage
+  safe_behavior: bloquear DoD
+  status: documented
+  test_status: planned
+- id: PM-099
+  family: Frontend e referência visual
+  failure: warning em toast desaparece
+  detection: story/E2E
+  safe_behavior: painel persistente
+  status: documented
+  test_status: planned
+- id: PM-100
+  family: Frontend e referência visual
+  failure: baseline atualizado sem revisão
+  detection: CI policy
+  safe_behavior: bloquear
+  status: documented
+  test_status: planned
+- id: PM-101
+  family: Frontend e referência visual
+  failure: referência externa copiada
+  detection: provenance review
+  safe_behavior: remover/refazer
+  status: documented
+  test_status: planned
+- id: PM-102
+  family: Frontend e referência visual
+  failure: animação bloqueia CTA
+  detection: motion test
+  safe_behavior: fallback/imediato
+  status: documented
+  test_status: planned
+- id: PM-103
+  family: Frontend e referência visual
+  failure: reduced motion apenas acelera
+  detection: accessibility test
+  safe_behavior: variante reduzida
+  status: documented
+  test_status: planned
+- id: PM-104
+  family: Frontend e referência visual
+  failure: GSAP permanece ativo após navegação
+  detection: leak test
+  safe_behavior: cleanup
+  status: documented
+  test_status: planned
+- id: PM-105
+  family: Sessão, API e contratos
+  failure: sessão expira enquanto job válido ainda executa
+  detection: integração sessão/job
+  safe_behavior: renovar dentro da política ou orientar recuperação; nunca tornar público
+  status: documented
+  test_status: planned
+- id: PM-106
+  family: Sessão, API e contratos
+  failure: token CSRF expirado, ausente ou reutilizado
+  detection: middleware/nonce
+  safe_behavior: '`403`, renovar página/token, nenhuma mutação'
+  status: documented
+  test_status: planned
+- id: PM-107
+  family: Sessão, API e contratos
+  failure: mesma idempotency key usada com payload diferente
+  detection: hash de request
+  safe_behavior: '`409 IDEMPOTENCY_CONFLICT`'
+  status: documented
+  test_status: planned
+- id: PM-108
+  family: Sessão, API e contratos
+  failure: rate limit ocorre após bytes já escritos em quarentena
+  detection: teste upload/cleanup
+  safe_behavior: abortar e remover temporário
+  status: documented
+  test_status: planned
+- id: PM-109
+  family: Sessão, API e contratos
+  failure: clock skew altera expiração ou URL assinada
+  detection: teste com relógio controlado
+  safe_behavior: usar horário do servidor e tolerância documentada
+  status: documented
+  test_status: planned
+- id: PM-110
+  family: Sessão, API e contratos
+  failure: nome Unicode/confusável ou path-like chega ao storage
+  detection: normalização/chave gerada
+  safe_behavior: ignorar path do cliente e preservar display name sanitizado
+  status: documented
+  test_status: planned
+- id: PM-111
+  family: Sessão, API e contratos
+  failure: upload multipart/chunk duplicado ou fora de ordem
+  detection: manifest/hash
+  safe_behavior: abortar ou reconstruir somente pelo protocolo suportado
+  status: documented
+  test_status: planned
+- id: PM-112
+  family: Sessão, API e contratos
+  failure: capability muda entre configuração e submit
+  detection: capability snapshot
+  safe_behavior: rejeitar configuração obsoleta e recarregar opções
+  status: documented
+  test_status: planned
+- id: PM-113
+  family: Sessão, API e contratos
+  failure: cookie anônimo é perdido e resultado fica órfão
+  detection: fluxo de recuperação
+  safe_behavior: não contornar autorização; aplicar mecanismo de recuperação aprovado
+  status: documented
+  test_status: planned
+- id: PM-114
+  family: Sessão, API e contratos
+  failure: cliente envia revisão antiga após nova confirmação
+  detection: '`expected_revision_id`'
+  safe_behavior: '`409 REVISION_CONFLICT`, preservar ambas'
+  status: documented
+  test_status: planned
+- id: PM-115
+  family: Infraestrutura, concorrência e publicação
+  failure: banco indisponível antes do commit
+  detection: fault injection
+  safe_behavior: não responder como aceito
+  status: documented
+  test_status: planned
+- id: PM-116
+  family: Infraestrutura, concorrência e publicação
+  failure: commit ocorre, mas outbox demora/falha ao publicar
+  detection: reconciler/outbox age
+  safe_behavior: manter job persistido e publicar posteriormente
+  status: documented
+  test_status: planned
+- id: PM-117
+  family: Infraestrutura, concorrência e publicação
+  failure: Redis/broker indisponível
+  detection: health/fault injection
+  safe_behavior: manter outbox pendente; não perder job
+  status: documented
+  test_status: planned
+- id: PM-118
+  family: Infraestrutura, concorrência e publicação
+  failure: mensagem é entregue mais de uma vez
+  detection: duplicate delivery test
+  safe_behavior: mesma tentativa lógica/sem artefato duplicado
+  status: documented
+  test_status: planned
+- id: PM-119
+  family: Infraestrutura, concorrência e publicação
+  failure: worker cai antes/depois de atualizar stage
+  detection: kill-point tests
+  safe_behavior: lease/reconcile e estado monotônico
+  status: documented
+  test_status: planned
+- id: PM-120
+  family: Infraestrutura, concorrência e publicação
+  failure: upload ao storage termina parcialmente
+  detection: temp key/checksum
+  safe_behavior: não promover chave final
+  status: documented
+  test_status: planned
+- id: PM-121
+  family: Infraestrutura, concorrência e publicação
+  failure: storage fica indisponível depois da transformação
+  detection: fault injection
+  safe_behavior: retry transitório; resultado não concluído
+  status: documented
+  test_status: planned
+- id: PM-122
+  family: Infraestrutura, concorrência e publicação
+  failure: checksum do artefato diverge do manifesto
+  detection: verificação antes de publish/download
+  safe_behavior: bloquear e abrir incidente
+  status: documented
+  test_status: planned
+- id: PM-123
+  family: Infraestrutura, concorrência e publicação
+  failure: cancelamento concorre com publicação
+  detection: compare-and-set terminal
+  safe_behavior: um único estado terminal; cancelado não publica
+  status: documented
+  test_status: planned
+- id: PM-124
+  family: Infraestrutura, concorrência e publicação
+  failure: purge concorre com download
+  detection: lock/version/retention tests
+  safe_behavior: resposta consistente, sem download parcial
+  status: documented
+  test_status: planned
+- id: PM-125
+  family: Infraestrutura, concorrência e publicação
+  failure: purge aponta para artefato de sessão errada
+  detection: ownership + manifest
+  safe_behavior: bloquear, incidente de segurança
+  status: documented
+  test_status: planned
+- id: PM-126
+  family: Infraestrutura, concorrência e publicação
+  failure: mensagem vai para dead-letter sem alerta
+  detection: DLQ monitor
+  safe_behavior: alertar owner e estado público não fica eternamente processando
+  status: documented
+  test_status: planned
+- id: PM-127
+  family: Infraestrutura, concorrência e publicação
+  failure: workers com versões diferentes processam o mesmo job
+  detection: manifest/version policy
+  safe_behavior: fixar versão por job ou rejeitar worker incompatível
+  status: documented
+  test_status: planned
+- id: PM-128
+  family: Infraestrutura, concorrência e publicação
+  failure: app e banco executam schemas incompatíveis durante deploy
+  detection: migration compatibility test
+  safe_behavior: bloquear deploy/worker; nunca adivinhar coluna
+  status: documented
+  test_status: planned
+- id: PM-129
+  family: Infraestrutura, concorrência e publicação
+  failure: jobs caros causam starvation dos simples
+  detection: métricas de fila/quotas
+  safe_behavior: filas e pesos por complexidade
+  status: documented
+  test_status: planned
+- id: PM-130
+  family: Infraestrutura, concorrência e publicação
+  failure: partitura válida provoca explosão combinatória
+  detection: complexity budget
+  safe_behavior: pausar/rejeitar com limite explicável
+  status: documented
+  test_status: planned
+- id: PM-131
+  family: Revisão, colaboração e versionamento
+  failure: dois revisores alteram a mesma região
+  detection: optimistic concurrency
+  safe_behavior: conflito explícito e merge humano
+  status: documented
+  test_status: planned
+- id: PM-132
+  family: Revisão, colaboração e versionamento
+  failure: anotação perde âncora após nova revisão
+  detection: anchor remap
+  safe_behavior: marcar `orphaned`, não mover silenciosamente
+  status: documented
+  test_status: planned
+- id: PM-133
+  family: Revisão, colaboração e versionamento
+  failure: aprovação é aplicada sobre parent obsoleto
+  detection: parent/revision check
+  safe_behavior: rejeitar e solicitar nova revisão
+  status: documented
+  test_status: planned
+- id: PM-134
+  family: Revisão, colaboração e versionamento
+  failure: link revogado continua válido por cache
+  detection: auth no fetch/cache policy
+  safe_behavior: negar acesso e invalidar cache
+  status: documented
+  test_status: planned
+- id: PM-135
+  family: Revisão, colaboração e versionamento
+  failure: comentário/metadado renderiza HTML/script
+  detection: sanitização/CSP
+  safe_behavior: neutralizar e preservar texto seguro
+  status: documented
+  test_status: planned
+- id: PM-136
+  family: Release, modelos, corpus e supply chain
+  failure: feature flag é ligada antes do gate de corpus
+  detection: policy-as-code
+  safe_behavior: bloquear rollout
+  status: documented
+  test_status: planned
+- id: PM-137
+  family: Release, modelos, corpus e supply chain
+  failure: rollback não consegue ler artefato de schema novo
+  detection: backward compatibility fixture
+  safe_behavior: manter reader compatível ou impedir rollback inseguro
+  status: documented
+  test_status: planned
+- id: PM-138
+  family: Release, modelos, corpus e supply chain
+  failure: provedor/modelo fica indisponível
+  detection: circuit breaker
+  safe_behavior: fallback aprovado ou capability indisponível; sem troca silenciosa
+  status: documented
+  test_status: planned
+- id: PM-139
+  family: Release, modelos, corpus e supply chain
+  failure: mesma variante muda sem novo ID por não determinismo
+  detection: artifact immutability
+  safe_behavior: preservar output concreto e gerar nova revisão
+  status: documented
+  test_status: planned
+- id: PM-140
+  family: Release, modelos, corpus e supply chain
+  failure: licença/dependência muda e invalida distribuição
+  detection: SBOM/licence gate
+  safe_behavior: bloquear release e substituir/comprovar direito
+  status: documented
+  test_status: planned
+- id: PM-141
+  family: Release, modelos, corpus e supply chain
+  failure: corpus de release vaza para treino/tuning
+  detection: data-lineage audit
+  safe_behavior: invalidar benchmark e reconstruir split
+  status: documented
+  test_status: planned
+- id: PM-142
+  family: Release, modelos, corpus e supply chain
+  failure: equipe ajusta algoritmo repetidamente contra test set
+  detection: governance audit
+  safe_behavior: congelar holdout novo e registrar contaminação
+  status: documented
+  test_status: planned
+- id: PM-143
+  family: Release, modelos, corpus e supply chain
+  failure: métrica agregada mascara falha em instrumento/textura
+  detection: relatório estratificado
+  safe_behavior: não ativar estrato reprovado
+  status: documented
+  test_status: planned
+- id: PM-144
+  family: Release, modelos, corpus e supply chain
+  failure: logs/telemetria capturam conteúdo musical ou PII
+  detection: scanner/amostragem
+  safe_behavior: remover, rotacionar e abrir incidente
+  status: documented
+  test_status: planned
+- id: PM-145
+  family: Frontend, offline e acessibilidade complementar
+  failure: UI mostra sucesso antes do estado terminal verificado
+  detection: contract/E2E
+  safe_behavior: exibir aceito/processando, nunca concluído otimista
+  status: documented
+  test_status: planned
+- id: PM-146
+  family: Frontend, offline e acessibilidade complementar
+  failure: rede cai depois que o backend aceitou o job
+  detection: E2E offline
+  safe_behavior: recuperar pelo job/session; não criar duplicado
+  status: documented
+  test_status: planned
+- id: PM-147
+  family: Frontend, offline e acessibilidade complementar
+  failure: ação feita offline parece enviada
+  detection: PWA/E2E
+  safe_behavior: declarar local/não enviado; não enfileirar mutação sem protocolo
+  status: documented
+  test_status: planned
+- id: PM-148
+  family: Frontend, offline e acessibilidade complementar
+  failure: viewport/zoom esconde CTA, warning ou inspector
+  detection: visual/a11y matrix
+  safe_behavior: reflow e ação acessível
+  status: documented
+  test_status: planned
+- id: PM-149
+  family: Frontend, offline e acessibilidade complementar
+  failure: teclado/leitor de tela não consegue selecionar evento musical
+  detection: interaction/a11y test
+  safe_behavior: oferecer lista textual e controles equivalentes
+  status: documented
+  test_status: planned
+- id: PM-150
+  family: Frontend, offline e acessibilidade complementar
+  failure: ruído de antialiasing causa atualização indiscriminada de baseline
+  detection: deterministic visual env
+  safe_behavior: tolerância controlada e revisão humana
+  status: documented
+  test_status: planned
+- id: PM-151
+  family: Frontend, offline e acessibilidade complementar
+  failure: nomes de notas/instrumentos mudam significado por locale
+  detection: locale fixtures
+  safe_behavior: armazenar IDs canônicos e localizar apenas apresentação
+  status: documented
+  test_status: planned
+- id: PM-152
+  family: Frontend, offline e acessibilidade complementar
+  failure: tempo decimal/locale é interpretado incorretamente
+  detection: parser/locale tests
+  safe_behavior: schema numérico canônico e validação
+  status: documented
+  test_status: planned
+- id: PM-153
+  family: Frontend, offline e acessibilidade complementar
+  failure: áudio perde sincronização após background/resume
+  detection: lifecycle test
+  safe_behavior: recalibrar relógio ou desabilitar following
+  status: documented
+  test_status: planned
+- id: PM-154
+  family: Frontend, offline e acessibilidade complementar
+  failure: service worker entrega capability/API schema antigo
+  detection: version handshake
+  safe_behavior: invalidar cache e bloquear submit obsoleto
+  status: documented
+  test_status: planned
+- id: PM-155
+  family: Frontend, offline e acessibilidade complementar
+  failure: reduced motion é respeitado na UI, mas ignorado em canvas/SVG
+  detection: a11y motion test
+  safe_behavior: substituir por estado estático
+  status: documented
+  test_status: planned

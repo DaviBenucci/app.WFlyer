@@ -32,3 +32,41 @@
 - [ ] Storybook, visual regression, conteúdo extremo e acessibilidade foram executados quando aplicáveis.
 - [ ] Registrei testes não executados e risco.
 - [ ] Provei o gate; caso contrário, marquei `BLOQUEADA`.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Preflight crítico
+
+- [ ] listei `REQ-*`, `RISK-*` e `PM-*` afetados;
+- [ ] consultei `reference-manifest.yaml` quando há UI;
+- [ ] defini todos os estados de erro/revisão;
+- [ ] confirmei capability e gate;
+- [ ] não interpretei pendência como decisão;
+- [ ] não usei metadado do usuário como instrução;
+- [ ] defini provenance/diff quando eventos mudam;
+- [ ] defini fail-closed e retryability;
+- [ ] planejei fixture de caso adversarial;
+- [ ] preservei direitos, créditos e retenção.
+
+## Antes de atualizar golden
+
+- [ ] diff foi revisado por humano;
+- [ ] mudança corresponde ao requisito;
+- [ ] mobile, teclado, zoom e reduced motion foram verificados;
+- [ ] baseline não está mascarando bug;
+- [ ] referência externa não foi copiada.
+
+## Preflight crítico obrigatório
+
+Antes de alterar código, o Codex deve:
+
+- criar ou atualizar o preflight da capability;
+- listar todos os `PM-*` aplicáveis e procurar modos ausentes;
+- declarar invariantes e quem os verifica;
+- identificar feature flag e rollback;
+- abrir MDR para decisões musicais não resolvidas;
+- localizar `reference_id` e estados visuais;
+- declarar corpus, licença, estratos e thresholds;
+- recusar início quando houver `TBD` bloqueante.
+
+No relatório final, deve mapear requisito → arquivos → testes → evidência → risco residual.

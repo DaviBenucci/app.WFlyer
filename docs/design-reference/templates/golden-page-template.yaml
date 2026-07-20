@@ -1,0 +1,15 @@
+id: WF-DRAFT-000
+status: draft
+purpose:
+  primary: ""
+layout:
+  shell: studio
+must_have: []
+must_not_have: []
+states: []
+accessibility:
+  keyboard_complete: false
+  reduced_motion_required: true
+viewports:
+  - {name: mobile, width: 390, height: 844}
+  - {name: desktop, width: 1440, height: 900}

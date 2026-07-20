@@ -88,3 +88,27 @@ Mocks são gerados/validados contra OpenAPI.
 - métricas/bundle comparados ao baseline.
 
 Detalhamento obrigatório: `09-testes-motion-performance.md`.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Cobertura por `reference_id`
+
+CI deve gerar matriz:
+
+```text
+reference_id x state x viewport x input_mode x motion_preference
+```
+
+Não é necessário testar produto cartesiano completo, mas cada combinação excluída precisa de justificativa de risco.
+
+## Casos críticos adicionais
+
+- warning bloqueante persiste após refresh;
+- diff parcial não aparece como completo;
+- `UNKNOWN` não usa aparência de sucesso;
+- navegação por teclado entre origem/resultado e change list;
+- foco permanece visível com sticky bars;
+- audio transport não inicia sozinho;
+- cursor de playback não captura leitor de tela a cada frame;
+- conflito de revisão preserva edição local sem sobrescrever servidor;
+- baseline não pode ser atualizado por bot sem aprovação.

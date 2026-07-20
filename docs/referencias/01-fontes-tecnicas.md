@@ -15,7 +15,8 @@
 
 - music21 — intervalos: https://www.music21.org/music21docs/moduleReference/moduleInterval.html
 - Audiveris — handbook: https://audiveris.github.io/audiveris/_pages/handbook/
-- Audiveris — exportação MusicXML: https://audiveris.github.io/audiveris/_pages/guides/advanced/export/
+- Audiveris — limitações conhecidas: https://audiveris.github.io/audiveris/_pages/reference/limitations/
+- Audiveris — exportação MusicXML: https://audiveris.github.io/audiveris/_pages/tutorials/quick/export/
 - MuseScore Studio — command line: https://handbook.musescore.org/appendix/command-line-usage
 
 A presença de uma ferramenta nesta lista não é decisão de produção; consultar `../00-visao-geral/09-decisoes-pendentes.md`.
@@ -68,3 +69,56 @@ A presença de uma ferramenta nesta lista não é decisão de produção; consul
 ## Regra de uso
 
 Ao implementar, registrar a versão exata da especificação, biblioteca e engine. Mudança de versão em parser/OMR/renderer exige executar corpus funcional e hostil antes de release.
+
+## Polifonia, extração de melodia e harmonização
+
+- MusicXML `<voice>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/voice/
+- MusicXML `<chord>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/chord/
+- MusicXML `<staff>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff/
+- MusicXML `<staves>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staves/
+- MusicXML `<principal-voice>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/principal-voice/
+- MusicXML `<harmony>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmony/
+- MusicXML `<forward>` e coordenação de vozes: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/forward/
+- ISMIR 2022 — melody extraction from polyphonic symbolic music: https://archives.ismir.net/ismir2022/paper/000091.pdf
+- AutoHarmonizer — harmonic rhythm controllable melody harmonization: https://arxiv.org/abs/2112.11122
+- Automatic Melody Harmonization with Triad Chords: https://arxiv.org/abs/2001.02360
+- music21 Chordify: https://music21.org/music21docs/usersGuide/usersGuide_09_chordify.html
+- music21 voice leading: https://music21.org/music21docs/moduleReference/moduleVoiceLeading.html
+
+## PDF, watermark e proveniência
+
+- PDF Association — padrões PDF e extensões de assinatura/integridade: https://pdfa.org/pdf-standards/
+- Adobe — visão geral de assinaturas digitais: https://helpx.adobe.com/pt/acrobat/desktop/e-sign-documents/learn-about-signatures/digital-sign-overview.html
+- Adobe — validação de assinaturas digitais: https://helpx.adobe.com/pt/acrobat/desktop/e-sign-documents/manage-digital-signatures/validate-digital-sign.html
+- Adobe — remoção de watermarks em PDF: https://helpx.adobe.com/pt/acrobat/desktop/edit-documents/add-backgrounds-and-watermarks/delete-watermarks.html
+- C2PA — especificações de proveniência: https://spec.c2pa.org/specifications/specifications/2.4/index.html
+
+As fontes de pesquisa não substituem benchmark do corpus, revisão musical, análise de licença ou threat model do W_Flyer.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Referências adicionais da visão crítica
+
+### Frontend e QA visual
+
+- Storybook — interaction testing: https://storybook.js.org/docs/writing-tests/interaction-testing
+- Storybook — accessibility testing: https://storybook.js.org/docs/writing-tests/accessibility-testing
+- Storybook — visual tests: https://storybook.js.org/docs/writing-tests/visual-testing
+- Playwright — visual comparisons: https://playwright.dev/docs/test-snapshots
+- WCAG 2.2: https://www.w3.org/TR/WCAG22/
+
+### Estrutura musical e análise
+
+- MusicXML `<voice>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/voice/
+- MusicXML `<staff>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/staff/
+- MusicXML `<principal-voice>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/principal-voice/
+- MusicXML `<harmony>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/harmony/
+- MusicXML `<transpose>`: https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/transpose/
+- MEI Guidelines 5.1: https://music-encoding.org/guidelines/v5/content/index.html
+
+### Áudio e engraving
+
+- Web Audio API 1.1: https://www.w3.org/TR/webaudio-1.1/
+- SMuFL 1.4: https://w3c.github.io/smufl/latest/
+
+Essas fontes fundamentam formatos e capacidades técnicas. Elas não definem sozinhas a UX, o perfil instrumental ou o gate musical do W_Flyer.

@@ -61,3 +61,13 @@
 ## Motor
 
 Executar a suíte de `05-testes-musicais.md` e falhar o job quando qualquer invariante obrigatório falhar.
+
+## Revisão, garantia e watermark
+
+- review A não acessa job de B;
+- revision conflict não sobrescreve;
+- job em espera não mantém lease;
+- assurance repara arquivos e detecta saída adulterada;
+- manifesto/hash/assinatura correspondem ao artefato;
+- token inválido não enumera registros;
+- falha do watermarker não publica PDF parcial.

@@ -103,6 +103,7 @@ O Core espera resposta de sucesso `validated`; quarentena/rejeição pode ser ob
 type JobStatus =
   | 'queued'
   | 'running'
+  | 'awaiting_user_input'
   | 'cancel_requested'
   | 'completed'
   | 'completed_with_warnings'
@@ -114,9 +115,17 @@ type ProcessingStage =
   | 'preprocessing'
   | 'recognizing'
   | 'normalizing'
+  | 'analyzing_structure'
+  | 'extracting_melody'
+  | 'reducing'
   | 'transposing'
+  | 'harmonizing'
+  | 'arranging'
   | 'validating'
+  | 'assuring'
   | 'rendering'
+  | 'watermarking'
+  | 'signing'
   | 'finalizing'
 
 type RetentionStatus = 'active' | 'expired' | 'purging' | 'purged'
@@ -137,8 +146,17 @@ type PublicErrorSummaryDTO = {
 
 type PublicJobDTO = {
   job_id: UUID
+  operation: 'TRANSPOSE' | 'EXTRACT_MELODY' | 'HARMONIZE' | 'ARRANGE_FOR_INSTRUMENT'
   status: JobStatus
   stage: ProcessingStage
+  review_kind: 'source_recognition' | 'melody_selection' | 'harmony_variant' | null
+  assurance_level:
+    | 'UNVERIFIED_SOURCE'
+    | 'STRUCTURALLY_VALID'
+    | 'SOURCE_USER_CONFIRMED'
+    | 'TRANSFORMATION_VERIFIED'
+    | 'CREATIVE_VARIANT_VALIDATED'
+    | 'CREATIVE_VARIANT_USER_APPROVED'
   progress_pct: number
   retention_status: RetentionStatus
   source_instrument_id: string
@@ -154,8 +172,11 @@ type PublicJobDTO = {
 
 type JobStatusDTO = {
   job_id: UUID
+  operation: PublicJobDTO['operation']
   status: JobStatus
   stage: ProcessingStage
+  review_kind: PublicJobDTO['review_kind']
+  assurance_level: PublicJobDTO['assurance_level']
   progress_pct: number
   retention_status: RetentionStatus
   message: string
@@ -239,3 +260,72 @@ type ErrorDTO = {
 - rejeitar campo ausente/tipo inesperado em fronteira crítica;
 - garantir ausência de `storage_key`, path, task id, stacktrace e confidence bruto;
 - confirmar que UI usa capabilities para formatos e outputs.
+
+## Contratos para operação e revisão
+
+O cliente gerado deve expor union discriminada por `operation`, `review_kind` e `assurance_level`. Não usar `Record<string, any>` para parâmetros musicais.
+
+Estados adicionais:
+
+```text
+awaiting_user_input
+source_recognition
+melody_selection
+harmony_variant
+```
+
+Quando `awaiting_user_input`, o polling normal pode reduzir frequência e a UI abre `/revisao/{job_id}`. O frontend nunca fabrica alternativa, score ou nível de garantia.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## DTOs avançados reservados
+
+```ts
+type DiffCategory =
+  | 'PRESERVED'
+  | 'PITCH_TRANSPOSED'
+  | 'ENHARMONIC_RESPELLING'
+  | 'OCTAVE_ADAPTED'
+  | 'SELECTED'
+  | 'REMOVED'
+  | 'GENERATED'
+  | 'LAYOUT_ONLY'
+
+type MusicalDiffEntry = {
+  sourceEventIds: string[]
+  resultEventIds: string[]
+  category: DiffCategory
+  reasonCode: string
+  regionId?: string
+  humanDecisionId?: string
+}
+
+type PlayabilityFinding = {
+  id: string
+  classification: 'IMPOSSIBLE' | 'DIFFICULT' | 'NON_IDIOMATIC' | 'COMFORTABLE' | 'UNKNOWN'
+  severity: 'INFO' | 'WARNING' | 'BLOCKING'
+  eventIds: string[]
+  explanationCode: string
+  suggestedActions: string[]
+}
+
+type PlaybackOccurrence = {
+  occurrenceId: string
+  eventId: string
+  startMs: number
+  endMs: number
+  measureNumber: string
+  page?: number
+  system?: number
+}
+```
+
+## Regras de consumo
+
+- `UNKNOWN` não vira sucesso visual;
+- UI nunca calcula coverage ou garantia por conta própria;
+- IDs de evento são opacos;
+- paginação de diff não autoriza afirmar que todos os eventos foram carregados;
+- decisões usam `revisionId` e `version`/ETag;
+- capability desligada remove ação, mas resposta do backend continua sendo a barreira real;
+- áudio A/B só habilita quando os dois renders usam mapa compatível.

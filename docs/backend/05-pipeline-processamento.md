@@ -105,3 +105,75 @@ correlation_id
 ```
 
 Esses dados são internos, salvo os campos explicitamente allowlisted nos DTOs públicos.
+
+## Orquestração por operação
+
+Após normalização, o pipeline escolhe um ramo tipado:
+
+```text
+TRANSPOSE
+-> transpose -> independent_validate
+
+EXTRACT_MELODY
+-> analyze -> select_candidates
+-> [awaiting_user_input quando ambíguo]
+-> reduce -> optional_transpose -> independent_validate
+
+HARMONIZE
+-> confirm_melody -> analyze_harmony
+-> generate_variants -> validate_constraints
+-> awaiting_user_input
+-> publish_selected_variant
+```
+
+Renderização final:
+
+```text
+validated MusicXML
+-> render
+-> plan watermark safe zones
+-> apply distributed watermark
+-> hash + sign manifest
+-> verify rendered artifact
+-> publish atomically
+```
+
+Nenhum ramo pode marcar `completed` antes do `assurance_report`. A falha de watermark/assinatura impede publicar o PDF, mas pode permitir MusicXML quando esse formato foi solicitado e sua própria validação passou.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## DAG de processamento avançado
+
+A evolução não deve formar uma função monolítica. O orquestrador monta um DAG por operação:
+
+```text
+ingest
+-> parse seguro
+-> normalizar
+-> construir grafo semântico
+-> analisar estrutura
+-> [revisão de origem, se necessária]
+-> executar operação
+-> verificar invariantes
+-> avaliar destino/tocabilidade
+-> gerar provenance/diff
+-> renderizar/gerar áudio, quando habilitado
+-> validar artefatos derivados
+-> publicar atomicamente
+```
+
+Nós de análise podem produzir `NEEDS_REVIEW`; não devem escolher silenciosamente para manter o pipeline andando.
+
+## Fronteiras de falha
+
+- erro estrutural: não retry;
+- ambiguidade musical: revisão, não retry;
+- ausência de perfil: capability/erro, não best effort;
+- timeout externo transitório: retry limitado;
+- output inválido de modelo/solver: descartar candidato e registrar métrica;
+- falha de renderer/áudio: não invalida revisão semântica, mas impede artefato correspondente;
+- falha de publicação: artefato continua privado até reconciliação.
+
+## Cache e reprodutibilidade
+
+A chave de cache inclui hash da revisão, operação, parâmetros, versões de catálogo/política/engine/modelo/renderer e seed quando aplicável. Não reutilizar resultado entre versões diferentes apenas porque o arquivo de entrada é igual.

@@ -1,0 +1,58 @@
+id: WF-TRANSPOSE-001
+status: binding
+purpose:
+  primary: Configurar e acompanhar uma operação musical.
+  secondary: Manter a partitura e o impacto da operação visíveis.
+layout:
+  shell: studio
+  desktop_columns:
+  - minmax(0, 1fr)
+  - 360px
+  score_area_min_ratio: 0.64
+  inspector_position: right
+  action_bar: sticky
+must_have:
+- ScoreSurface como foco principal
+- operação explicitamente selecionada
+- instrumento de origem e destino
+- TranspositionRoute ou resumo equivalente
+- capacidade e incompatibilidades antes do submit
+- estado persistente de warnings
+must_not_have:
+- wizard modal
+- dashboard de cards
+- intervalo calculado apenas no frontend
+- toast como único erro
+states:
+- empty
+- selected_local
+- uploading
+- validated
+- incompatible_texture
+- ready
+- processing
+- awaiting_user_input
+- failed
+- expired
+accessibility:
+  keyboard_complete: true
+  drag_has_button_alternative: true
+  focus_not_obscured: true
+  zoom_200_percent: true
+  reduced_motion_required: true
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: tablet
+  width: 834
+  height: 1112
+- name: desktop
+  width: 1440
+  height: 900
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+baselines:
+- golden-pages/transpose-workspace/desktop.png
+- golden-pages/transpose-workspace/mobile.png

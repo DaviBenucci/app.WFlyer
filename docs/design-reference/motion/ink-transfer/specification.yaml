@@ -1,0 +1,24 @@
+id: WF-MOTION-INK-001
+status: binding
+name: Ink Transfer
+engine: gsap
+contexts: [home_intro, processing_metaphor, result_reveal]
+semantic_rule: A cena explica transposição; não representa processamento real de notas do usuário.
+duration_ms:
+  min: 1400
+  max: 1800
+requirements:
+  - CTA and text available on first frame
+  - maximum six moving glyphs
+  - one play per session on home
+  - no continuous animation after completion
+  - pause in hidden tab
+  - cleanup on navigation and strict mode
+  - static or reduced composition for reduced motion
+properties_owned_by_gsap: [svg_transform, svg_opacity, path_progress]
+forbidden:
+  - blocking splash
+  - random particles
+  - progress percentage inference
+  - shared transform ownership with Motion
+  - animation of user score before stable geometry mapping exists

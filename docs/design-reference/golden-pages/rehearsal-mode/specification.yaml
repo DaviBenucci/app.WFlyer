@@ -1,0 +1,49 @@
+id: WF-REHEARSAL-001
+status: binding-composition
+purpose:
+  primary: Praticar ou executar uma versão aprovada com mínima distração.
+layout:
+  shell: rehearsal
+  score: dominant
+  transport: docked
+  inspector: on_demand
+must_have:
+- partitura legível
+- play pause loop tempo metronome
+- cursor desligável
+- atalhos e toque
+- estado de áudio/mapeamento
+must_not_have:
+- navegação administrativa permanente
+- animação decorativa contínua
+- autoplay
+- cursor sem fallback
+states:
+- loading_assets
+- ready
+- playing
+- looping
+- mapping_partial
+- audio_unavailable
+- offline_readonly
+accessibility:
+  keyboard_complete: true
+  touch_targets: true
+  cursor_not_focus: true
+  reduced_motion_required: true
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: tablet_landscape
+  width: 1180
+  height: 820
+- name: desktop
+  width: 1440
+  height: 900
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+baselines:
+- golden-pages/rehearsal-mode/desktop.png
+- golden-pages/rehearsal-mode/mobile.png

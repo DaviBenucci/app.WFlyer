@@ -1,0 +1,43 @@
+id: WF-DIFF-001
+status: binding
+purpose:
+  primary: Verificar mudanças entre duas versões.
+layout:
+  shell: studio
+  score_panes: side_by_side_linked
+  inspector_width: 340px
+  change_navigation: persistent
+must_have:
+- garantia e operação
+- panes origem/resultado
+- lista textual de mudanças
+- proveniência por evento
+- filtros sem esconder total
+must_not_have:
+- diferença baseada apenas em pixels
+- cor como único indicador
+- notas criadas sem rótulo
+states:
+- complete_diff
+- partial_diff
+- no_semantic_change
+- creative_changes
+- render_unavailable
+accessibility:
+  keyboard_change_navigation: true
+  textual_diff_export: true
+  synchronized_zoom_optional: true
+  reduced_motion_required: true
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: desktop
+  width: 1536
+  height: 960
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+baselines:
+- golden-pages/result-comparison/desktop.png
+- golden-pages/result-comparison/mobile.png

@@ -1,0 +1,15 @@
+id: WF-INSTRUMENT-PICKER-001
+status: binding
+component: InstrumentPicker
+purpose: Selecionar instrumento e afinação sem ambiguidade.
+required:
+  - busca por nome e alias
+  - agrupamento por família
+  - afinação e comportamento de oitava
+  - estado suportado/desabilitado com motivo
+  - seleção por teclado
+states: [empty, searching, selected, unsupported, long_names, no_results]
+forbidden:
+  - lista sem afinação
+  - depender apenas de ícone
+  - hardcode fora da API

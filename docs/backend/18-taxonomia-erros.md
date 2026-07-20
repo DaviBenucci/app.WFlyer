@@ -79,3 +79,111 @@
 - Campo inválido usa `field_errors` com paths allowlisted.
 - Mensagens não citam engine, biblioteca, path, comando, schema interno ou stacktrace.
 - Códigos novos exigem atualização deste arquivo, OpenAPI, frontend e testes de contrato.
+
+## Operações musicais avançadas
+
+| Código | HTTP | Retry | Uso |
+|---|---:|---|---|
+| `OPERATION_NOT_ENABLED` | 422 | não | capacidade não habilitada. |
+| `TARGET_TEXTURE_UNSUPPORTED` | 422 | não | destino não suporta a polifonia solicitada. |
+| `MELODY_EXTRACTION_REQUIRED` | 422 | não | operação exige escolher linha melódica. |
+| `MELODY_AMBIGUOUS` | 409 | não | múltiplas linhas plausíveis; review necessária. |
+| `MELODY_SELECTION_INVALID` | 422 | não | seleção não referencia eventos válidos/coerentes. |
+| `REVIEW_VERSION_CONFLICT` | 409 | não | revisão obsoleta. |
+| `HARMONY_PROFILE_REQUIRED` | 422 | não | parâmetros mínimos ausentes. |
+| `HARMONY_CONSTRAINT_VIOLATION` | 500 | não | variante não passou restrições rígidas. |
+| `NO_VALID_HARMONY_VARIANT` | 422 | não | nenhuma proposta atende o perfil. |
+| `TARGET_RANGE_UNSATISFIABLE` | 422 | não | não há adaptação permitida dentro da extensão. |
+| `ASSURANCE_VALIDATION_FAILED` | 500 | não | verificador independente bloqueou publicação. |
+| `WATERMARK_RENDER_FAILED` | 503 | sim | falha transitória no estágio de watermark. |
+| `PROVENANCE_SIGNATURE_FAILED` | 503 | sim | manifesto não pôde ser assinado. |
+| `VERIFICATION_TOKEN_INVALID` | 404 | não | resposta pública neutra. |
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Códigos críticos adicionais
+
+### Grafo, revisão e diff
+
+```text
+EVENT_GRAPH_UNSUPPORTED
+EVENT_ID_MAPPING_INCOMPLETE
+MUSICAL_DIFF_INCOMPLETE
+REVISION_CONFLICT
+REVIEW_REQUIRED
+REVIEW_ANCHOR_ORPHANED
+```
+
+### Melodia, análise e harmonia
+
+```text
+MELODY_AMBIGUITY_BLOCKING
+TONAL_REGION_AMBIGUOUS
+FORM_ANALYSIS_INCOMPLETE
+LOCKED_MELODY_CHANGED
+NO_VALID_HARMONY_VARIANT
+MODEL_OUTPUT_REJECTED
+```
+
+### Instrumento e tocabilidade
+
+```text
+INSTRUMENT_PROFILE_NOT_APPROVED
+PLAYABILITY_UNKNOWN
+TARGET_PHYSICALLY_IMPOSSIBLE
+TARGET_POLYPHONY_INCOMPATIBLE
+ADAPTATION_REQUIRES_APPROVAL
+```
+
+### Score, layout e áudio
+
+```text
+SCORE_PART_MISMATCH
+ENGRAVING_COLLISION_BLOCKING
+MUSIC_FONT_MISMATCH
+PLAYBACK_MAP_INVALID
+AUDIO_NOTATION_MISMATCH
+AUDIO_ASSET_LICENSE_MISSING
+```
+
+### Dados, direitos e rollout
+
+```text
+METADATA_POLICY_VIOLATION
+ATTRIBUTION_LOSS_BLOCKING
+CAPABILITY_NOT_APPROVED
+ROLLOUT_KILLED
+```
+
+Cada código precisa de `user_action`, retryability, HTTP status, log severity, métrica, estado de UI e fixture. Mensagem pública não pode expor score, prompt, path ou stacktrace.
+
+## Novos grupos públicos reservados
+
+Os códigos abaixo são reservados; não devem ser retornados enquanto a capability estiver desabilitada:
+
+```text
+CAPABILITY_DISABLED
+CAPABILITY_CHANGED
+REVISION_CONFLICT
+REVIEW_REQUIRED
+MELODY_SELECTION_REQUIRED
+ANALYSIS_AMBIGUOUS
+NO_VALID_HARMONY_VARIANT
+PLAYABILITY_BLOCKED
+ADAPTATION_BUDGET_EXCEEDED
+PLAYBACK_MAPPING_UNAVAILABLE
+SCORE_PART_INCONSISTENT
+ENSEMBLE_PACKAGE_INCOMPLETE
+ARTIFACT_REVOKED
+ENGINE_VERSION_INCOMPATIBLE
+IDEMPOTENCY_CONFLICT
+```
+
+Regras:
+
+- código público descreve ação do usuário, não detalhes internos;
+- `PM-*` e stack traces não são expostos;
+- ambiguidade é `REVIEW_REQUIRED`, não `PROCESSING_FAILED`;
+- indisponibilidade transitória declara `retryable=true` e `retry_after` quando aplicável;
+- conflito de revisão nunca sobrescreve decisão do outro revisor;
+- `UNKNOWN_INTERNAL_ERROR` sempre permanece não publicável e gera `correlation_id`.

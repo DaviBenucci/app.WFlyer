@@ -99,3 +99,22 @@ O MVP pode iniciar com menos workers físicos, desde que as rotas lógicas, limi
 - cancelamento durante stage não publica resultado;
 - payload da fila não contém dados sensíveis;
 - falha do worker não derruba a API.
+
+## Filas especializadas
+
+```text
+wflyer.core
+wflyer.omr
+wflyer.melody
+wflyer.harmony
+wflyer.render
+wflyer.assurance
+wflyer.maintenance
+```
+
+- `core` não aguarda capacidade de GPU/modelo.
+- `harmony` e `omr` possuem quotas, autoscaling e circuit breaker próprios.
+- `assurance` deve ser executado mesmo quando a transformação veio de cache.
+- `awaiting_user_input` não mantém tarefa reservada.
+- reenfileiramento após review usa a revisão exata no fingerprint.
+- seed, versão e parâmetros entram no request fingerprint de operação criativa.

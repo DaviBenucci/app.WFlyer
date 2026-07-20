@@ -220,3 +220,213 @@ outbox_events(published_at, created_at)
 - artefato público só para job terminal de sucesso;
 - purge não apaga evidência mínima necessária imediatamente, mas remove bytes e dados sensíveis conforme política;
 - deleção física e status de retenção são reconciliáveis.
+
+## Expansão para operações e garantia
+
+Adicionar a `processing_jobs` quando as trilhas forem habilitadas:
+
+```text
+operation ENUM
+operation_parameters_json
+assurance_level
+review_status
+review_kind NULL
+source_confirmation_revision NULL
+melody_extractor_manifest_json NULL
+harmony_profile_snapshot_json NULL
+random_seed NULL
+```
+
+Novas tabelas:
+
+```text
+musical_reviews
+melody_selections
+harmony_variants
+event_provenance
+assurance_checks
+verification_manifests
+watermark_tokens
+```
+
+### musical_reviews
+
+```text
+id UUID PK
+job_id FK
+review_kind
+revision INT
+status ENUM(pending, submitted, superseded, cancelled)
+payload_json
+submitted_at
+created_at
+UNIQUE(job_id, review_kind, revision)
+```
+
+### event_provenance
+
+```text
+id UUID PK
+job_id FK
+artifact_id FK
+output_event_id
+origin_kind
+source_event_ids_json
+transformation_id
+rule_or_model_version
+metadata_json
+```
+
+### verification_manifests
+
+```text
+id UUID PK
+job_id FK
+public_token_hash UNIQUE
+manifest_sha256
+artifact_sha256
+signature
+key_id
+assurance_level
+revoked_at
+created_at
+```
+
+`watermark_tokens` não armazena PII e não concede autorização. Payloads de revisão exigem schema e limite de tamanho; não armazenar SVG/partitura inteira em JSON.
+
+Novos tipos de artefato:
+
+```text
+confirmed_source_musicxml
+melody_selection
+reduced_melody_musicxml
+harmony_plan
+harmonized_musicxml
+arranged_musicxml
+assurance_report
+signed_manifest
+watermarked_pdf
+```
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Modelo avançado reservado
+
+As tabelas abaixo entram apenas com suas capabilities, mas seus relacionamentos orientam IDs e manifests desde o Core.
+
+### `musical_revisions`
+
+```text
+id uuid pk
+project_id/session_owner_id
+parent_revision_id nullable
+revision_kind ORIGINAL|NORMALIZED|TRANSPOSED|MELODY_REVIEWED|HARMONIZED|ADAPTED|ENSEMBLE_SCORE|PART
+artifact_id
+semantic_hash
+engine_manifest_id
+created_by SYSTEM|USER|REVIEWER
+created_at
+```
+
+### `musical_events`
+
+Armazena ou referencia o índice semântico necessário a provenance/diff. Eventos pesados podem permanecer em artefato estruturado; o banco mantém IDs, revision, kind, location e hashes.
+
+### `event_provenance`
+
+Expandir com:
+
+```text
+source_revision_id
+source_event_id nullable
+result_revision_id
+result_event_id
+relation PRESERVED|TRANSFORMED|SELECTED|REMOVED|GENERATED|SPLIT|MERGED
+reason_code
+rule_or_model_version
+human_decision_id nullable
+```
+
+### `analysis_regions`
+
+Regiões versionadas de frase, tonalidade, modo, cadência, melodia, tensão ou harmonia, com alternativas e status de revisão.
+
+### `playability_findings`
+
+```text
+revision_id
+instrument_profile_version
+region/event ids
+rule_id
+classification IMPOSSIBLE|DIFFICULT|NON_IDIOMATIC|COMFORTABLE|UNKNOWN
+severity
+explanation_code
+suggested_actions jsonb
+```
+
+### `audio_renders` e `playback_map_entries`
+
+Áudio aponta para revisão, engine/samples/licença, hash, loudness e versão do mapa. Ocorrências não substituem eventos semânticos.
+
+### `ensemble_packages` e `ensemble_parts`
+
+O pacote aponta para revisão-base e formação. Cada parte aponta para a mesma versão de score e possui `part_role`, instrumento, transposição, artifact e validation status.
+
+### `review_sessions`, `annotations` e `musical_decisions`
+
+Âncoras usam event/region/revision IDs, possuem `version`, `resolved_at`, autoria e auditoria. Texto é sanitizado e nunca é interpretado como instrução de modelo.
+
+### `capability_rollouts`
+
+Mantém capability, ambiente, cohort, versão do motor, início/fim, kill switch e critérios. O frontend não é fonte de verdade para habilitação.
+
+## Regras de integridade avançadas
+
+- revisão publicada é imutável;
+- uma parte não pode apontar para score de versão diferente;
+- provenance não pode formar ciclo inválido;
+- evento `GENERATED` não possui source_event obrigatório, mas exige razão;
+- decisão humana referencia exatamente a revisão analisada;
+- `UNKNOWN` não pode ser persistido como `PASS`;
+- purge respeita dependências e política de prova mínima.
+
+## Entidades futuras versionadas
+
+As tabelas abaixo são reservadas para capabilities avançadas e não devem ser criadas antecipadamente sem migration aprovada:
+
+```text
+MusicalRevision
+Operation
+OperationDependency
+EventIdentity
+EventProvenance
+MusicalDiff
+AnalysisRegion
+AnalysisHypothesis
+ReviewTask
+ReviewDecision
+PlayabilityFinding
+InstrumentProfileVersion
+PlaybackManifest
+PlaybackOccurrence
+EnsemblePackage
+PartProjection
+AnnotationThread
+AnnotationAnchor
+CapabilitySnapshot
+FeatureFlagEvaluation
+MusicalDecisionRecordRef
+```
+
+## Regras de modelagem
+
+- revisões e artefatos são imutáveis;
+- edição cria nova revisão com `parent_revision_id`;
+- `EventIdentity` permanece estável quando o evento é semanticamente preservado;
+- evento criado recebe `created_by_operation_id` e motivo;
+- aprovação referencia exatamente revisão, analysis version e policy version;
+- score e partes apontam para o mesmo `canonical_score_graph_id`;
+- findings não são strings soltas: possuem código, severidade, localização e evidência;
+- capability/engine/profile snapshots ficam registrados no job;
+- exclusão lógica não reutiliza IDs;
+- annotation anchor pode ficar `orphaned`, nunca ser remapeada silenciosamente.

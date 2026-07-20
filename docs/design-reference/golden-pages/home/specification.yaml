@@ -1,0 +1,45 @@
+id: WF-HOME-001
+status: binding-composition
+purpose:
+  primary: Explicar transposição com clareza e levar ao estúdio.
+  secondary: Demonstrar identidade musical sem prometer automação perfeita.
+layout:
+  shell: public
+  composition: editorial_asymmetric
+  max_content_width: 1240px
+  hero_motion: WF-MOTION-INK-001
+  cta_visible_first_frame: true
+must_have:
+- demonstração fixa e musicalmente correta
+- explicação de origem, intervalo e destino
+- limitações e formatos suportados acessíveis
+- CTA para iniciar transposição
+must_not_have:
+- grade de métricas inventadas
+- depoimentos fictícios
+- título em gradiente
+- splash screen
+- partículas contínuas
+states:
+- default
+- mobile
+- reduced_motion
+- capability_limited
+accessibility:
+  keyboard_complete: true
+  reduced_motion_required: true
+  zoom_200_percent: true
+  autoplay_audio: false
+viewports:
+- name: mobile
+  width: 390
+  height: 844
+- name: desktop
+  width: 1440
+  height: 900
+approval:
+  composition: approved_documentation
+  pixel_baseline: candidate_human_review_required
+baselines:
+- golden-pages/home/desktop.png
+- golden-pages/home/mobile.png

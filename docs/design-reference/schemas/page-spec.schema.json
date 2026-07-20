@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wflyer.local/schemas/page-spec.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "status",
+    "purpose",
+    "layout",
+    "must_have",
+    "must_not_have",
+    "states",
+    "accessibility"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^WF-"
+    },
+    "status": {
+      "enum": [
+        "binding",
+        "binding-composition",
+        "reference",
+        "draft"
+      ]
+    },
+    "purpose": {
+      "type": "object"
+    },
+    "layout": {
+      "type": "object"
+    },
+    "must_have": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "must_not_have": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "accessibility": {
+      "type": "object"
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "composition": {
+          "type": "string"
+        },
+        "pixel_baseline": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "baselines": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "viewports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "width",
+          "height"
+        ]
+      }
+    }
+  },
+  "additionalProperties": true
+}

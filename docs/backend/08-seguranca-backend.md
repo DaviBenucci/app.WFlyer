@@ -105,3 +105,16 @@ Logs usam allowlist de campos, redaction e controle de acesso. Nome original dev
 ## Gate
 
 Nenhum formato ou processador novo é habilitado apenas porque “funcionou em um arquivo”. Deve passar pela matriz de segurança, autorização, limites e observabilidade descrita em `../qa/08-testes-seguranca-arquivos.md`.
+
+## Segurança de inteligência musical e proveniência
+
+- perfis harmônicos são enums/schemas; não aceitar prompt livre como comando de sistema;
+- modelos externos não recebem partituras sem decisão de privacidade e consentimento;
+- artefatos de revisão mantêm a mesma autorização por sessão;
+- payload de seleção só referencia IDs pertencentes ao job;
+- manifesto é assinado fora do worker geral;
+- watermark token é aleatório e pseudônimo;
+- endpoint de verificação não funciona como oracle de existência de usuários;
+- nenhuma técnica de watermark altera conteúdo musical.
+
+Consultar `../security/06-integridade-proveniencia-watermark.md`.

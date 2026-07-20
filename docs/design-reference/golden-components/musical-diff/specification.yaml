@@ -1,0 +1,15 @@
+id: WF-MUSICAL-DIFF-001
+status: binding
+component: MusicalDiff
+purpose: Relacionar eventos de origem e resultado.
+required:
+  - category code localized
+  - source and target event links
+  - reason codes
+  - severity
+  - textual fallback
+states: [complete, partial, creative, layout_only, unmapped]
+forbidden:
+  - DOM index mapping
+  - pixel-only comparison
+  - color-only status

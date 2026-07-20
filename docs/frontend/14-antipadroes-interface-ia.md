@@ -86,3 +86,43 @@ Correção: identidade por composição, tipografia, linguagem e componentes do 
 - o componente veio de biblioteca sem adaptação visível?
 
 Qualquer resposta problemática bloqueia aprovação visual.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Antipadrões de confiança musical
+
+- selo “100% correto” sem nível de garantia;
+- confidence em porcentagem sem significado para o usuário;
+- destacar somente casos de sucesso e esconder cobertura;
+- transformar ambiguidade em escolha automática para reduzir fricção;
+- chamar harmonização de correção;
+- chamar adaptação de simples transposição;
+- usar animação da tinta como prova de que notas reais foram processadas;
+- reproduzir áudio que não corresponde à revisão exibida;
+- mostrar `PASS` quando o perfil é desconhecido;
+- permitir download final antes de aceitar warning bloqueante.
+
+## Antipadrões de referência
+
+- implementar a partir de screenshot sem estados;
+- copiar layout/branding de referência externa;
+- atualizar golden para mascarar regressão;
+- usar lorem ipsum ou números inventados em tela aprovada;
+- criar desktop e “deixar o CSS resolver mobile” sem spec;
+- esconder funcionalidade não implementada atrás de botão sem ação.
+
+## Antipadrões adicionais de domínio
+
+- chamar qualquer saída de “100% correta” sem assurance level;
+- usar uma porcentagem única para esconder regiões ambíguas;
+- reproduzir áudio como prova de notação correta;
+- mostrar “IA analisando emoção” como fato;
+- classificar nota mais aguda como melodia sem evidência;
+- alterar melodia em harmonização sem diff;
+- esconder notas removidas por adaptação;
+- chamar parte extraída de score de “orquestração”;
+- permitir pacote incompleto com selo de concluído;
+- mover anotação para nota parecida após revisão sem marcar remap;
+- exibir warning material apenas em toast;
+- atualizar golden screenshot apenas para passar CI;
+- misturar protótipo de capability futura com fluxo disponível.

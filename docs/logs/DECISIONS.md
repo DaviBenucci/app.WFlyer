@@ -129,3 +129,30 @@ Status: ACEITA
 Decisão: a animação de tinta usa SVG determinístico e exemplo musical validado na Home. Durante processamento ela é metáfora acompanhada do `stage` real. Notas reais do usuário só poderão ser animadas futuramente quando existir `NoteGeometryMap` estável emitido pelo renderer.
 
 Consequência: o MVP não infere semântica por classes/posições do SVG de terceiros, não promete progresso e sempre possui fallback estático/reduced motion.
+
+## 2026-07-20 — operações e promessa de qualidade
+
+Decidido que “100% confiável” não será promessa universal. A aplicação usará transformação verificada dentro da matriz, pausa obrigatória para ambiguidade e aceite humano para conteúdo criativo. Watermark será tratado como dissuasão/rastreabilidade/integridade, não como impossibilidade de remoção.
+
+<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## 2026-07-20 — visão crítica integrada
+
+Foram aceitas as decisões ADR-028 a ADR-040 do documento canônico `../00-visao-geral/01-decisoes-arquiteturais.md`, cobrindo grafo semântico, Musical Diff, perfis instrumentais, controle humano, IA/solvers, áudio, score/partes, engraving, revisões, colaboração, referências visuais, direitos e pre-mortem.
+
+## ADR-041 a ADR-050 — expansão crítica pré-implementação
+
+Status: ACEITAS COMO ARQUITETURA DOCUMENTAL; ATIVAÇÃO DAS CAPABILITIES CONTINUA BLOQUEADA.
+
+Decisões:
+
+- referências visuais internas precedem inspiração externa;
+- Musical Diff é produzido pelo backend;
+- áudio é projeção derivada;
+- adaptação é operação separada de transposição;
+- inferência/criatividade preservam autoridade humana;
+- score e partes derivam do mesmo grafo;
+- perfis instrumentais modelam capacidade prática;
+- catálogo de falhas e unknown fail-closed são obrigatórios;
+- preflight antecede código;
+- rollout é estratificado por capacidade e perfil.
