@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wflyer.local/schemas/toolchain-manifest.schema.json",
+  "title": "W_Flyer toolchain manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "reviewed_at",
+    "package_managers",
+    "prerequisites",
+    "tools"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "package_managers": {
+      "type": "object",
+      "required": [
+        "javascript",
+        "python"
+      ],
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tool"
+      },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "tool": {
+      "type": "object",
+      "required": [
+        "id",
+        "category",
+        "adoption",
+        "phase",
+        "scope",
+        "install",
+        "verify",
+        "use",
+        "update",
+        "remove",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adoption": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phase": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "install": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verify": {
+          "type": "string",
+          "minLength": 1
+        },
+        "use": {
+          "type": "string",
+          "minLength": 1
+        },
+        "update": {
+          "type": "string",
+          "minLength": 1
+        },
+        "remove": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

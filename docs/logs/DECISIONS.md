@@ -156,3 +156,18 @@ Decisões:
 - catálogo de falhas e unknown fail-closed são obrigatórios;
 - preflight antecede código;
 - rollout é estratificado por capacidade e perfil.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## 2026-07-21 — Arquitetura de agentes e testes
+
+- OpenSpec governa mudanças materiais.
+- Graphify fornece impacto macro, sem precedência normativa.
+- Serena fornece navegação/edição por símbolos.
+- Context7 fica restrito a dependências externas.
+- Nx organiza tarefas e cache afetado.
+- XState é condicional a fluxos complexos.
+- Storybook, Vitest, MSW, Playwright, pytest, Hypothesis e Testcontainers formam a base de testes.
+- Biome, Ruff e typecheckers são gates separados.
+- Style Dictionary gera tokens; outputs não são editados.
+- Temporal, Rive, Pact, StrykerJS e mutmut exigem spike/ADR.

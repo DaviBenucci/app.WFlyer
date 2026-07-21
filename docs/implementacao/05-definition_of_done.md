@@ -65,3 +65,21 @@ Uma capability não está concluída enquanto:
 - feature flag, rollout e rollback não estiverem testados;
 - decisões musicais não estiverem em MDR;
 - documentação, changelog, OpenAPI e matriz de rastreabilidade não estiverem sincronizados.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Definition of Done da toolchain
+
+Uma mudança material não está concluída sem:
+
+- OpenSpec atualizado e tarefas com evidência;
+- impacto Graphify revisado e grafo atualizado se estrutural;
+- símbolos/consumidores conferidos;
+- dependências externas usadas conforme versão instalada;
+- `Nx affected` verde;
+- lint, format e typecheck verdes;
+- testes unitários e camadas adicionais aplicáveis;
+- Storybook/visual/acessibilidade para UI;
+- property/golden/segurança para domínio musical;
+- nenhuma ferramenta opcional adicionada sem ADR;
+- comandos, ambiente, cache e falhas registrados.

@@ -109,3 +109,22 @@ properties/invariantes
 ```
 
 Cobertura de linhas não substitui cobertura de modos de falha. A matriz de `PM-*` é uma dimensão obrigatória do relatório de teste.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Frameworks normativos por camada
+
+```text
+TypeScript unit/component     → Vitest
+Browser component             → Vitest Browser + Storybook
+Network scenarios             → MSW
+E2E/visual/accessibility      → Playwright
+Python unit/integration       → pytest
+Property/metamorphic          → Hypothesis
+Infra real isolada            → Testcontainers
+Mutation TypeScript opcional  → StrykerJS
+Mutation Python opcional      → mutmut
+Task selection/cache          → Nx
+```
+
+Detalhes de instalação, uso e proibições estão em `../implementacao/18-frontend-toolchain-testes.md`, `../implementacao/19-backend-toolchain-testes.md` e `../implementacao/20-ferramentas-opcionais-spikes.md`.

@@ -240,3 +240,26 @@ Esta camada converte a visão crítica de produto, prática musical, confiabilid
 
 - `16-relatorio-visao-critica-preflight-2026-07-20.md` — relatório detalhado de escopo, limites e gates.
 - `17-relatorio-integracao-visao-critica-2026-07-20.md` — resumo executivo da integração nos documentos existentes.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Implementação assistida por IA e toolchain
+
+- `../implementacao/11-arquitetura-ferramentas-agentes.md` — responsabilidades e precedência;
+- `../implementacao/12-bootstrap-toolchain.md` — instalação ordenada;
+- `../implementacao/13-openspec-especificacoes.md` — mudança orientada por especificação;
+- `../implementacao/14-graphify-governanca.md` — grafo e orçamento de contexto;
+- `../implementacao/15-serena-context7-mcp.md` — símbolos internos e docs externas;
+- `../implementacao/16-nx-monorepo-cache.md` — projetos e tarefas afetadas;
+- `../implementacao/17-xstate-fluxos-reativos.md` — statecharts da interface;
+- `../implementacao/18-frontend-toolchain-testes.md` — Storybook, Vitest, MSW, Playwright, Biome e tokens;
+- `../implementacao/19-backend-toolchain-testes.md` — pytest, Hypothesis, Testcontainers e Ruff;
+- `../implementacao/20-ferramentas-opcionais-spikes.md` — Temporal, Rive, Pact e mutation testing;
+- `../implementacao/21-fluxo-operacional-ia.md` — ciclo obrigatório do agente;
+- `../implementacao/22-manutencao-atualizacao-toolchain.md` — atualizações e retirada;
+- `../implementacao/toolchain-manifest.yaml` — inventário machine-readable.
+
+## Relatórios de toolchain — 2026-07-21
+
+- `18-relatorio-integracao-toolchain-2026-07-21.md`;
+- `19-validacao-toolchain-2026-07-21.md`.

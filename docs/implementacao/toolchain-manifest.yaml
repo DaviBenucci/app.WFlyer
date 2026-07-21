@@ -1,0 +1,244 @@
+schema_version: 1
+reviewed_at: '2026-07-21'
+package_managers:
+  javascript: pnpm
+  python: uv
+prerequisites:
+- git
+- node>=20.19
+- corepack
+- pnpm
+- uv
+- docker-api-compatible-runtime
+tools:
+- id: openspec
+  category: agent-governance
+  adoption: required
+  phase: '0'
+  scope: global-cli+repository
+  install: pnpm add -g @fission-ai/openspec@latest
+  verify: openspec --version
+  use: openspec init; manage changes under openspec/
+  update: pnpm update -g @fission-ai/openspec && openspec update
+  remove: remove global package manually; preserve/review openspec/ history
+  owner: architecture
+- id: graphify
+  category: repository-graph
+  adoption: required
+  phase: '0'
+  scope: global-cli+local-artifact
+  install: uv tool install graphifyy
+  verify: graphify --version
+  use: graphify install --platform codex; /graphify .; query/path/explain
+  update: uv tool upgrade graphifyy; /graphify . --update
+  remove: graphify uninstall --purge; uv tool uninstall graphifyy
+  owner: architecture
+- id: serena
+  category: symbolic-code-intelligence
+  adoption: required
+  phase: '0'
+  scope: global-cli+mcp
+  install: uv tool install -p 3.13 serena-agent
+  verify: serena --version; serena project health-check
+  use: serena init; serena setup codex; /mcp
+  update: uv tool upgrade serena-agent
+  remove: uv tool uninstall serena-agent
+  owner: engineering
+- id: context7
+  category: external-docs
+  adoption: required-on-demand
+  phase: '0'
+  scope: mcp-user-config
+  install: npx ctx7 setup --codex
+  verify: query installed dependency documentation from Codex
+  use: only for external libraries and installed versions
+  update: rerun setup after client/config changes
+  remove: npx ctx7 remove
+  owner: engineering
+- id: nx
+  category: monorepo-tasks
+  adoption: required
+  phase: '1'
+  scope: workspace-dev-dependency
+  install: npx nx@latest init
+  verify: pnpm nx graph
+  use: pnpm nx affected -t lint typecheck test
+  update: pnpm nx migrate <target>; pnpm nx migrate --run-migrations
+  remove: ADR and replacement of targets required
+  owner: platform
+- id: xstate
+  category: frontend-statecharts
+  adoption: conditional
+  phase: frontend
+  scope: apps/web
+  install: pnpm add xstate @xstate/react
+  verify: unit tests for machine transitions
+  use: complex workflows only
+  update: pnpm update xstate @xstate/react
+  remove: replace machine with documented equivalent
+  owner: frontend
+- id: storybook
+  category: ui-workshop
+  adoption: required
+  phase: frontend
+  scope: apps/web+design-system
+  install: pnpm create storybook@latest
+  verify: pnpm run storybook; pnpm run build-storybook
+  use: approved stories for all product states
+  update: official Storybook upgrade/migration flow
+  remove: not allowed while UI gates depend on it
+  owner: frontend
+- id: vitest
+  category: frontend-tests
+  adoption: required
+  phase: frontend
+  scope: workspace-dev-dependency
+  install: pnpm add -D -w vitest @vitest/browser
+  verify: pnpm exec vitest run
+  use: unit, component, browser projects
+  update: pnpm update vitest @vitest/browser
+  remove: replacement test runner and migration required
+  owner: qa-frontend
+- id: msw
+  category: network-mocking
+  adoption: required
+  phase: frontend
+  scope: workspace-dev-dependency
+  install: pnpm add -D -w msw; pnpm exec msw init apps/web/public --save
+  verify: unhandled request policy test
+  use: shared handlers in Storybook, tests, local dev
+  update: pnpm update msw and regenerate worker
+  remove: replace all mock scenarios
+  owner: qa-frontend
+- id: playwright
+  category: e2e-visual
+  adoption: required
+  phase: frontend
+  scope: workspace-dev-dependency+browsers
+  install: pnpm create playwright; pnpm exec playwright install --with-deps
+  verify: pnpm exec playwright test --list
+  use: critical E2E, visual, accessibility
+  update: pnpm update @playwright/test; reinstall pinned browsers
+  remove: replacement E2E suite required
+  owner: qa
+- id: biome
+  category: frontend-quality
+  adoption: required
+  phase: '1'
+  scope: workspace-dev-dependency
+  install: pnpm add -D -w --save-exact @biomejs/biome; pnpm exec biome init
+  verify: pnpm exec biome ci .
+  use: format, lint, import organization
+  update: explicit exact-version update
+  remove: replacement formatter/linter required
+  owner: frontend
+- id: style-dictionary
+  category: design-tokens
+  adoption: required-when-tokens-exist
+  phase: frontend
+  scope: workspace-dev-dependency
+  install: pnpm add -D -w style-dictionary
+  verify: pnpm exec style-dictionary build
+  use: generate CSS/TS artifacts from tokens
+  update: pnpm update style-dictionary
+  remove: token build replacement required
+  owner: design-system
+- id: pytest
+  category: python-tests
+  adoption: required
+  phase: backend
+  scope: python-dev-dependency
+  install: uv add --dev pytest
+  verify: uv run pytest --collect-only
+  use: unit/integration/contract/security/golden
+  update: uv lock --upgrade-package pytest
+  remove: not allowed without replacement
+  owner: qa-backend
+- id: hypothesis
+  category: property-tests
+  adoption: required
+  phase: music-core
+  scope: python-dev-dependency
+  install: uv add --dev hypothesis
+  verify: run one property suite with deterministic profile
+  use: musical invariants and hostile edge cases
+  update: uv lock --upgrade-package hypothesis
+  remove: property coverage replacement required
+  owner: music-qa
+- id: testcontainers
+  category: integration-infrastructure
+  adoption: required
+  phase: backend
+  scope: python-dev-dependency+docker
+  install: uv add --dev testcontainers[postgres]
+  verify: start/stop PostgreSQL test container
+  use: real dependencies in integration tests
+  update: pin package and container images
+  remove: equivalent isolated integration environment required
+  owner: qa-backend
+- id: ruff
+  category: python-quality
+  adoption: required
+  phase: '1'
+  scope: python-dev-dependency
+  install: uv add --dev ruff
+  verify: uv run ruff check .; uv run ruff format --check .
+  use: lint and format
+  update: uv lock --upgrade-package ruff
+  remove: replacement linter/formatter required
+  owner: backend
+- id: temporal
+  category: durable-workflows
+  adoption: optional-spike
+  phase: future
+  scope: python+infrastructure
+  install: uv add temporalio
+  verify: crash/recovery spike
+  use: only if ADR replaces current orchestration for a pipeline
+  update: after adoption only
+  remove: spike branch or documented migration
+  owner: platform
+- id: rive
+  category: interactive-illustration
+  adoption: optional-spike
+  phase: future-frontend
+  scope: apps/web
+  install: pnpm add @rive-app/react-canvas
+  verify: bundle, fallback, reduced-motion spike
+  use: small independent illustrations only
+  update: after adoption only
+  remove: static/Motion fallback
+  owner: frontend
+- id: pact
+  category: contract-testing
+  adoption: optional-spike
+  phase: future
+  scope: workspace-dev-dependency
+  install: pnpm add -D @pact-foundation/pact
+  verify: consumer and provider example
+  use: independently evolving consumers/providers
+  update: after adoption only
+  remove: OpenAPI/integration coverage replacement
+  owner: qa
+- id: strykerjs
+  category: mutation-testing-js
+  adoption: optional-spike
+  phase: future
+  scope: workspace-dev-dependency
+  install: npx stryker init
+  verify: npx stryker run on one critical package
+  use: scheduled/affected mutation testing
+  update: after adoption only
+  remove: delete config/deps after evidence capture
+  owner: qa-frontend
+- id: mutmut
+  category: mutation-testing-python
+  adoption: optional-spike
+  phase: future
+  scope: python-dev-dependency
+  install: uv add --dev mutmut
+  verify: uv run mutmut run on one critical module
+  use: scheduled mutation testing on Linux/WSL
+  update: after adoption only
+  remove: uv remove --dev mutmut and clean mutation artifacts
+  owner: music-qa

@@ -39,3 +39,21 @@ UX que contradiga segurança/escopo
 ## Registros
 
 Cada tarefa atualiza logs aplicáveis e informa explicitamente testes não executados. Nunca afirmar que código, segurança ou música foram validados apenas por leitura documental.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Ferramentas obrigatórias do agente
+
+A IA segue `21-fluxo-operacional-ia.md`:
+
+```text
+OpenSpec ativo
+→ Graphify para impacto
+→ Serena para símbolos
+→ Context7 somente para dependência externa
+→ teste primeiro quando aplicável
+→ Nx affected
+→ gates ampliados por risco
+```
+
+A ausência ou falha de uma ferramenta não autoriza suposição silenciosa. A IA registra a limitação, usa método equivalente auditável e não reduz os gates.

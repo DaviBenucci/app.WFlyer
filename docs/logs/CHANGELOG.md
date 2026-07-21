@@ -165,3 +165,14 @@ A entrega é documental e inclui protótipos estáticos. Não comprova motores m
 ### Observação
 
 A entrega é documental. Protótipos e baselines não são código de produção; capabilities avançadas permanecem desabilitadas até seus gates.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## 2026-07-21 — Governança de agentes e toolchain de qualidade
+
+- adicionada arquitetura OpenSpec + Graphify + Serena + Context7 + Nx;
+- documentados XState, Storybook, Vitest, MSW, Playwright, pytest, Hypothesis e Testcontainers;
+- documentados Biome, Ruff e Style Dictionary;
+- ferramentas opcionais passaram a exigir spike/ADR;
+- adicionados manifest/schema e templates de bootstrap/verificação;
+- Definition of Done e estratégia de testes integradas ao novo fluxo.

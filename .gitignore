@@ -1,0 +1,42 @@
+# Dependências e ambientes
+node_modules/
+.venv/
+venv/
+__pycache__/
+
+# Builds
+.next/
+dist/
+build/
+coverage/
+storybook-static/
+
+# Dados e artefatos de execução
+storage/
+uploads/
+tmp/
+artifacts/
+exports/
+quarantine/
+
+# Resultados do próprio Graphify
+graphify-out/
+
+# Arquivos gerados para distribuição
+*.zip
+*.patch
+*.sha256
+
+# Arquivos locais e segredos
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Baselines binários que não contribuem para o modelo conceitual
+design-reference/**/screenshots/
+design-reference/**/videos/
+design-reference/**/*.mp4
+design-reference/**/*.webm

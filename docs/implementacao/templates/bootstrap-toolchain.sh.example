@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf 'Este script é um exemplo. Revise versões e execute na raiz do repositório.\n'
+
+command -v git >/dev/null
+command -v node >/dev/null
+command -v corepack >/dev/null
+command -v uv >/dev/null
+
+corepack enable
+
+pnpm add -g @fission-ai/openspec@latest
+uv tool install graphifyy
+uv tool install -p 3.13 serena-agent
+
+openspec --version
+graphify --version
+serena --version
+
+printf '\nPróximos passos manuais:\n'
+printf '  openspec init\n'
+printf '  graphify install --platform codex\n'
+printf '  /graphify . (dentro do agente)\n'
+printf '  serena init && serena setup codex\n'
+printf '  npx ctx7 setup --codex\n'
+printf '  inicializar Nx e dependências somente após criação do workspace\n'

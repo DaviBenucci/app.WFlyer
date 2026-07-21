@@ -394,3 +394,18 @@ Quando a documentação não resolver uma decisão, a IA deve parar, registrar `
 11. somente então solicitar ativação do estrato.
 
 É proibido tratar protótipo visual de capability avançada como prova de backend disponível.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Protocolo de ferramentas antes de cada fase
+
+1. confirmar mudança OpenSpec e próxima tarefa;
+2. consultar Graphify para dependências e testes;
+3. usar Serena para localizar símbolos e referências;
+4. consultar Context7 somente para APIs externas da versão instalada;
+5. implementar o menor corte vertical;
+6. executar `pnpm nx affected -t lint typecheck test`;
+7. executar gates musicais, integração, segurança, visual e E2E aplicáveis;
+8. atualizar OpenSpec, rastreabilidade, logs, documentação e grafo.
+
+A instalação completa está em `../implementacao/12-bootstrap-toolchain.md`. A IA deve ler `../implementacao/21-fluxo-operacional-ia.md` antes do primeiro código.

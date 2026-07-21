@@ -141,3 +141,18 @@ As decisões abaixo permanecem abertas e bloqueiam ativação das respectivas ca
 - owners e datas de revisão de cada risco crítico.
 
 A IA deve registrar essas lacunas em preflight e manter a feature flag desligada.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Toolchain e ferramentas opcionais
+
+Decisões bloqueadas até spike/ADR:
+
+- manter Celery ou substituir a orquestração por Temporal;
+- adotar ou rejeitar Rive para microilustrações;
+- ativar Pact quando consumidor/provedor tiverem evolução independente;
+- definir escopo e cadência de StrykerJS e mutmut;
+- selecionar typechecker Python definitivo;
+- definir cache remoto Nx e sua política de segurança.
+
+A ausência de decisão mantém a opção desabilitada; não autoriza instalação preventiva.

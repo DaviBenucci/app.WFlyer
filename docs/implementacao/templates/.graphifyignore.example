@@ -1,0 +1,49 @@
+# Dependências e ambientes
+node_modules/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.hypothesis/
+
+# Builds e caches
+.next/
+dist/
+build/
+coverage/
+storybook-static/
+.nx/
+playwright-report/
+test-results/
+
+# Dados e artefatos de execução
+storage/
+uploads/
+quarantine/
+tmp/
+artifacts/
+exports/
+
+# Resultado do próprio Graphify
+graphify-out/
+
+# Distribuição e binários
+*.zip
+*.patch
+*.sha256
+*.pdf
+*.mp4
+*.webm
+
+# Segredos
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Baselines binários; manter specifications textuais
+docs/design-reference/**/*.png
+docs/design-reference/**/*.jpg
+docs/design-reference/**/*.jpeg

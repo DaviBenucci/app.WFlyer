@@ -136,3 +136,17 @@ Stories obrigatórias adicionais:
 - todos em mobile, 200% zoom, forced colors e reduced motion.
 
 Stories devem usar fixtures versionadas; não mockar estado “bonito” que a API não consegue produzir.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Integração com a toolchain
+
+- Storybook usa MSW para cenários de rede reutilizáveis;
+- stories críticas participam dos testes de interação;
+- Vitest Browser é preferido quando APIs reais do navegador forem relevantes;
+- Playwright valida páginas e fluxos completos;
+- Nx executa apenas stories/testes afetados quando a configuração de inputs estiver correta;
+- Style Dictionary gera tokens; stories nunca editam outputs gerados;
+- Biome e TypeScript são gates antes do build do Storybook.
+
+Consultar `../implementacao/18-frontend-toolchain-testes.md`.

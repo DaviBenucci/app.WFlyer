@@ -207,3 +207,17 @@ OpenAPI client
 - protótipos em `design-reference/prototypes` nunca são importados pelo app.
 
 Canvas/SVG/AudioContext precisam de cleanup, pausa em background e fallback textual.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Statecharts e ownership do comportamento
+
+Fluxos com processamento, retry, cancelamento, revisão ou expiração devem avaliar XState conforme `../implementacao/17-xstate-fluxos-reativos.md`. React local, TanStack Query, React Hook Form e XState não podem duplicar o mesmo estado autoritativo.
+
+```text
+backend = estado autoritativo do job
+TanStack Query = cache remoto
+XState = orquestração da experiência
+React Hook Form = edição/validação do formulário
+Motion/GSAP = apresentação
+```

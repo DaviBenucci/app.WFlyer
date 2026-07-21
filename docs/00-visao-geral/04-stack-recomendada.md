@@ -130,3 +130,25 @@ Qualquer modelo/solver deve ter:
 - versão, seed/configuração e licença registradas;
 - política de dados e opt-in separados;
 - fallback seguro sem publicação.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Toolchain de desenvolvimento e agentes
+
+```text
+Governança: OpenSpec
+Conhecimento macro: Graphify
+Inteligência de código: Serena MCP
+Documentação externa: Context7 MCP
+Monorepo e execução afetada: Nx
+Fluxos complexos de UI: XState
+UI isolada: Storybook
+Frontend tests: Vitest + MSW + Playwright
+Backend/music tests: pytest + Hypothesis + Testcontainers
+Qualidade: Biome + Ruff + typecheckers
+Tokens: Style Dictionary
+```
+
+Obrigatório desde o início: OpenSpec, Graphify, Serena, Context7, Nx, Biome, Ruff e a suíte base de testes. XState é usado apenas em fluxos complexos. Temporal, Rive, Pact, StrykerJS e mutmut permanecem opcionais até spike e ADR.
+
+A instalação e o uso detalhado são normativos em `../implementacao/11-arquitetura-ferramentas-agentes.md` a `../implementacao/22-manutencao-atualizacao-toolchain.md`.

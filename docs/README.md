@@ -122,3 +122,28 @@ segurança, domínio e acessibilidade
 ## Limite entre Core e capacidades avançadas
 
 Musical Diff, análise polifônica, adaptação idiomática, harmonização, áudio sincronizado, modo de ensaio, score/partes e colaboração estão arquitetados, mas permanecem desabilitados até cumprir seus gates. A presença de documentação ou protótipo não autoriza ativação em produção.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Toolchain de agentes e qualidade
+
+Antes de qualquer implementação, ler nesta ordem:
+
+1. `implementacao/11-arquitetura-ferramentas-agentes.md`;
+2. `implementacao/12-bootstrap-toolchain.md`;
+3. `implementacao/13-openspec-especificacoes.md`;
+4. `implementacao/14-graphify-governanca.md`;
+5. `implementacao/15-serena-context7-mcp.md`;
+6. `implementacao/16-nx-monorepo-cache.md`;
+7. `implementacao/21-fluxo-operacional-ia.md`;
+8. `implementacao/toolchain-manifest.yaml`.
+
+A ordem operacional é:
+
+```text
+OpenSpec → Graphify → Serena → Context7 quando necessário
+→ implementação pequena → Nx affected → gates por risco
+→ documentação/logs/grafo
+```
+
+Ferramentas opcionais estão bloqueadas até o spike de `implementacao/20-ferramentas-opcionais-spikes.md`.

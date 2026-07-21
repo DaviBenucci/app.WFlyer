@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "targets": {
+    "lint": {
+      "command": "uv run ruff check .",
+      "cwd": "apps/api",
+      "cache": true
+    },
+    "typecheck": {
+      "command": "uv run mypy src",
+      "cwd": "apps/api",
+      "cache": true
+    },
+    "test": {
+      "command": "uv run pytest tests/unit tests/property -q",
+      "cwd": "apps/api",
+      "cache": true
+    },
+    "integration": {
+      "command": "uv run pytest tests/integration -q",
+      "cwd": "apps/api",
+      "cache": false
+    }
+  }
+}

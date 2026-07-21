@@ -108,3 +108,14 @@ Musical Decision Record aprovado
 ```
 
 Esses artefatos não podem contrariar segurança, escopo e invariantes canônicos. Quando houver conflito, a implementação deve pausar e abrir decisão; não escolher silenciosamente o documento mais conveniente.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Relação entre documentação canônica e OpenSpec
+
+- documentação canônica descreve o comportamento vigente;
+- `openspec/changes/` descreve uma alteração ainda em execução;
+- uma mudança aprovada não pode contradizer segurança/domínio sem ADR explícita;
+- ao concluir, o comportamento vigente e os documentos canônicos são atualizados;
+- Graphify, Serena e Context7 são índices/ferramentas e nunca possuem precedência normativa;
+- `implementacao/toolchain-manifest.yaml` governa instalação e uso das ferramentas, sem revogar requisitos do produto.

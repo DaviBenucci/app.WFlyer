@@ -70,3 +70,21 @@ Antes de alterar código, o Codex deve:
 - recusar início quando houver `TBD` bloqueante.
 
 No relatório final, deve mapear requisito → arquivos → testes → evidência → risco residual.
+
+<!-- TOOLCHAIN-IA-2026-07-21 -->
+
+## Checklist de toolchain
+
+- [ ] mudança OpenSpec selecionada;
+- [ ] Graphify atualizado ou staleness registrada;
+- [ ] impacto macro consultado;
+- [ ] Serena conectada e projeto ativo;
+- [ ] símbolos e consumidores confirmados;
+- [ ] Context7 consultado somente quando necessário;
+- [ ] versão externa conferida no lockfile;
+- [ ] target Nx e inputs/outputs conhecidos;
+- [ ] teste que demonstra a mudança definido;
+- [ ] ferramenta opcional ausente ou aprovada por ADR;
+- [ ] `nx affected` executado;
+- [ ] gates adicionais por risco executados;
+- [ ] OpenSpec, docs, logs e grafo atualizados.

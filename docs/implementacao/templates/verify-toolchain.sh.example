@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+fail=0
+check() {
+  local name="$1"
+  shift
+  if "$@" >/dev/null 2>&1; then
+    printf '[OK] %s\n' "$name"
+  else
+    printf '[FALHA] %s\n' "$name"
+    fail=1
+  fi
+}
+
+check git git --version
+check node node --version
+check pnpm pnpm --version
+check uv uv --version
+check openspec openspec --version
+check graphify graphify --version
+check serena serena --version
+
+if [[ -f package.json ]]; then
+  check nx pnpm nx --version
+  check biome pnpm exec biome --version
+  check vitest pnpm exec vitest --version
+  check playwright pnpm exec playwright --version
+fi
+
+if [[ -f pyproject.toml ]]; then
+  check ruff uv run ruff --version
+  check pytest uv run pytest --version
+fi
+
+exit "$fail"
