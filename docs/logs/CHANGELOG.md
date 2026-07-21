@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-07-21 — Bootstrap e fundação da Fase 0
+
+### Adicionado
+
+- OpenSpec inicializado com a mudança `bootstrap-core-foundation` e seus quatro artefatos de planejamento;
+- Graphify 0.9.23 integrado ao projeto, com grafo, relatório, visualização, memória de consulta e backups locais;
+- Serena 1.6.1 e Context7 0.5.5 conectados ao Codex;
+- workspace raiz privado e sem dependências, com Node/pnpm fixados, lockfile pnpm e verificador da toolchain;
+- relatórios de pré-instalação, implementação e testes da Fase 0.
+
+### Verificado
+
+- validação estrita do OpenSpec;
+- integrações MCP Serena e Context7;
+- integridade do Graphify;
+- lockfile offline e congelado;
+- baseline de zero coletores de teste configurados.
+
+### Limite
+
+Nenhum framework ou funcionalidade de produto foi instalado ou implementado. Nx, projeto Python, lint, typecheck e suites de produto permanecem para fases posteriores conforme o manifesto; a Fase 1 não é liberada automaticamente.
+
 ## 2026-07-20 — Arquitetura de motion e animação-assinatura
 
 ### Decidido

@@ -16,6 +16,49 @@ Resultado:
 Riscos e pendências:
 ```
 
+## 2026-07-21 — Bootstrap e fundação da Fase 0
+
+Fase:
+Fase 0 — governança da IA e fundação da toolchain.
+
+Objetivo:
+Preparar OpenSpec, Graphify, Serena, Context7 e uma superfície mínima de verificação antes de qualquer framework ou funcionalidade de produto.
+
+Arquivos alterados:
+
+- orientações e skills do Codex em `AGENTS.md` e `.codex/skills/`;
+- configuração versionável da Serena em `.serena/`;
+- planejamento em `openspec/changes/bootstrap-core-foundation/`;
+- pin de Node e metadados raiz em `.node-version`, `package.json` e `pnpm-lock.yaml`;
+- verificador em `scripts/verify-toolchain.sh`;
+- relatórios e logs da Fase 0 em `docs/logs/`.
+
+Resumo técnico:
+
+- OpenSpec 1.6.0 instalado pelo pnpm no escopo do usuário e inicializado no repositório.
+- Graphify 0.9.23 instalado pelo `uv tool`; skills global e de projeto alinhadas na mesma versão; grafo inicial recuperado após reinicialização abrupta e consultado para delimitar a Fase 0.
+- Serena 1.6.1 instalada pelo `uv tool` com Python 3.13.14 e MCP registrado no Codex; o projeto documental foi ativado.
+- Context7 CLI 0.5.5 configurado em MCP OAuth e verificado funcionalmente por uma nova sessão do Codex.
+- Node.js 24.18.0 e pnpm 11.15.1 fixados no workspace; `pnpm-lock.yaml` gerado sem dependências.
+- Nx, projeto Python, frameworks de produto e ferramentas de fases posteriores não foram inicializados.
+- Nenhum `sudo` ou gerenciador de pacotes do sistema foi utilizado.
+
+Contratos/migrations:
+Somente a capacidade OpenSpec `phase-zero-foundation` foi adicionada. Nenhum contrato de produto, schema de dados ou migration foi criado.
+
+Testes executados:
+Validação estrita do OpenSpec, verificador da toolchain, integridade do Graphify, diagnóstico Serena, verificação MCP, validação congelada/offline do lockfile e descoberta de coletores. Ver `TEST_LOG.md`.
+
+Resultado:
+A fundação sem dependências funcionais foi instalada e verificada. A mudança OpenSpec possui quatro artefatos completos e válidos.
+
+Riscos e pendências:
+
+- A Serena ativa o projeto, mas o health-check informa `No analyzable files found` porque ainda não há código-fonte.
+- O documento de bootstrap exige `nx.json`, `uv.lock` e coletores na Fase 0, enquanto o manifesto vinculante classifica Nx na Fase 1; o manifesto e o escopo expresso pelo usuário prevaleceram nesta execução.
+- A versão Python do backend continua pendente; Python 3.13 da Serena não decide o runtime do produto.
+- A exclusão preexistente de `finanças.md` pertence ao usuário, ficou fora do escopo e não foi restaurada nem alterada.
+
 ## 2026-07-20 — Revisão técnica da documentação W_Flyer
 
 Fase:
