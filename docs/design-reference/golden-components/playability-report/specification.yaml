@@ -1,15 +1,24 @@
 id: WF-PLAYABILITY-001
-status: binding
+status: reference
 component: PlayabilityReport
 purpose: Exibir impossibilidades, riscos e sugestões por região.
 required:
-  - severity and category
-  - instrument profile version
-  - measure/phrase anchor
-  - evidence
-  - adaptation options
-states: [playable, warnings, blocking, unmodeled_technique, profile_changed]
+- severity and category
+- instrument profile version
+- measure/phrase anchor
+- evidence
+- adaptation options
+states:
+- playable
+- warnings
+- blocking
+- unmodeled_technique
+- profile_changed
 forbidden:
-  - score percentual único
-  - chamar difícil de impossível
-  - aplicar mudança automaticamente
+- score percentual único
+- chamar difícil de impossível
+- aplicar mudança automaticamente
+capability: idiomatic_adaptation
+capability_status: disabled
+implementation_gate: I
+implementation_forbidden_until_gate: true

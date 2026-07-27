@@ -40,6 +40,7 @@ references:
     - golden-pages/home/desktop.png
     - golden-pages/home/mobile.png
     pixel_baseline_status: candidate_human_review_required
+    production_approval: pending_product_owner
   WF-TRANSPOSE-001:
     status: binding
     kind: page
@@ -60,8 +61,9 @@ references:
     - golden-pages/transpose-workspace/desktop.png
     - golden-pages/transpose-workspace/mobile.png
     pixel_baseline_status: candidate_human_review_required
+    production_approval: pending_product_owner
   WF-MELODY-REVIEW-001:
-    status: binding
+    status: reference
     kind: page
     specification: golden-pages/melody-review/specification.yaml
     prototype: prototypes/melody-review.html
@@ -78,8 +80,13 @@ references:
     - golden-pages/melody-review/desktop.png
     - golden-pages/melody-review/mobile.png
     pixel_baseline_status: candidate_human_review_required
+    capability: melody_extraction
+    capability_status: disabled
+    implementation_gate: L4
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-DIFF-001:
-    status: binding
+    status: reference
     kind: page
     specification: golden-pages/result-comparison/specification.yaml
     prototype: prototypes/result-comparison.html
@@ -96,8 +103,13 @@ references:
     - golden-pages/result-comparison/desktop.png
     - golden-pages/result-comparison/mobile.png
     pixel_baseline_status: candidate_human_review_required
+    capability: musical_diff_ui
+    capability_status: disabled
+    implementation_gate: D
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-HARMONY-001:
-    status: binding-composition
+    status: reference
     kind: page
     specification: golden-pages/harmonization-lab/specification.yaml
     prototype: prototypes/harmonization-lab.html
@@ -114,8 +126,13 @@ references:
     - golden-pages/harmonization-lab/desktop.png
     - golden-pages/harmonization-lab/mobile.png
     pixel_baseline_status: candidate_human_review_required
+    capability: harmonization
+    capability_status: disabled
+    implementation_gate: H5
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-REHEARSAL-001:
-    status: binding-composition
+    status: reference
     kind: page
     specification: golden-pages/rehearsal-mode/specification.yaml
     prototype: prototypes/rehearsal-mode.html
@@ -133,31 +150,53 @@ references:
     - golden-pages/rehearsal-mode/desktop.png
     - golden-pages/rehearsal-mode/mobile.png
     pixel_baseline_status: candidate_human_review_required
+    capability: rehearsal_mode
+    capability_status: disabled
+    implementation_gate: A
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-INSTRUMENT-PICKER-001:
     status: binding
     kind: component
     specification: golden-components/instrument-picker/specification.yaml
     approval: pending_product_owner
+    production_approval: pending_product_owner
   WF-MUSICAL-DIFF-001:
     status: binding
     kind: component
     specification: golden-components/musical-diff/specification.yaml
     approval: pending_product_owner
+    production_approval: pending_product_owner
   WF-PLAYABILITY-001:
-    status: binding
+    status: reference
     kind: component
     specification: golden-components/playability-report/specification.yaml
     approval: pending_product_owner
+    capability: idiomatic_adaptation
+    capability_status: disabled
+    implementation_gate: I
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-HARMONY-VARIANT-001:
-    status: binding
+    status: reference
     kind: component
     specification: golden-components/harmony-variant-card/specification.yaml
     approval: pending_product_owner
+    capability: harmonization
+    capability_status: disabled
+    implementation_gate: H5
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-MOTION-INK-001:
-    status: binding
+    status: reference
     kind: motion
     specification: motion/ink-transfer/specification.yaml
     approval: pending_product_owner
+    capability: production_motion
+    capability_status: disabled
+    implementation_gate: Core 7 / frontend gate
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-PROCESSING-001:
     status: binding
     kind: page
@@ -181,6 +220,7 @@ references:
     - golden-pages/processing/desktop.png
     - golden-pages/processing/mobile.png
     baseline_kind: original_wflyer_documentation_candidate
+    production_approval: pending_product_owner
   WF-UPLOAD-ERROR-001:
     status: binding
     kind: page
@@ -202,8 +242,9 @@ references:
     - golden-pages/upload-error/desktop.png
     - golden-pages/upload-error/mobile.png
     baseline_kind: original_wflyer_documentation_candidate
+    production_approval: pending_product_owner
   WF-ENSEMBLE-001:
-    status: binding-composition
+    status: reference
     kind: page
     specification: golden-pages/ensemble-package/specification.yaml
     prototype: prototypes/ensemble-package.html
@@ -224,16 +265,27 @@ references:
     - golden-pages/ensemble-package/desktop.png
     - golden-pages/ensemble-package/mobile.png
     baseline_kind: original_wflyer_documentation_candidate
+    capability: ensemble_package
+    capability_status: disabled
+    implementation_gate: E
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-PLAYBACK-TRANSPORT-001:
-    status: binding
+    status: reference
     kind: component
     specification: golden-components/playback-transport/specification.yaml
     approval: pending_product_owner
+    capability: audio_playback
+    capability_status: disabled
+    implementation_gate: A
+    implementation_forbidden_until_gate: true
+    production_approval: pending_product_owner
   WF-PROCESSING-TIMELINE-001:
     status: binding
     kind: component
     specification: golden-components/processing-timeline/specification.yaml
     approval: pending_product_owner
+    production_approval: pending_product_owner
 baseline_policy:
   composition_status: binding_as_documented
   pixel_status: candidate_human_review_required
@@ -243,3 +295,5 @@ baseline_policy:
   - reason
   - human_review
   - updated_hash_manifest
+  capability_rule: A reference with capability_status=disabled cannot authorize routes,
+    buttons, endpoints or implementation.

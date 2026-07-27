@@ -377,3 +377,17 @@ O shim pnpm pode ser removido com `corepack disable --install-directory /home/da
 | relatórios, falhas, pendências e rollback | aprovado |
 
 **Decisão:** a Fase 0 solicitada está `CONCLUIDA`. O gate permite encerrar este bootstrap, mas a Fase 1 permanece **NÃO LIBERADA** nesta execução, tanto pelo limite expresso do pedido quanto pelas divergências e decisões pendentes registradas acima.
+
+## Adendo de consolidação — 2026-07-27
+
+Este relatório preserva as métricas históricas da execução de 2026-07-21. Depois daquela fotografia, o grafo foi incrementado e passou a conter 3.076 nós e 2.890 relações, conforme `graph.json` e `GRAPH_REPORT.md`.
+
+As divergências documentais registradas nas pendências foram corrigidas em 2026-07-27:
+
+- o bootstrap diferencia Fase 0 de agentes e Fase 1 de produto;
+- Serena e Context7 são instalados/configurados na Fase 0 e usados sobre código a partir da Fase 1;
+- a mudança OpenSpec foi sincronizada e arquivada;
+- a arquitetura física de pacotes Python compartilhados foi fechada;
+- o verificador foi separado em escopo portável e escopo local.
+
+O documento de fechamento é `FASE-0-CONSOLIDACAO-2026-07-27.md`. O Graphify deve ser atualizado novamente após as alterações de consolidação e antes do commit/tag final.

@@ -1,5 +1,5 @@
 id: WF-MELODY-REVIEW-001
-status: binding
+status: reference
 purpose:
   primary: Confirmar a linha melódica por frase/região.
 layout:
@@ -37,8 +37,12 @@ viewports:
   width: 1440
   height: 900
 approval:
-  composition: approved_documentation
+  composition: future_documentation_only
   pixel_baseline: candidate_human_review_required
 baselines:
 - golden-pages/melody-review/desktop.png
 - golden-pages/melody-review/mobile.png
+capability: melody_extraction
+capability_status: disabled
+implementation_gate: L4
+implementation_forbidden_until_gate: true

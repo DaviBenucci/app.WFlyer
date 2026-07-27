@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-07-20'
+updated_at: '2026-07-27'
 policy: No reference becomes production-approved without explicit human sign-off.
 references:
   WF-HOME-001:
@@ -13,25 +13,29 @@ references:
     approved_at: null
     notes: Original W_Flyer documentation baseline; not production UI.
   WF-MELODY-REVIEW-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para melody_extraction; capability desabilitada
+      até o gate L4. Não autoriza implementação nem ação ativa no Core.
   WF-DIFF-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para musical_diff_ui; capability desabilitada
+      até o gate D. Não autoriza implementação nem ação ativa no Core.
   WF-HARMONY-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para harmonization; capability desabilitada
+      até o gate H5. Não autoriza implementação nem ação ativa no Core.
   WF-REHEARSAL-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para rehearsal_mode; capability desabilitada
+      até o gate A. Não autoriza implementação nem ação ativa no Core.
   WF-INSTRUMENT-PICKER-001:
     status: pending_product_owner
     approved_by: null
@@ -43,20 +47,24 @@ references:
     approved_at: null
     notes: Original W_Flyer documentation baseline; not production UI.
   WF-PLAYABILITY-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para idiomatic_adaptation; capability desabilitada
+      até o gate I. Não autoriza implementação nem ação ativa no Core.
   WF-HARMONY-VARIANT-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para harmonization; capability desabilitada
+      até o gate H5. Não autoriza implementação nem ação ativa no Core.
   WF-MOTION-INK-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para production_motion; capability desabilitada
+      até o gate Core 7 / frontend gate. Não autoriza implementação nem ação ativa
+      no Core.
   WF-PROCESSING-001:
     status: pending_product_owner
     approved_by: null
@@ -68,15 +76,17 @@ references:
     approved_at: null
     notes: Original W_Flyer documentation baseline; not production UI.
   WF-ENSEMBLE-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para ensemble_package; capability desabilitada
+      até o gate E. Não autoriza implementação nem ação ativa no Core.
   WF-PLAYBACK-TRANSPORT-001:
-    status: pending_product_owner
+    status: future_reference_not_approved
     approved_by: null
     approved_at: null
-    notes: Original W_Flyer documentation baseline; not production UI.
+    notes: Referência documental futura para audio_playback; capability desabilitada
+      até o gate A. Não autoriza implementação nem ação ativa no Core.
   WF-PROCESSING-TIMELINE-001:
     status: pending_product_owner
     approved_by: null

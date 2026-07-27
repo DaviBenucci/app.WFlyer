@@ -1,6 +1,6 @@
 # Bootstrap da toolchain do W_Flyer
 
-> Status: canônico. Execute somente na Fase 0, em ambiente limpo, registrando versões e saídas.
+> Status: canônico. Separa explicitamente o bootstrap de agentes da Fase 0 e a toolchain de produto da Fase 1.
 
 ## Pré-requisitos
 
@@ -39,7 +39,7 @@ uv --version
 python3 --version
 ```
 
-A versão Python do backend é decidida na Fase 0 conforme compatibilidade das bibliotecas musicais. Serena usa ambiente próprio com Python 3.13 e não determina a versão do backend.
+A versão Python do backend é decidida na Fase 1, antes de criar o workspace `uv`, conforme compatibilidade das bibliotecas musicais aprovadas. Serena usa ambiente próprio e não determina a versão do backend.
 
 ## 3. Instalar e inicializar OpenSpec
 
@@ -119,6 +119,10 @@ Verificação:
 - não inserir `CONTEXT7_API_KEY` no Git;
 - remover a configuração com `npx ctx7 remove` quando necessário.
 
+## Fase 1 — toolchain do produto
+
+As seções seguintes só podem ser executadas dentro da mudança OpenSpec da Fase 1, depois do fechamento formal da Fase 0.
+
 ## 7. Inicializar Nx em repositório existente
 
 Executar somente depois que o workspace JavaScript existir:
@@ -187,14 +191,26 @@ O script é referência e deve ser copiado/adaptado para `scripts/verify-toolcha
 
 ## Saída obrigatória da Fase 0
 
-- versões registradas;
-- `package.json`, `pnpm-lock.yaml`, `uv.lock` e `nx.json` versionados;
-- `openspec/` inicializado;
-- Graphify e Serena conectados;
-- Context7 verificado;
-- lint, typecheck e coletores de testes funcionando;
+- versões das CLIs de orientação registradas;
+- `package.json` e `pnpm-lock.yaml` mínimos, sem dependências do produto;
+- `openspec/` inicializado e mudança de bootstrap validada;
+- Graphify gerado e integração do projeto instalada;
+- Serena e Context7 conectados ao Codex;
+- scripts separados para validar repositório e toolchain local;
+- nenhum `nx.json`, `pyproject.toml`, `uv.lock` ou framework funcional criado artificialmente;
 - nenhum framework opcional instalado;
-- relatório de falhas ou incompatibilidades.
+- relatório de falhas, incompatibilidades e rollback.
+
+## Saída obrigatória da Fase 1
+
+- monorepo Nx e workspace pnpm;
+- workspace `uv` com API, worker e `packages/python/`;
+- `nx.json`, `pnpm-workspace.yaml`, `pyproject.toml`, `uv.lock` e lockfiles coerentes;
+- Biome, Ruff, typecheckers e coletores de testes funcionando;
+- Storybook, Vitest, MSW e Playwright configurados no escopo aprovado;
+- pytest e Testcontainers configurados para a fundação backend;
+- CI inicial executando os gates da Fase 1;
+- nenhuma lógica musical avançada ou capability futura implementada.
 
 ## Fontes oficiais
 

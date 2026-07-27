@@ -1,5 +1,5 @@
 id: WF-HARMONY-001
-status: binding-composition
+status: reference
 purpose:
   primary: Configurar, comparar e aprovar propostas harmônicas.
 layout:
@@ -39,8 +39,12 @@ viewports:
   width: 1536
   height: 960
 approval:
-  composition: approved_documentation
+  composition: future_documentation_only
   pixel_baseline: candidate_human_review_required
 baselines:
 - golden-pages/harmonization-lab/desktop.png
 - golden-pages/harmonization-lab/mobile.png
+capability: harmonization
+capability_status: disabled
+implementation_gate: H5
+implementation_forbidden_until_gate: true

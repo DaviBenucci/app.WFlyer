@@ -2,13 +2,15 @@
   "name": "w-flyer-workspace",
   "version": "0.0.0",
   "private": true,
-  "description": "Fundação de governança e verificação da Fase 0 do W_Flyer.",
+  "description": "Governança documental e fundação da Fase 0 do W_Flyer.",
   "packageManager": "pnpm@11.15.1",
   "engines": {
     "node": "24.18.0",
     "pnpm": "11.15.1"
   },
   "scripts": {
+    "verify:repository": "bash scripts/verify-repository.sh",
+    "verify:agent-toolchain": "bash scripts/verify-local-agent-toolchain.sh",
     "verify:toolchain": "bash scripts/verify-toolchain.sh"
   }
 }

@@ -1,20 +1,37 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Produto: W_Flyer, aplicação web de preparação musical verificável.
+  Estado: Fase 0 concluída e arquivada; Fase 1 ainda não iniciada.
+  MVP Core: MusicXML não comprimido, uma parte e uma pauta, transposição determinística,
+  verificação independente, processamento assíncrono e sessão anônima privada.
+  Fora do Core: PDF/OMR, multiparte/multipauta, extração de melodia, adaptação,
+  harmonização, áudio, ensemble, watermark, login e cobrança até seus gates.
+  Fonte normativa: docs/ conforme docs/00-visao-geral/08-hierarquia-documental.md.
+  Backend: Python; API e worker separados; domínio compartilhado em packages/python/.
+  Frontend: TypeScript/Next.js; sem regra musical canônica no cliente.
+  Segurança: fail-closed para impacto musical, autorização, integridade e autoria.
+  Processo: OpenSpec -> Graphify -> Serena -> Context7 externo -> implementação -> testes
+  -> documentação/logs/Graphify. Nenhuma fase avança automaticamente.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - Declare a fase e a capability afetadas.
+    - Inclua objetivo, não objetivos, motivação, riscos e rollback.
+    - Não proponha capability fora da matriz de suporte sem ADR e gate.
+    - Identifique decisões pendentes que continuam bloqueadas.
+  design:
+    - Cite documentos canônicos e contratos afetados.
+    - Separe comportamento determinístico, inferencial e criativo.
+    - Inclua estados de falha, observabilidade, segurança e estratégia de migração.
+    - Evite duplicação de regra musical entre Python e TypeScript.
+  specs:
+    - Use requisitos verificáveis e cenários WHEN/THEN.
+    - Defina entradas suportadas, rejeições, invariantes e níveis de garantia.
+    - Inclua cenários de falha, retry, cancelamento, autorização e rollback quando aplicáveis.
+    - Não use linguagem vaga como “inteligente”, “perfeito” ou “automático” sem métrica.
+  tasks:
+    - Ordene tarefas por dependência e por gate.
+    - Cada tarefa deve produzir evidência verificável.
+    - Inclua lint, typecheck, testes, documentação e atualização do Graphify.
+    - A última tarefa deve impedir avanço automático para a fase seguinte.

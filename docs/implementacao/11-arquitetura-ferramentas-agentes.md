@@ -111,8 +111,8 @@ A IA deve recuperar contexto em camadas:
 |---|---|---:|---:|---|
 | OpenSpec | obrigatória | 0 | sim, para mudança material | mudança em `openspec/` |
 | Graphify | obrigatória | 0 | sim, para impacto transversal | grafo atualizado e consulta registrada |
-| Serena | obrigatória para código | 1 | sim, quando disponível | símbolos lidos/alterados |
-| Context7 | obrigatória quando houver dúvida externa | 1 | sim, se API não estiver confirmada | biblioteca/versão consultada |
+| Serena | instalada na Fase 0; obrigatória para código | 0/1 | sim, quando houver código analisável | MCP ativo e símbolos lidos/alterados |
+| Context7 | configurado na Fase 0; usado sob demanda | 0/1 | sim, se API externa não estiver confirmada | MCP ativo e biblioteca/versão consultada |
 | Nx | obrigatória no monorepo | 1 | sim | `nx affected`/targets verdes |
 | XState | condicional | frontend | para fluxos complexos | máquina, eventos e testes |
 | Storybook | obrigatória para UI de produto | frontend | sim | stories e estados aprovados |

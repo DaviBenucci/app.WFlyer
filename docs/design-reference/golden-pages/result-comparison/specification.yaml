@@ -1,5 +1,5 @@
 id: WF-DIFF-001
-status: binding
+status: reference
 purpose:
   primary: Verificar mudanças entre duas versões.
 layout:
@@ -36,8 +36,12 @@ viewports:
   width: 1536
   height: 960
 approval:
-  composition: approved_documentation
+  composition: future_documentation_only
   pixel_baseline: candidate_human_review_required
 baselines:
 - golden-pages/result-comparison/desktop.png
 - golden-pages/result-comparison/mobile.png
+capability: musical_diff_ui
+capability_status: disabled
+implementation_gate: D
+implementation_forbidden_until_gate: true

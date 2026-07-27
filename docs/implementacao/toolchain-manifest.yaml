@@ -1,5 +1,5 @@
 schema_version: 1
-reviewed_at: '2026-07-21'
+reviewed_at: '2026-07-27'
 package_managers:
   javascript: pnpm
   python: uv
@@ -36,7 +36,7 @@ tools:
 - id: serena
   category: symbolic-code-intelligence
   adoption: required
-  phase: '0'
+  phase: 0-install-1-use
   scope: global-cli+mcp
   install: uv tool install -p 3.13 serena-agent
   verify: serena --version; serena project health-check
@@ -47,7 +47,7 @@ tools:
 - id: context7
   category: external-docs
   adoption: required-on-demand
-  phase: '0'
+  phase: 0-config-1-use
   scope: mcp-user-config
   install: npx ctx7 setup --codex
   verify: query installed dependency documentation from Codex

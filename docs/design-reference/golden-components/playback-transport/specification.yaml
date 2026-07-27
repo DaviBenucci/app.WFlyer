@@ -1,21 +1,32 @@
 id: WF-PLAYBACK-TRANSPORT-001
-status: binding
+status: reference
 purpose: Controlar reprodução sem transformar áudio em prova de correção.
 required_props:
-  - playback_manifest_status
-  - current_occurrence_id
-  - tempo
-  - loop_range
-  - audio_status
+- playback_manifest_status
+- current_occurrence_id
+- tempo
+- loop_range
+- audio_status
 must_have:
-  - play_pause
-  - loop
-  - tempo
-  - metronome
-  - mapping_state
-  - keyboard_shortcuts
-states: [loading, ready, playing, paused, mapping_partial, audio_unavailable, background_resync]
+- play_pause
+- loop
+- tempo
+- metronome
+- mapping_state
+- keyboard_shortcuts
+states:
+- loading
+- ready
+- playing
+- paused
+- mapping_partial
+- audio_unavailable
+- background_resync
 prohibitions:
-  - autoplay
-  - cursor sem mapa validado
-  - atualização de toda árvore por frame
+- autoplay
+- cursor sem mapa validado
+- atualização de toda árvore por frame
+capability: audio_playback
+capability_status: disabled
+implementation_gate: A
+implementation_forbidden_until_gate: true

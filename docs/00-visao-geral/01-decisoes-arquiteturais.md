@@ -227,3 +227,28 @@ Nenhuma capacidade inicia sem preflight que declare contratos, invariantes, modo
 ## ADR-050 — Capacidades avançadas usam rollout estratificado
 
 Melodia, adaptação, harmonia, ensemble e OMR são ativados por versão de modelo, formato, instrumento, complexidade e perfil. Um resultado agregado não autoriza ativação para grupos com desempenho insuficiente.
+
+
+## ADR-051 — Domínio musical compartilhado em pacotes Python internos
+
+API e worker devem depender dos mesmos pacotes Python internos versionados em `packages/python/`:
+
+```text
+packages/python/
+├── music-domain/
+├── musicxml/
+├── instrument-catalog/
+├── transposition-engine/
+└── music-verifier/
+```
+
+A API continua responsável por HTTP, sessão, autorização e persistência. O worker continua responsável pela execução assíncrona. Nenhum deles possui uma cópia própria do domínio musical.
+
+Consequências:
+
+- API e worker são implantáveis separadamente, mas usam o mesmo workspace `uv`;
+- o worker não importa a aplicação HTTP da API;
+- o verificador permanece separado do transformador;
+- contratos de rede continuam derivados do OpenAPI;
+- TypeScript não contém uma segunda implementação do motor musical;
+- Nx pode orquestrar targets Python por meio de comandos `uv run`.

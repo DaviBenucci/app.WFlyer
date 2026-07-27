@@ -1,6 +1,6 @@
 # Pacote de referências visuais do W_Flyer
 
-> Status: vinculante para composição do frontend. Revisão: 2026-07-20.
+> Status: governança de referências visuais. Revisão: 2026-07-27.
 
 Este diretório contém referências internas próprias. Ele não é um catálogo de screenshots de terceiros.
 
@@ -63,9 +63,12 @@ Os hashes e dimensões estão em `baseline-manifest.json`.
 Status atual:
 
 ```text
-composição e hierarquia: vinculantes como documentação
+referências do Core: orientação de composição sujeita a aprovação humana
+referências com status=reference: futuras; não autorizam implementação
 pixel baseline: candidato; requer revisão humana do produto
 automação/implementação: inexistente nesta entrega
 ```
+
+Uma referência com `capability_status: disabled` não pode gerar rota, botão ativo, endpoint, feature flag ligada ou código funcional. Ela existe apenas para evitar que a arquitetura futura seja esquecida.
 
 A primeira implementação em Storybook deve comparar-se a estes baselines, registrar divergências justificadas e produzir o baseline de produção aprovado. Não atualizar PNG apenas para silenciar CI.

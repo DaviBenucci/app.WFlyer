@@ -1,5 +1,5 @@
 id: WF-REHEARSAL-001
-status: binding-composition
+status: reference
 purpose:
   primary: Praticar ou executar uma versão aprovada com mínima distração.
 layout:
@@ -42,8 +42,12 @@ viewports:
   width: 1440
   height: 900
 approval:
-  composition: approved_documentation
+  composition: future_documentation_only
   pixel_baseline: candidate_human_review_required
 baselines:
 - golden-pages/rehearsal-mode/desktop.png
 - golden-pages/rehearsal-mode/mobile.png
+capability: rehearsal_mode
+capability_status: disabled
+implementation_gate: A
+implementation_forbidden_until_gate: true

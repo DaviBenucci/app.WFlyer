@@ -101,3 +101,35 @@ Arquivos Markdown principais existiam e não estavam vazios. Nenhum teste de apl
 
 Resultado:
 Estrutura documental gerada. Nenhum teste de aplicação foi executado.
+
+## 2026-07-27 — Validação da consolidação da Fase 0
+
+Comandos executados:
+
+- `python3 scripts/validate-repository.py`;
+- parsing de JSON e YAML;
+- verificação de links Markdown relativos;
+- validação de paths do manifesto visual;
+- validação estrutural de `graphify-out/graph.json`;
+- comparação de contagens com `GRAPH_REPORT.md`;
+- inspeção do estado OpenSpec arquivado;
+- `bash -n` nos scripts versionados;
+- `git diff --check`.
+
+Ambiente/versões:
+Ambiente isolado de revisão; não possui OpenSpec, Graphify, Serena ou Context7 instalados.
+
+Fixtures:
+Não aplicável; nenhum código de produto foi criado.
+
+Resultado:
+Validação documental e estrutural aprovada no pacote corrigido. O grafo existente contém 3.076 nós e 2.890 relações válidas e concorda com o relatório.
+
+Falhas encontradas:
+Arquivos raiz obsoletos, contexto OpenSpec vazio, hook absoluto, arquitetura Python ambígua, visual futuro tratado como vinculante e verificador local dependente da máquina.
+
+Correções aplicadas:
+As correções constam em `FASE-0-CONSOLIDACAO-2026-07-27.md`.
+
+Testes não executados e motivo:
+A atualização do Graphify e a verificação dos MCPs não foram executadas porque essas CLIs não existem no ambiente de revisão. Devem ser executadas na máquina do projeto antes do checkpoint Git.

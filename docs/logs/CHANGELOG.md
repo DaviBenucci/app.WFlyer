@@ -198,3 +198,25 @@ A entrega é documental. Protótipos e baselines não são código de produção
 - ferramentas opcionais passaram a exigir spike/ADR;
 - adicionados manifest/schema e templates de bootstrap/verificação;
 - Definition of Done e estratégia de testes integradas ao novo fluxo.
+
+## 2026-07-27 — Consolidação e fechamento documental da Fase 0
+
+### Corrigido
+
+- estado real, roadmap e arquitetura nos arquivos raiz;
+- governança dos agentes e contexto OpenSpec;
+- hook Graphify portátil;
+- separação entre validação do repositório e toolchain local;
+- inconsistência entre bootstrap da Fase 0 e toolchain da Fase 1;
+- arquitetura de compartilhamento do domínio Python entre API e worker;
+- referências visuais futuras que poderiam sugerir capabilities ativas.
+
+### OpenSpec
+
+- `phase-zero-foundation` sincronizada como spec vigente;
+- `bootstrap-core-foundation` arquivada em `openspec/changes/archive/2026-07-27-bootstrap-core-foundation/`;
+- nenhuma mudança funcional da Fase 1 foi aberta.
+
+### Limite
+
+O Graphify precisa ser atualizado e o checkpoint Git precisa ser criado na máquina do projeto. Nenhum código funcional foi implementado.

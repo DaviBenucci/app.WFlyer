@@ -1,6 +1,6 @@
 # Documentação técnica do W_Flyer
 
-> Status: canônica após integração crítica de produto, música, frontend, segurança e pre-mortem em 2026-07-20.
+> Status: canônica. Fase 0 consolidada em 2026-07-27; código funcional ainda não iniciado.
 
 Esta pasta é a fonte normativa para a implementação do W_Flyer. O produto deve transformar material musical com rastreabilidade, explicar o que mudou, interromper o fluxo quando não puder provar uma decisão e manter o músico no controle de inferências e criações.
 

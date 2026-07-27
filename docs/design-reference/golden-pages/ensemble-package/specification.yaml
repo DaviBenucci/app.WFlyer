@@ -1,10 +1,11 @@
 id: WF-ENSEMBLE-001
-status: binding-composition
+status: reference
 approval:
-  composition: approved_documentation
+  composition: future_documentation_only
   pixel_baseline: candidate_human_review_required
 purpose:
-  primary: Configurar formação, acompanhar verificações e publicar score/partes como pacote coerente.
+  primary: Configurar formação, acompanhar verificações e publicar score/partes como
+    pacote coerente.
 layout:
   shell: studio
   main: part_matrix_and_score_summary
@@ -44,3 +45,7 @@ viewports:
 baselines:
 - golden-pages/ensemble-package/desktop.png
 - golden-pages/ensemble-package/mobile.png
+capability: ensemble_package
+capability_status: disabled
+implementation_gate: E
+implementation_forbidden_until_gate: true

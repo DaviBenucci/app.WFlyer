@@ -108,3 +108,41 @@ Criar estrutura de documentação para implementação futura.
 
 Resultado:
 Documentação base criada; nenhum código final de aplicação implementado.
+
+## 2026-07-27 — Consolidação documental da Fase 0
+
+Fase:
+Fase 0.1 — correção e fechamento, sem implementação funcional.
+
+Objetivo:
+Reconciliar arquivos raiz, governança, OpenSpec, arquitetura física, referências visuais e verificadores antes da Fase 1.
+
+Arquivos alterados:
+
+- `README.md`, `TREE.md`, `MANIFESTO_VALIDACAO.md` e `AGENTS.md`;
+- `.codex/hooks.json`, `.serena/project.yml` e `openspec/config.yaml`;
+- ADRs, estrutura de pastas e bootstrap da toolchain;
+- manifesto/aprovação das referências visuais;
+- scripts de validação;
+- OpenSpec vigente e arquivo da mudança da Fase 0.
+
+Resumo técnico:
+
+- Fase 0 sincronizada e arquivada no OpenSpec.
+- Pacotes Python compartilhados em `packages/python/` definidos como arquitetura canônica.
+- Capabilities futuras deixaram de ser referências vinculantes de implementação.
+- Hook do Graphify passou a resolver o executável pelo `PATH`.
+- Verificação portável do repositório foi separada da verificação dependente da máquina.
+- Serena recebeu contexto do projeto, mantendo linguagens vazias até o scaffold real.
+
+Contratos/migrations:
+Nenhum contrato público ou migration de produto foi criado.
+
+Testes executados:
+`python3 scripts/validate-repository.py`, validação JSON/YAML, links Markdown, manifesto visual, OpenSpec arquivado, hook portátil e integridade do grafo existente.
+
+Resultado:
+Correções documentais preparadas. O grafo deve ser atualizado na máquina do projeto antes do commit/tag final.
+
+Riscos e pendências:
+Aprovação visual humana, versão Python, typechecker, Graphify atualizado e checkpoint Git permanecem pendentes. A Fase 1 não foi iniciada.

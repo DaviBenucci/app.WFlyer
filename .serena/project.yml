@@ -106,7 +106,11 @@ ls_additional_workspace_folders: []
 #     - "**/bin/**"
 #     - "**/obj/**"
 # Note: global ignored_paths from serena_config.yml are also applied additively.
-ignored_paths: []
+ignored_paths:
+- ".git/**"
+- "node_modules/**"
+- "graphify-out/**"
+- "docs/design-reference/**/*.png"
 
 # whether the project is in read-only mode
 # If set to true, all editing tools will be disabled and attempts to use them will result in an error
@@ -145,7 +149,13 @@ added_modes:
 
 # initial prompt for the project. It will always be given to the LLM upon activating the project
 # (contrary to the memories, which are loaded on demand).
-initial_prompt: ""
+initial_prompt: |
+  Projeto W_Flyer. A Fase 0 está concluída e o código funcional ainda não começou.
+  Use docs/00-visao-geral/08-hierarquia-documental.md como precedência normativa e
+  AGENTS.md como contrato operacional. Não invente decisões pendentes nem implemente
+  capabilities avançadas. Quando a Fase 1 criar o frontend e o workspace Python,
+  atualize `languages` para incluir `typescript` e `python`, mantendo API e worker
+  separados e o domínio musical compartilhado em `packages/python/`.
 
 # time budget (seconds) per tool call for the retrieval of additional symbol information
 # such as docstrings or parameter information.
