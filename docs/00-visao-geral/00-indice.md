@@ -1,6 +1,6 @@
 # Índice geral da documentação W_Flyer
 
-> Status: canônico. Revisão: 2026-07-20.
+> Status: canônico. Revisão: 2026-07-27.
 
 ## Comece aqui
 
@@ -13,6 +13,12 @@
 - `10-relatorio-modernizacao-frontend-2026-07-20.md`
 - `11-relatorio-arquitetura-motion-2026-07-20.md`
 - `12-relatorio-confiabilidade-harmonia-watermark-2026-07-20.md`
+
+
+## Visões completas por público
+
+- `20-explicacao-completa-nao-tecnica.md` — explicação integral sem exigir conhecimento de programação;
+- `21-visao-tecnica-completa.md` — visão consolidada para desenvolvedores e arquitetos experientes.
 
 ## Produto e arquitetura
 

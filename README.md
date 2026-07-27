@@ -4,6 +4,16 @@
 
 O W_Flyer será uma aplicação web para transformar material musical estruturado com rastreabilidade, validação independente e controle do músico. O primeiro produto executável será o **MVP Core MusicXML**. PDF/OMR, extração de melodia, adaptação idiomática, harmonização, áudio, ensemble e marca d'água são trilhas posteriores e permanecem desabilitadas até seus gates específicos.
 
+
+## Duas visões completas da aplicação
+
+Para atender públicos diferentes, a documentação possui duas explicações centrais:
+
+- [Explicação completa para quem não é programador](docs/00-visao-geral/20-explicacao-completa-nao-tecnica.md) — apresenta propósito, funcionamento, limites, experiência e evolução em linguagem acessível;
+- [Visão técnica completa](docs/00-visao-geral/21-visao-tecnica-completa.md) — consolida domínio, arquitetura, contratos, processamento, segurança, testes e roadmap para profissionais experientes.
+
+Esses documentos são portas de entrada. As especificações especializadas continuam sendo a fonte normativa em cada área.
+
 ## Estado atual
 
 Já existem neste repositório:

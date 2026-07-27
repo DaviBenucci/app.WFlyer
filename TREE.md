@@ -19,7 +19,9 @@ app.WFlyer/
 ├── MANIFESTO_VALIDACAO.md
 ├── W-Flyer_Regra-Transposição.md
 ├── docs/
-│   ├── 00-visao-geral/               # escopo, ADRs, roadmap e pendências
+│   ├── 00-visao-geral/               # escopo, ADRs, roadmap e visões por público
+│   │   ├── 20-explicacao-completa-nao-tecnica.md
+│   │   └── 21-visao-tecnica-completa.md
 │   ├── 100-implementacao/            # guia, aceite e rastreabilidade
 │   ├── backend/
 │   ├── design-reference/             # specs, protótipos e baselines candidatos

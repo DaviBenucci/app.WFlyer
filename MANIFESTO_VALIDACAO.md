@@ -16,20 +16,20 @@ Capabilities avançadas: desabilitadas
 
 | Métrica | Quantidade |
 |---|---:|
-| Arquivos relevantes do repositório | 326 |
-| Documentos Markdown | 235 |
-| Arquivos dentro de `docs/` | 277 |
+| Arquivos relevantes do repositório | 328 |
+| Documentos Markdown | 237 |
+| Arquivos dentro de `docs/` | 279 |
 | JSON parseados fora dos artefatos gerados do Graphify | 14 |
 | YAML/YML parseados | 30 |
 | Contratos JSON Schema verificados | 21 |
 | Referências visuais registradas | 16 |
-| Links Markdown relativos verificados | 10 |
+| Links Markdown relativos verificados | 12 |
 
 Os números são uma fotografia desta consolidação. O script deve ser executado novamente após qualquer alteração.
 
 ## Verificações aprovadas
 
-- arquivos obrigatórios presentes;
+- 15 arquivos obrigatórios presentes, incluindo as duas visões completas por público;
 - JSON e YAML sintaticamente válidos;
 - 21 pares de dados/JSON Schema válidos;
 - links Markdown relativos existentes;

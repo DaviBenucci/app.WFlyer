@@ -68,6 +68,8 @@ def validate_required() -> None:
         "docs/00-visao-geral/02-roadmap-fases.md",
         "docs/00-visao-geral/08-hierarquia-documental.md",
         "docs/00-visao-geral/09-decisoes-pendentes.md",
+        "docs/00-visao-geral/20-explicacao-completa-nao-tecnica.md",
+        "docs/00-visao-geral/21-visao-tecnica-completa.md",
         "docs/backend/13-estrutura-pastas.md",
         "docs/design-reference/reference-manifest.yaml",
         "openspec/config.yaml",

@@ -1,6 +1,6 @@
 # Hierarquia e governança documental
 
-> Status: canônico. Revisão: 2026-07-20.
+> Status: canônico. Revisão: 2026-07-27.
 
 ## Precedência
 
@@ -17,6 +17,15 @@ Em caso de conflito, prevalece a ordem abaixo:
 9. guias de implementação;
 10. exemplos e textos de UX;
 11. logs históricos.
+
+## Documentos de síntese por público
+
+Os arquivos abaixo são portas de entrada e possuem status de `referência`:
+
+- `20-explicacao-completa-nao-tecnica.md` — explicação integral para leitores sem formação em programação;
+- `21-visao-tecnica-completa.md` — consolidação arquitetural para profissionais experientes.
+
+Eles devem permanecer coerentes com as fontes canônicas, mas não criam capabilities, não resolvem decisões pendentes e não prevalecem sobre contratos especializados. Quando uma regra mudar, as duas sínteses devem ser atualizadas na mesma mudança.
 
 ## Documentos canônicos
 

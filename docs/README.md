@@ -4,6 +4,14 @@
 
 Esta pasta é a fonte normativa para a implementação do W_Flyer. O produto deve transformar material musical com rastreabilidade, explicar o que mudou, interromper o fluxo quando não puder provar uma decisão e manter o músico no controle de inferências e criações.
 
+
+## Escolha a explicação adequada ao público
+
+- `00-visao-geral/20-explicacao-completa-nao-tecnica.md`: visão integral em linguagem acessível para músicos, gestores, parceiros e leitores sem formação em programação;
+- `00-visao-geral/21-visao-tecnica-completa.md`: síntese integral para desenvolvedores e arquitetos, com terminologia técnica, limites de módulo e contratos do sistema.
+
+A primeira explica **o produto e sua utilização**. A segunda explica **como o produto será construído e comprovado**.
+
 ## Compromisso realista
 
 A documentação antecipa classes conhecidas e plausíveis de falha, mas nenhuma especificação consegue enumerar todo defeito futuro. Por isso, o projeto combina:
