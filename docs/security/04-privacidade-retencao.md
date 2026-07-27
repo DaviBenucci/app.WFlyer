@@ -53,3 +53,7 @@ Seus arquivos ficam disponíveis por até 15 dias após o processamento. Você p
 ## Dados de revisão, modelo e verificação
 
 Seleções de melodia e variantes podem revelar conteúdo musical derivado e seguem a mesma retenção do job. Dados não podem ser reaproveitados para treino sem consentimento/base explícita. Após purge, o registro de verificação deve conter apenas hash/token/versões/status mínimos; não manter eventos, títulos ou PII por conveniência.
+
+## Política pública relacionada
+
+A redação pública planejada está em `../policies/02-politica-privacidade.md` e `../policies/08-politica-retencao-exclusao.md`. Os controles técnicos deste documento prevalecem sobre textos resumidos de interface.

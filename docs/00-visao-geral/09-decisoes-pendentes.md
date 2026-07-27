@@ -156,3 +156,72 @@ Decisões bloqueadas até spike/ADR:
 - definir cache remoto Nx e sua política de segurança.
 
 A ausência de decisão mantém a opção desabilitada; não autoriza instalação preventiva.
+
+## PEND-025 — natureza jurídica, CNAEs e regime tributário
+
+Definir somente após abertura planejada e análise contábil. A IA não pode inferir enquadramento a partir do nome dos serviços.
+
+## PEND-026 — provedor do site institucional
+
+Comparar hospedagem gerenciada/static e VPS conforme Next.js, formulários, preview, custo, backup e exportação. O site não deve depender da infraestrutura de produção do SaaS.
+
+## PEND-027 — modelo de hospedagem para clientes
+
+Decidir quando usar conta do cliente, hospedagem gerenciada isolada ou compartilhada de baixo risco. A produção do W_Flyer não pode hospedar clientes.
+
+## PEND-028 — provedor de pagamento
+
+Stripe é candidato preferencial e Mercado Pago é alternativa. A decisão permanece proposta até spike sandbox, análise comercial e validação contábil/jurídica.
+
+## PEND-029 — modelo de planos, créditos e preços
+
+Definir após medir custos reais de CPU, OMR, storage, tráfego, suporte, taxas e tributos. Não publicar quotas arbitrárias.
+
+## PEND-030 — emissor de NFS-e e certificado
+
+Depende de CNPJ, município, inscrição municipal, regime, código de serviço e documentação vigente. Não presumir API estadual da SEFAZ nem tipo de certificado.
+
+## PEND-031 — DNS autoritativo
+
+Decidir entre Registro.br, Cloudflare ou Route 53. O domínio pode continuar no Registro.br independentemente do provedor DNS.
+
+## PEND-032 — broker de produção
+
+Comparar Celery/Redis com SQS/adapters antes da fundação de produção AWS. PostgreSQL permanece fonte de verdade e outbox continua obrigatória.
+
+## PEND-033 — metas comerciais de RPO, RTO e SLO
+
+Os valores preliminares devem ser validados por orçamento e exercícios. Não converter meta interna em SLA antes de comprovação.
+
+## PEND-034 — lifecycle comercial dos créditos
+
+Definir após benchmark e revisão jurídica/comercial:
+
+- validade por tipo de lote;
+- acúmulo mensal;
+- ordem de consumo;
+- trial;
+- tratamento de resultado parcial;
+- upgrade/downgrade;
+- créditos institucionais;
+- relação entre reembolso e crédito consumido.
+
+A ausência de decisão mantém campos `null`/`PENDENTE` e billing desabilitado.
+
+## PEND-035 — aprovação das políticas públicas
+
+Antes de publicar `/politicas`, definir e aprovar:
+
+- razão social, CNPJ, endereço e contatos;
+- versões e datas de vigência;
+- termos de uso;
+- privacidade e inventário de fornecedores;
+- cookies reais;
+- pagamentos, créditos, cancelamento e reembolso;
+- direitos autorais e procedimento de denúncia;
+- uso aceitável;
+- retenção e exclusão;
+- suporte, disponibilidade e incidentes;
+- situações que exigem aceite e novo aceite.
+
+Rascunhos não substituem revisão jurídica nem controles implementados.

@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wflyer.com.br/schemas/pricing-config.schema.json",
+  "title": "W_Flyer pricing configuration template",
+  "type": "object",
+  "required": [
+    "version",
+    "status",
+    "currency",
+    "rules",
+    "financial_assumptions",
+    "credit_policy",
+    "plans",
+    "credit_packages",
+    "operations",
+    "approval_gates"
+  ],
+  "properties": {
+    "version": {"type": "integer", "minimum": 1},
+    "status": {"enum": ["pending_measurement", "draft", "approved", "retired"]},
+    "currency": {"const": "BRL"},
+    "last_reviewed_at": {"type": ["string", "null"], "format": "date"},
+    "approved_at": {"type": ["string", "null"], "format": "date"},
+    "approved_by": {"type": ["string", "null"]},
+    "rules": {
+      "type": "object",
+      "required": [
+        "money_storage",
+        "percentage_storage",
+        "unresolved_values_block_production",
+        "frontend_may_define_price",
+        "provider_is_source_of_catalog",
+        "internal_catalog_is_source_of_truth"
+      ],
+      "properties": {
+        "money_storage": {"const": "minor_units_integer"},
+        "percentage_storage": {"const": "basis_points_integer"},
+        "unresolved_values_block_production": {"const": true},
+        "frontend_may_define_price": {"const": false},
+        "provider_is_source_of_catalog": {"const": false},
+        "internal_catalog_is_source_of_truth": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "financial_assumptions": {"$ref": "#/$defs/nullableNonNegativeIntegerMap"},
+    "credit_policy": {
+      "type": "object",
+      "required": [
+        "credit_unit_name",
+        "credit_cash_equivalent",
+        "credit_transferable_between_accounts",
+        "credit_withdrawable",
+        "consumption_order",
+        "negative_balance_allowed"
+      ],
+      "properties": {
+        "credit_unit_name": {"type": "string", "minLength": 1},
+        "credit_cash_equivalent": {"type": "boolean"},
+        "credit_transferable_between_accounts": {"type": "boolean"},
+        "credit_withdrawable": {"type": "boolean"},
+        "monthly_grant_expires_after_days": {"type": ["integer", "null"], "minimum": 1},
+        "purchased_credits_expire_after_days": {"type": ["integer", "null"], "minimum": 1},
+        "promotional_credits_expire_after_days": {"type": ["integer", "null"], "minimum": 1},
+        "consumption_order": {
+          "enum": ["pending_decision", "earliest_expiration_first", "promotional_first", "monthly_first", "purchased_first"]
+        },
+        "negative_balance_allowed": {"type": "boolean"},
+        "reservation_timeout_minutes": {"type": ["integer", "null"], "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "plans": {
+      "type": "object",
+      "required": ["free", "musician", "professional", "institutional"],
+      "additionalProperties": {"$ref": "#/$defs/plan"}
+    },
+    "credit_packages": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/creditPackage"}
+    },
+    "operations": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/operation"}
+    },
+    "approval_gates": {
+      "type": "object",
+      "required": [
+        "benchmark_complete",
+        "accounting_review_complete",
+        "legal_review_complete",
+        "payment_provider_spike_complete",
+        "tax_model_confirmed",
+        "production_catalog_approved"
+      ],
+      "additionalProperties": {"type": "boolean"}
+    }
+  },
+  "$defs": {
+    "nullableNonNegativeIntegerMap": {
+      "type": "object",
+      "additionalProperties": {"type": ["integer", "null"], "minimum": 0}
+    },
+    "plan": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "monthly_price_minor",
+        "annual_price_minor",
+        "monthly_credit_grant",
+        "included_storage_bytes",
+        "max_active_projects",
+        "max_team_members",
+        "capabilities"
+      ],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "monthly_price_minor": {"type": ["integer", "null"], "minimum": 0},
+        "annual_price_minor": {"type": ["integer", "null"], "minimum": 0},
+        "monthly_credit_grant": {"type": ["integer", "null"], "minimum": 0},
+        "included_storage_bytes": {"type": ["integer", "null"], "minimum": 0},
+        "max_active_projects": {"type": ["integer", "null"], "minimum": 0},
+        "max_team_members": {"type": ["integer", "null"], "minimum": 1},
+        "capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "creditPackage": {
+      "type": "object",
+      "required": ["enabled", "price_minor", "credits"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "price_minor": {"type": ["integer", "null"], "minimum": 0},
+        "credits": {"type": ["integer", "null"], "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "operation": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "billing_unit",
+        "credit_cost",
+        "estimated_internal_cost_minor",
+        "maximum_billable_units"
+      ],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "billing_unit": {
+          "enum": ["per_job", "per_page", "per_variant", "per_part", "per_started_minute", "per_generated_part"]
+        },
+        "credit_cost": {"type": ["integer", "null"], "minimum": 0},
+        "estimated_internal_cost_minor": {"type": ["integer", "null"], "minimum": 0},
+        "maximum_billable_units": {"type": ["integer", "null"], "minimum": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

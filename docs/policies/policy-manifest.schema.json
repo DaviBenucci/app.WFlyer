@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wflyer.com.br/schemas/policy-manifest.schema.json",
+  "title": "W_Flyer policy manifest",
+  "type": "object",
+  "required": ["version", "status", "company", "policies"],
+  "properties": {
+    "version": {"type": "integer", "minimum": 1},
+    "status": {"enum": ["draft_pre_company", "legal_review", "approved", "retired"]},
+    "company": {
+      "type": "object",
+      "required": ["legal_name", "trade_name", "cnpj", "registered_address", "support_email", "privacy_email", "security_email", "legal_contact"],
+      "properties": {
+        "legal_name": {"type": ["string", "null"]},
+        "trade_name": {"type": "string", "minLength": 1},
+        "cnpj": {"type": ["string", "null"]},
+        "registered_address": {"type": ["string", "null"]},
+        "support_email": {"type": ["string", "null"]},
+        "privacy_email": {"type": ["string", "null"]},
+        "security_email": {"type": ["string", "null"]},
+        "legal_contact": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "policies": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/policy"}
+    }
+  },
+  "$defs": {
+    "policy": {
+      "type": "object",
+      "required": ["route", "source", "public", "acceptance_required", "acceptance_events", "effective_date", "version", "legal_review"],
+      "properties": {
+        "route": {"type": "string", "pattern": "^/"},
+        "source": {"type": "string", "pattern": "\\.md$"},
+        "public": {"type": "boolean"},
+        "acceptance_required": {"type": "boolean"},
+        "acceptance_events": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "effective_date": {"type": ["string", "null"], "format": "date"},
+        "version": {"type": "string", "minLength": 1},
+        "legal_review": {"enum": ["pending", "in_review", "approved", "expired"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

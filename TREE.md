@@ -24,12 +24,18 @@ app.WFlyer/
 │   │   └── 21-visao-tecnica-completa.md
 │   ├── 100-implementacao/            # guia, aceite e rastreabilidade
 │   ├── backend/
-│   ├── design-reference/             # specs, protótipos e baselines candidatos
+│   ├── billing/                       # assinaturas, créditos e provedores
+│   ├── company/                       # empresa, site e serviços
+│   ├── design-reference/              # specs, protótipos e baselines candidatos
 │   ├── features/
+│   ├── fiscal/                        # NFS-e e prontidão contábil
 │   ├── frontend/
-│   ├── implementacao/                # toolchain e fluxo dos agentes
+│   ├── implementacao/                 # toolchain e fluxo dos agentes
+│   ├── infrastructure/                # hosting, AWS, banco e DR
 │   ├── logs/
 │   ├── music/
+│   ├── operations/                    # runbooks
+│   ├── policies/                      # políticas públicas versionadas e central /politicas
 │   ├── pages/
 │   ├── qa/
 │   ├── referencias/
@@ -39,10 +45,14 @@ app.WFlyer/
 ├── openspec/
 │   ├── config.yaml
 │   ├── specs/
-│   │   └── phase-zero-foundation/spec.md
+│   │   ├── phase-zero-foundation/spec.md
+│   │   ├── business-launch-readiness/spec.md
+│   │   └── pricing-credits-policies/spec.md
 │   └── changes/
 │       └── archive/
-│           └── 2026-07-27-bootstrap-core-foundation/
+│           ├── 2026-07-27-bootstrap-core-foundation/
+│           ├── 2026-07-27-document-business-launch-readiness/
+│           └── 2026-07-27-document-pricing-credits-policies/
 ├── scripts/
 │   ├── validate-repository.py
 │   ├── verify-repository.sh
@@ -118,3 +128,41 @@ A decisão completa está em `docs/00-visao-geral/01-decisoes-arquiteturais.md` 
 - não editar manualmente `packages/api-client`;
 - não transformar `graphify-out/` em fonte normativa;
 - não adicionar capability avançada ao menu como disponível antes do respectivo gate.
+## Presença digital planejada
+
+```text
+wflyer.com.br       → repositório e deploy do site institucional
+app.wflyer.com.br   → aplicação deste repositório
+status.wflyer.com.br→ status independente
+clientes            → repositórios e ambientes isolados
+```
+
+O site institucional não será adicionado ao monorepo da aplicação. A infraestrutura AWS de produção e o hosting de clientes também permanecem separados.
+
+## Catálogos comerciais e políticas planejadas
+
+```text
+docs/billing/
+├── 08-parametros-precos-planos.md
+├── 09-sistema-creditos-detalhado.md
+├── 10-formulario-decisao-precos-creditos.md
+├── pricing-config.template.yaml
+└── pricing-config.schema.json
+
+docs/policies/
+├── 00-central-de-politicas.md
+├── 01-termos-de-uso.md
+├── 02-politica-privacidade.md
+├── 03-politica-cookies.md
+├── 04-politica-pagamentos-creditos-assinaturas.md
+├── 05-politica-cancelamento-reembolso.md
+├── 06-politica-direitos-autorais-conteudo.md
+├── 07-politica-uso-aceitavel.md
+├── 08-politica-retencao-exclusao.md
+├── 09-politica-suporte-disponibilidade.md
+├── 10-politica-seguranca-incidentes.md
+├── policy-manifest.yaml
+└── policy-manifest.schema.json
+```
+
+Esses arquivos preparam decisões futuras; não habilitam cobrança nem publicação jurídica.

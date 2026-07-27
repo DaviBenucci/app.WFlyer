@@ -1,0 +1,110 @@
+version: 1
+status: draft_pre_company
+company:
+  legal_name: null
+  trade_name: W_Flyer
+  cnpj: null
+  registered_address: null
+  support_email: null
+  privacy_email: null
+  security_email: null
+  legal_contact: null
+policies:
+  terms_of_use:
+    route: /termos
+    source: 01-termos-de-uso.md
+    public: true
+    acceptance_required: true
+    acceptance_events:
+      - account_creation
+      - material_terms_update
+    effective_date: null
+    version: draft
+    legal_review: pending
+  privacy:
+    route: /privacidade
+    source: 02-politica-privacidade.md
+    public: true
+    acceptance_required: false
+    acceptance_events: []
+    effective_date: null
+    version: draft
+    legal_review: pending
+  cookies:
+    route: /cookies
+    source: 03-politica-cookies.md
+    public: true
+    acceptance_required: false
+    acceptance_events: []
+    effective_date: null
+    version: draft
+    legal_review: pending
+  billing_credits:
+    route: /pagamentos-e-creditos
+    source: 04-politica-pagamentos-creditos-assinaturas.md
+    public: true
+    acceptance_required: true
+    acceptance_events:
+      - checkout_confirmation
+      - subscription_change
+    effective_date: null
+    version: draft
+    legal_review: pending
+  cancellation_refund:
+    route: /cancelamento-e-reembolso
+    source: 05-politica-cancelamento-reembolso.md
+    public: true
+    acceptance_required: false
+    acceptance_events: []
+    effective_date: null
+    version: draft
+    legal_review: pending
+  copyright_content:
+    route: /direitos-autorais-e-conteudo
+    source: 06-politica-direitos-autorais-conteudo.md
+    public: true
+    acceptance_required: true
+    acceptance_events:
+      - first_upload
+      - material_terms_update
+    effective_date: null
+    version: draft
+    legal_review: pending
+  acceptable_use:
+    route: /uso-aceitavel
+    source: 07-politica-uso-aceitavel.md
+    public: true
+    acceptance_required: true
+    acceptance_events:
+      - account_creation
+      - material_terms_update
+    effective_date: null
+    version: draft
+    legal_review: pending
+  retention_deletion:
+    route: /retencao-e-exclusao
+    source: 08-politica-retencao-exclusao.md
+    public: true
+    acceptance_required: false
+    acceptance_events: []
+    effective_date: null
+    version: draft
+    legal_review: pending
+  support_availability:
+    route: /suporte-e-disponibilidade
+    source: 09-politica-suporte-disponibilidade.md
+    public: true
+    acceptance_required: false
+    acceptance_events: []
+    effective_date: null
+    version: draft
+    legal_review: pending
+  security_incidents:
+    route: /seguranca
+    source: 10-politica-seguranca-incidentes.md
+    public: true
+    acceptance_required: false
+    acceptance_events: []
+    effective_date: null
+    version: draft
+    legal_review: pending

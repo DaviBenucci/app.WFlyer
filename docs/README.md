@@ -12,6 +12,19 @@ Esta pasta é a fonte normativa para a implementação do W_Flyer. O produto dev
 
 A primeira explica **o produto e sua utilização**. A segunda explica **como o produto será construído e comprovado**.
 
+## Empresa, site, cobrança e produção
+
+A documentação também cobre a preparação para lançamento comercial, sem presumir que a empresa já existe:
+
+- `company/`: abertura planejada, site institucional, serviços e hospedagem de clientes;
+- `billing/`: Stripe versus Mercado Pago, assinaturas, créditos, webhooks e reconciliação;
+- `fiscal/`: NFS-e, certificado, emissor e contingência;
+- `infrastructure/`: domínio, AWS, banco, filas, backup e custos;
+- `operations/`: runbooks de incidentes;
+- `policies/`: central pública, termos, privacidade, pagamentos, conteúdo, retenção, suporte e segurança.
+
+Essas pastas preparam o futuro lançamento, mas não autorizam cobrança, emissão fiscal, publicação de políticas finais ou infraestrutura de produção antes dos respectivos gates. Valores comerciais permanecem explicitamente pendentes.
+
 ## Compromisso realista
 
 A documentação antecipa classes conhecidas e plausíveis de falha, mas nenhuma especificação consegue enumerar todo defeito futuro. Por isso, o projeto combina:

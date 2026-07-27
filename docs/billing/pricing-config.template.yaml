@@ -1,0 +1,141 @@
+version: 1
+status: pending_measurement
+currency: BRL
+last_reviewed_at: null
+approved_at: null
+approved_by: null
+
+rules:
+  money_storage: minor_units_integer
+  percentage_storage: basis_points_integer
+  unresolved_values_block_production: true
+  frontend_may_define_price: false
+  provider_is_source_of_catalog: false
+  internal_catalog_is_source_of_truth: true
+
+financial_assumptions:
+  gateway_percentage_bps: null
+  gateway_fixed_fee_minor: null
+  tax_effective_rate_bps: null
+  chargeback_reserve_bps: null
+  refund_reserve_bps: null
+  support_allocation_minor_per_operation: null
+  infrastructure_margin_bps: null
+  target_gross_margin_bps: null
+  annual_discount_bps: null
+
+credit_policy:
+  credit_unit_name: credito_wflyer
+  credit_cash_equivalent: false
+  credit_transferable_between_accounts: false
+  credit_withdrawable: false
+  monthly_grant_expires_after_days: null
+  purchased_credits_expire_after_days: null
+  promotional_credits_expire_after_days: null
+  consumption_order: pending_decision
+  negative_balance_allowed: false
+  reservation_timeout_minutes: null
+
+plans:
+  free:
+    enabled: true
+    monthly_price_minor: 0
+    annual_price_minor: 0
+    monthly_credit_grant: null
+    included_storage_bytes: null
+    max_active_projects: null
+    max_team_members: 1
+    capabilities: []
+  musician:
+    enabled: false
+    monthly_price_minor: null
+    annual_price_minor: null
+    monthly_credit_grant: null
+    included_storage_bytes: null
+    max_active_projects: null
+    max_team_members: 1
+    capabilities: []
+  professional:
+    enabled: false
+    monthly_price_minor: null
+    annual_price_minor: null
+    monthly_credit_grant: null
+    included_storage_bytes: null
+    max_active_projects: null
+    max_team_members: 1
+    capabilities: []
+  institutional:
+    enabled: false
+    monthly_price_minor: null
+    annual_price_minor: null
+    monthly_credit_grant: null
+    included_storage_bytes: null
+    max_active_projects: null
+    max_team_members: null
+    capabilities: []
+
+credit_packages:
+  small:
+    enabled: false
+    price_minor: null
+    credits: null
+  medium:
+    enabled: false
+    price_minor: null
+    credits: null
+  large:
+    enabled: false
+    price_minor: null
+    credits: null
+
+operations:
+  musicxml_transposition:
+    enabled: false
+    billing_unit: per_job
+    credit_cost: null
+    estimated_internal_cost_minor: null
+    maximum_billable_units: 1
+  pdf_omr:
+    enabled: false
+    billing_unit: per_page
+    credit_cost: null
+    estimated_internal_cost_minor: null
+    maximum_billable_units: null
+  melody_extraction:
+    enabled: false
+    billing_unit: per_job
+    credit_cost: null
+    estimated_internal_cost_minor: null
+    maximum_billable_units: 1
+  harmonization_variant:
+    enabled: false
+    billing_unit: per_variant
+    credit_cost: null
+    estimated_internal_cost_minor: null
+    maximum_billable_units: null
+  idiomatic_adaptation:
+    enabled: false
+    billing_unit: per_part
+    credit_cost: null
+    estimated_internal_cost_minor: null
+    maximum_billable_units: null
+  audio_render:
+    enabled: false
+    billing_unit: per_started_minute
+    credit_cost: null
+    estimated_internal_cost_minor: null
+    maximum_billable_units: null
+  ensemble_package:
+    enabled: false
+    billing_unit: per_generated_part
+    credit_cost: null
+    estimated_internal_cost_minor: null
+    maximum_billable_units: null
+
+approval_gates:
+  benchmark_complete: false
+  accounting_review_complete: false
+  legal_review_complete: false
+  payment_provider_spike_complete: false
+  tax_model_confirmed: false
+  production_catalog_approved: false

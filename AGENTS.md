@@ -110,6 +110,17 @@ Ao encontrar contradição, pare e corrija a fonte canônica antes de implementa
 - Use tokens e componentes de produto; não entregue o tema padrão de uma biblioteca.
 - Atualização de golden file exige revisão humana aplicável.
 
+## Regras empresariais, comerciais e fiscais
+
+- A empresa ainda não foi aberta; a abertura é planejada para o final de agosto de 2026.
+- Não declarar CNPJ, regime, CNAE, inscrição, certificado, provedor fiscal ou conta comercial inexistentes.
+- `wflyer.com.br` é o site institucional; `app.wflyer.com.br` é a aplicação futura; sites de clientes são ambientes separados.
+- Não implementar cobrança de produção antes da ADR aceita, empresa formalizada, spike sandbox, termos e validação contábil/jurídica.
+- Stripe é candidato preferencial, não decisão final; Mercado Pago permanece alternativa.
+- Não codificar alíquota, imposto, código de serviço ou regra de NFS-e por inferência.
+- Site institucional, SaaS e sites de clientes não compartilham banco, secrets ou ambiente de produção.
+- Toda mudança de billing, fiscal ou infraestrutura comercial exige OpenSpec, risco, rollback, testes e owner.
+
 ## Proibições
 
 - Não inventar contrato, endpoint, estado, migration ou regra musical.
@@ -147,3 +158,14 @@ Uma tarefa só termina quando o relatório registra:
 - rollback;
 - documentação e Graphify atualizados;
 - confirmação de que a próxima fase não foi iniciada.
+
+## Preços, créditos e políticas públicas
+
+- Não inventar preços, impostos, taxas, quotas, validade ou custo em créditos.
+- Manter campos comerciais não decididos como `PENDENTE` ou `null`.
+- Não habilitar billing quando `pricing-config.template.yaml` estiver incompleto ou sem gates aprovados.
+- Não usar o frontend ou o gateway como fonte normativa de preço.
+- Não publicar rascunhos de `docs/policies/` como textos jurídicos finais.
+- Não preencher razão social, CNPJ, endereço ou contatos sem dado confirmado pelo responsável.
+- Toda política material exige versão, vigência, histórico e revisão jurídica registrada.
+- A rota `/politicas` somente pode exibir documentos aprovados no `policy-manifest.yaml`.

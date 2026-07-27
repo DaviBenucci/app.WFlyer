@@ -20,6 +20,58 @@
 - `20-explicacao-completa-nao-tecnica.md` — explicação integral sem exigir conhecimento de programação;
 - `21-visao-tecnica-completa.md` — visão consolidada para desenvolvedores e arquitetos experientes.
 
+## Empresa, site institucional e lançamento comercial
+
+- `../company/README.md`
+- `../company/00-contexto-fases-empresa.md`
+- `../company/01-site-institucional-wflyer.md`
+- `../company/02-catalogo-servicos-programacao.md`
+- `../company/03-hospedagem-sites-clientes.md`
+- `../company/04-dominios-subdominios-dns.md`
+- `../company/05-separacao-site-app-clientes.md`
+- `../company/06-checklist-abertura-empresa.md`
+- `../company/07-contratos-privacidade-e-atendimento.md`
+
+## Billing e fiscal
+
+- `../billing/README.md`
+- `../billing/01-comparativo-stripe-mercado-pago.md`
+- `../billing/02-adr-provedor-planejado.md`
+- `../billing/05-assinaturas-creditos-ledger.md`
+- `../billing/06-webhooks-idempotencia-reconciliacao.md`
+- `../billing/08-parametros-precos-planos.md`
+- `../billing/09-sistema-creditos-detalhado.md`
+- `../billing/10-formulario-decisao-precos-creditos.md`
+- `../billing/pricing-config.template.yaml`
+- `../fiscal/README.md`
+- `../fiscal/01-nfse-arquitetura.md`
+- `../fiscal/03-checklist-contador-juridico.md`
+
+## Políticas públicas planejadas
+
+- `../policies/README.md`
+- `../policies/00-central-de-politicas.md`
+- `../policies/01-termos-de-uso.md`
+- `../policies/02-politica-privacidade.md`
+- `../policies/03-politica-cookies.md`
+- `../policies/04-politica-pagamentos-creditos-assinaturas.md`
+- `../policies/05-politica-cancelamento-reembolso.md`
+- `../policies/06-politica-direitos-autorais-conteudo.md`
+- `../policies/07-politica-uso-aceitavel.md`
+- `../policies/08-politica-retencao-exclusao.md`
+- `../policies/09-politica-suporte-disponibilidade.md`
+- `../policies/10-politica-seguranca-incidentes.md`
+- `../pages/18-central-politicas.md`
+
+## Infraestrutura e operação
+
+- `../infrastructure/README.md`
+- `../infrastructure/01-arquitetura-dominio-wflyer.md`
+- `../infrastructure/02-arquitetura-aws-producao.md`
+- `../infrastructure/04-capacidade-sobrecarga-banco.md`
+- `../infrastructure/07-backup-restore-dr.md`
+- `../operations/README.md`
+
 ## Produto e arquitetura
 
 - `01-decisoes-arquiteturais.md`

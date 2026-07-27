@@ -71,10 +71,39 @@ def validate_required() -> None:
         "docs/00-visao-geral/20-explicacao-completa-nao-tecnica.md",
         "docs/00-visao-geral/21-visao-tecnica-completa.md",
         "docs/backend/13-estrutura-pastas.md",
+        "docs/company/00-contexto-fases-empresa.md",
+        "docs/company/01-site-institucional-wflyer.md",
+        "docs/billing/01-comparativo-stripe-mercado-pago.md",
+        "docs/billing/08-parametros-precos-planos.md",
+        "docs/billing/09-sistema-creditos-detalhado.md",
+        "docs/billing/10-formulario-decisao-precos-creditos.md",
+        "docs/billing/pricing-config.template.yaml",
+        "docs/billing/pricing-config.schema.json",
+        "docs/policies/00-central-de-politicas.md",
+        "docs/policies/01-termos-de-uso.md",
+        "docs/policies/02-politica-privacidade.md",
+        "docs/policies/03-politica-cookies.md",
+        "docs/policies/04-politica-pagamentos-creditos-assinaturas.md",
+        "docs/policies/05-politica-cancelamento-reembolso.md",
+        "docs/policies/06-politica-direitos-autorais-conteudo.md",
+        "docs/policies/07-politica-uso-aceitavel.md",
+        "docs/policies/08-politica-retencao-exclusao.md",
+        "docs/policies/09-politica-suporte-disponibilidade.md",
+        "docs/policies/10-politica-seguranca-incidentes.md",
+        "docs/policies/policy-manifest.yaml",
+        "docs/policies/policy-manifest.schema.json",
+        "docs/pages/18-central-politicas.md",
+        "docs/fiscal/01-nfse-arquitetura.md",
+        "docs/infrastructure/02-arquitetura-aws-producao.md",
+        "docs/operations/README.md",
         "docs/design-reference/reference-manifest.yaml",
         "openspec/config.yaml",
         "openspec/specs/phase-zero-foundation/spec.md",
+        "openspec/specs/business-launch-readiness/spec.md",
+        "openspec/specs/pricing-credits-policies/spec.md",
         "openspec/changes/archive/2026-07-27-bootstrap-core-foundation/tasks.md",
+        "openspec/changes/archive/2026-07-27-document-business-launch-readiness/tasks.md",
+        "openspec/changes/archive/2026-07-27-document-pricing-credits-policies/tasks.md",
     ]
     missing = [item for item in required if not (ROOT / item).is_file()]
     if missing:
@@ -113,6 +142,8 @@ def validate_json_schemas() -> int:
         (ROOT / "docs/implementacao/toolchain-manifest.yaml", ROOT / "docs/implementacao/toolchain-manifest.schema.json"),
         (ROOT / "docs/qa/pre-mortem-register.yaml", ROOT / "docs/qa/pre-mortem-register.schema.json"),
         (ROOT / "docs/riscos/failure-mode-catalog.yaml", ROOT / "docs/riscos/failure-mode-catalog.schema.json"),
+        (ROOT / "docs/billing/pricing-config.template.yaml", ROOT / "docs/billing/pricing-config.schema.json"),
+        (ROOT / "docs/policies/policy-manifest.yaml", ROOT / "docs/policies/policy-manifest.schema.json"),
     ]
     pairs.extend((path, design / "schemas/component-spec.schema.json") for path in (design / "golden-components").glob("*/specification.yaml"))
     pairs.extend((path, design / "schemas/page-spec.schema.json") for path in (design / "golden-pages").glob("*/specification.yaml"))
@@ -193,19 +224,80 @@ def validate_hooks() -> None:
 
 
 def validate_openspec_state() -> None:
-    active = ROOT / "openspec/changes/bootstrap-core-foundation"
-    archived = ROOT / "openspec/changes/archive/2026-07-27-bootstrap-core-foundation"
-    main_spec = ROOT / "openspec/specs/phase-zero-foundation/spec.md"
-    if active.exists():
-        fail("mudança bootstrap-core-foundation ainda está ativa")
-    elif not archived.is_dir() or not main_spec.is_file():
-        fail("Fase 0 não está sincronizada e arquivada corretamente")
-    else:
+    changes = [
+        (
+            ROOT / "openspec/changes/bootstrap-core-foundation",
+            ROOT / "openspec/changes/archive/2026-07-27-bootstrap-core-foundation",
+            ROOT / "openspec/specs/phase-zero-foundation/spec.md",
+            "bootstrap-core-foundation",
+        ),
+        (
+            ROOT / "openspec/changes/document-business-launch-readiness",
+            ROOT / "openspec/changes/archive/2026-07-27-document-business-launch-readiness",
+            ROOT / "openspec/specs/business-launch-readiness/spec.md",
+            "document-business-launch-readiness",
+        ),
+        (
+            ROOT / "openspec/changes/document-pricing-credits-policies",
+            ROOT / "openspec/changes/archive/2026-07-27-document-pricing-credits-policies",
+            ROOT / "openspec/specs/pricing-credits-policies/spec.md",
+            "document-pricing-credits-policies",
+        ),
+    ]
+    for active, archived, main_spec, name in changes:
+        if active.exists():
+            fail(f"mudança {name} ainda está ativa")
+            continue
+        if not archived.is_dir() or not main_spec.is_file():
+            fail(f"mudança {name} não está sincronizada e arquivada corretamente")
+            continue
         tasks = (archived / "tasks.md").read_text(encoding="utf-8")
         if "- [ ]" in tasks:
-            fail("arquivo arquivado contém tarefas incompletas")
+            fail(f"mudança arquivada {name} contém tarefas incompletas")
         else:
-            ok("OpenSpec da Fase 0 sincronizado e arquivado")
+            ok(f"OpenSpec {name} sincronizado e arquivado")
+
+
+def validate_policy_manifest() -> None:
+    path = ROOT / "docs/policies/policy-manifest.yaml"
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    policies = data.get("policies", {})
+    missing: list[str] = []
+    for policy_id, policy in policies.items():
+        source = policy.get("source")
+        if not source or not (path.parent / source).is_file():
+            missing.append(f"{policy_id}:{source}")
+        if data.get("status") != "approved" and policy.get("legal_review") == "approved":
+            fail(f"política aprovada dentro de manifesto não aprovado: {policy_id}")
+    if missing:
+        fail("fontes ausentes no manifesto de políticas: " + ", ".join(missing))
+    else:
+        ok(f"manifesto de políticas: {len(policies)} documentos com fontes existentes")
+
+
+def validate_pricing_template() -> None:
+    path = ROOT / "docs/billing/pricing-config.template.yaml"
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if data.get("status") == "approved":
+        unresolved = []
+        def walk(value, prefix=""):
+            if value is None:
+                unresolved.append(prefix)
+            elif isinstance(value, dict):
+                for key, child in value.items():
+                    walk(child, f"{prefix}.{key}" if prefix else key)
+            elif isinstance(value, list):
+                for index, child in enumerate(value):
+                    walk(child, f"{prefix}[{index}]")
+        walk(data)
+        if unresolved:
+            fail("catálogo de preços aprovado contém campos null: " + ", ".join(unresolved[:10]))
+        elif not all(data.get("approval_gates", {}).values()):
+            fail("catálogo de preços aprovado possui gates falsos")
+        else:
+            ok("catálogo de preços aprovado sem pendências")
+    else:
+        ok("catálogo de preços permanece explicitamente pendente")
 
 
 def validate_graphify() -> tuple[int, int]:
@@ -259,6 +351,8 @@ def main() -> int:
     schema_count = validate_json_schemas()
     links = validate_markdown_links(paths)
     validate_design_manifest()
+    validate_policy_manifest()
+    validate_pricing_template()
     validate_hooks()
     validate_openspec_state()
     graph_nodes, graph_edges = validate_graphify()

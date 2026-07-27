@@ -589,7 +589,30 @@ Isso não representa atraso. É uma decisão para reduzir improvisações antes 
 
 A próxima etapa prevista é a criação da **fundação executável da Fase 1**.
 
-## 21. O que o W_Flyer não deve se tornar
+## 21. Empresa, site e lançamento
+
+A empresa W_Flyer ainda não está aberta. A abertura é planejada para o final de agosto de 2026. Antes disso, o projeto pode preparar o site, a identidade, as demonstrações e toda a documentação, mas não deve se apresentar como pessoa jurídica já regularizada.
+
+O plano é:
+
+```text
+wflyer.com.br
+→ site da futura empresa, serviços de programação e apresentação do produto
+
+app.wflyer.com.br
+→ aplicação musical quando estiver pronta
+
+sites de clientes
+→ hospedagens e domínios separados da aplicação
+```
+
+O site institucional será criado primeiro para apresentar serviços de criação de sites, aplicações e integrações. O pagamento do SaaS ficará para depois que o produto estiver praticamente completo, com custos, impostos, suporte e emissão de NFS-e validados.
+
+Stripe e Mercado Pago serão testados. Stripe é o candidato inicial, mas a decisão só será final depois de testes em ambiente de sandbox e da abertura da empresa.
+
+A aplicação deverá ser hospedada em infraestrutura própria e resiliente, planejada para AWS, sem depender da mesma hospedagem usada pelo site institucional ou por clientes. Backups, restauração, filas, proteção do banco e resposta a falhas já estão previstos na documentação.
+
+## 22. O que o W_Flyer não deve se tornar
 
 O W_Flyer não deverá ser:
 
@@ -602,11 +625,11 @@ O W_Flyer não deverá ser:
 - uma cópia visual de outra aplicação musical;
 - um repositório com muitas funções parcialmente prontas e nenhuma confiável.
 
-## 22. Resumo em uma frase
+## 23. Resumo em uma frase
 
 > O W_Flyer será um estúdio digital que transforma material musical, mostra o que mudou, verifica o que pode ser provado e mantém o músico responsável pelas decisões que dependem de interpretação ou criatividade.
 
-## 23. Glossário simples
+## 24. Glossário simples
 
 | Termo | Significado simples |
 |---|---|
@@ -627,3 +650,9 @@ O W_Flyer não deverá ser:
 | Sessão anônima | Uso sem conta permanente, mas com um identificador privado temporário. |
 | Retenção | Período durante o qual o arquivo permanece disponível. |
 | Capability | Função que pode estar preparada, mas só é ativada após aprovação. |
+
+## Como preços, créditos e políticas serão decididos
+
+Os preços não foram escolhidos antecipadamente. A equipe primeiro medirá quanto cada operação realmente custa e preencherá os campos reservados na documentação. O sistema de créditos mostrará o custo antes de iniciar, reservará o saldo durante o processamento e devolverá a reserva quando uma falha interna impedir a entrega.
+
+O site e a aplicação terão uma Central de Políticas pública com termos, privacidade, cookies, pagamentos, cancelamento, direitos autorais, uso aceitável, retenção, suporte e segurança. Enquanto a empresa não estiver formalizada e os textos não forem revisados, essas políticas permanecem como rascunhos internos.

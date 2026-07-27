@@ -43,6 +43,47 @@ Não bloqueia o Core e não pode ser ativada por conveniência:
 | P3 | UX de incerteza | Warnings/falha segura/revisão externa validados. |
 | P4 | Habilitação controlada | `pdf_omr=true` apenas no ambiente aprovado. |
 
+## Trilha S — empresa e site institucional
+
+Esta trilha pode avançar em paralelo ao Core, sem afirmar que a pessoa jurídica já existe.
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| S0 | Planejamento empresarial | serviços, domínio, riscos e checklist documentados |
+| S1 | Site institucional | conteúdo, acessibilidade, privacidade, formulário e deploy aprovados |
+| S2 | Formalização | CNPJ, inscrições, regime e dados empresariais confirmados |
+| S3 | Prestação de serviços | contrato, proposta, hospedagem e suporte operacionais |
+
+## Trilha B — billing
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| B0 | Domínio de planos/créditos | ledger, reservas e entitlements testados sem gateway |
+| B1 | Spike Stripe/Mercado Pago | cenários equivalentes comprovados em sandbox |
+| B2 | Provedor escolhido | ADR aceita, conta aprovada e custos revisados |
+| B3 | Assinaturas | checkout, webhook, portal e renovação testados |
+| B4 | Reembolso/reconciliação | eventos duplicados, disputas e divergências cobertos |
+
+## Trilha F — fiscal
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| F0 | Definição contábil | empresa, município, regime, serviço e emissor confirmados |
+| F1 | Homologação NFS-e | autenticação, emissão, consulta, cancelamento e XML aprovados |
+| F2 | Integração assíncrona | fila, retries, contingência e reconciliação testados |
+| F3 | Produção | contador aprova e emissão real é monitorada |
+
+## Trilha I — infraestrutura comercial
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| I0 | Domínio e ambientes | DNS, HTTPS, contas e separação definidas |
+| I1 | Staging | deploy reproduzível, observabilidade e backup |
+| I2 | Produção AWS | HA, filas, RDS, S3 e segurança aprovados |
+| I3 | Disaster recovery | restore e runbooks exercitados |
+
+Billing e fiscal não bloqueiam a construção técnica do Core, mas bloqueiam o lançamento pago.
+
 ## Fora do roadmap inicial
 
 - multiparte e multipauta;

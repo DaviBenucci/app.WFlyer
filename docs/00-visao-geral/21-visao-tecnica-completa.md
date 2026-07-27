@@ -1250,7 +1250,56 @@ Um canonical score graph gera projections de score e partes. Validador bidirecio
 
 Playback map deve expandir repetições, casas, D.C., D.S., coda e mudanças de tempo. A posição visual não pode ser inferida apenas pelo índice linear do XML.
 
-## 29. Riscos arquiteturais principais
+## 29. Arquitetura empresarial, billing, fiscal e hosting
+
+### 29.1 Contexto pré-CNPJ
+
+A pessoa jurídica ainda não existe. Billing e NFS-e permanecem feature flags desabilitadas. Nenhuma regra de CNAE, regime, imposto, certificado ou emissor é canônica até decisão formal registrada.
+
+### 29.2 Separação de produtos
+
+```text
+wflyer-site repository
+app.WFlyer repository
+client repositories/deployments
+```
+
+`wflyer.com.br` hospeda o institucional; `app.wflyer.com.br` aponta por DNS para a distribuição da aplicação. Sites de clientes não compartilham a conta de produção do SaaS.
+
+### 29.3 Billing
+
+Domínio interno desacoplado por `BillingProvider`. Candidato preliminar: Stripe; alternativa: Mercado Pago. O modelo previsto usa subscriptions, entitlements, credit ledger e usage reservations. Webhooks assinados, idempotência e reconciliação são obrigatórios.
+
+### 29.4 Fiscal
+
+Pagamento cria obrigação fiscal assíncrona. `FiscalProvider` abstrai emissor nacional, municipal, terceiro ou processo manual. A emissão só é habilitada após município, regime, inscrição, código de serviço, certificado/autenticação e homologação serem definidos.
+
+### 29.5 Produção AWS
+
+Arquitetura-alvo:
+
+```text
+Route 53 → CloudFront/WAF → ALB → ECS web/api
+PostgreSQL RDS Multi-AZ
+S3 privado
+outbox → SQS/DLQ → worker pools
+Redis para cache/coordenação curta
+```
+
+AWS Organizations separa development e production. Site institucional e sites de clientes permanecem fora do blast radius do app.
+
+### 29.6 Resiliência
+
+- banco não armazena arquivos binários grandes;
+- filas por workload;
+- backpressure e quotas;
+- publicação atômica;
+- PITR e backup cross-region quando aprovado;
+- status page independente;
+- runbooks exercitados;
+- RPO/RTO só viram SLA depois de medidos.
+
+## 30. Riscos arquiteturais principais
 
 1. **Promessa de confiabilidade excessiva** — mitigada por assurance levels e fail-closed.
 2. **Modelo interno acoplado ao XML/renderer** — mitigado por IDs estáveis e canonical graph.
@@ -1267,7 +1316,7 @@ Playback map deve expandir repetições, casas, D.C., D.S., coda e mudanças de 
 
 O catálogo ampliado está no registro de pre-mortem e FMEA.
 
-## 30. Definition of Done por capability
+## 31. Definition of Done por capability
 
 Uma capability não está concluída apenas porque o happy path funciona.
 
@@ -1289,7 +1338,7 @@ Requisitos mínimos:
 - Graphify atualizado;
 - nenhum gate crítico pendente.
 
-## 31. Resumo técnico
+## 32. Resumo técnico
 
 O W_Flyer deve ser implementado como um sistema assíncrono, versionado e fail-closed, no qual:
 
@@ -1306,7 +1355,7 @@ O W_Flyer deve ser implementado como um sistema assíncrono, versionado e fail-c
 - capacidades inferenciais/criativas exigem controle humano;
 - testes musicais e corpus são parte da arquitetura, não uma etapa posterior.
 
-## 32. Leitura técnica complementar
+## 33. Leitura técnica complementar
 
 Ordem recomendada após este documento:
 
@@ -1324,3 +1373,9 @@ Ordem recomendada após este documento:
 12. `../security/01-modelo-ameacas.md`;
 13. `../qa/01-estrategia-testes.md`;
 14. `../100-implementacao/guia-codex-app-wflyer.md`.
+
+## Catálogo de preços, credit ledger e políticas públicas
+
+O domínio comercial utilizará catálogo versionado, valores monetários em unidades mínimas, percentuais em basis points, `usage_quote`, `usage_reservation` e ledger imutável. `pricing-config.template.yaml` mantém valores não decididos como `null`; produção deve rejeitar catálogo incompleto.
+
+A publicação jurídica será governada por `docs/policies/policy-manifest.yaml`. A rota `/politicas` apenas apresenta versões aprovadas; rascunhos, dados empresariais pendentes e políticas sem vigência não podem ser expostos como finais.

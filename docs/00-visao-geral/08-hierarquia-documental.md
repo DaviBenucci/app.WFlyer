@@ -128,3 +128,48 @@ Esses artefatos não podem contrariar segurança, escopo e invariantes canônico
 - ao concluir, o comportamento vigente e os documentos canônicos são atualizados;
 - Graphify, Serena e Context7 são índices/ferramentas e nunca possuem precedência normativa;
 - `implementacao/toolchain-manifest.yaml` governa instalação e uso das ferramentas, sem revogar requisitos do produto.
+
+## Precedência empresarial, comercial e fiscal
+
+Os documentos de `company/`, `billing/`, `fiscal/`, `infrastructure/` e `operations/` são propostas arquiteturais até que suas decisões sejam aprovadas.
+
+Em assuntos empresariais e fiscais, prevalece:
+
+```text
+legislação e documentação oficial vigente
+> orientação formal registrada de contador/advogado
+> ADR aceita
+> contrato técnico
+> documento de proposta
+> inferência da IA
+```
+
+A IA não pode escolher CNAE, regime, alíquota, certificado, emissor fiscal, provedor de pagamento ou preço sem aprovação. Runbooks são referência operacional e só viram procedimento aprovado depois de exercício/teste.
+
+## Precedência de preços, créditos e políticas
+
+Para valores comerciais e créditos:
+
+```text
+catálogo aprovado e versionado
+> ADR comercial aceita
+> contrato técnico de billing
+> formulário de decisão preenchido
+> template pendente
+> exemplo de interface
+```
+
+`PENDENTE` e `null` são estados válidos de pré-decisão; não podem ser substituídos por estimativas da IA.
+
+Para políticas públicas:
+
+```text
+legislação/documentação oficial vigente
+> revisão jurídica registrada
+> política aprovada e versionada
+> contrato técnico e controles implementados
+> rascunho em docs/policies
+> microcopy da interface
+```
+
+A central `/politicas` é uma página de publicação e navegação. Ela não pode modificar regras técnicas, prazos ou direitos por conta própria.

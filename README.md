@@ -36,6 +36,22 @@ Ainda **não** existem:
 
 A ausência desses itens é esperada neste ponto. Nenhuma tela, endpoint ou capability avançada deve ser simulada para aparentar progresso.
 
+## Contexto empresarial e presença digital
+
+A empresa W_Flyer **ainda não foi aberta**. A formalização é planejada para o final de agosto de 2026. Até a conclusão do CNPJ, inscrições, regime tributário e processo fiscal, o repositório deve tratar a organização como projeto/marca em formação.
+
+A presença digital planejada é separada:
+
+```text
+wflyer.com.br       site institucional e serviços de programação
+app.wflyer.com.br   aplicação musical, quando estiver pronta
+sites de clientes  ambientes e domínios isolados
+```
+
+O site institucional será desenvolvido antes do SaaS para apresentar serviços de criação de sites, aplicações e integrações, além de explicar o W_Flyer sem anunciar capacidades inexistentes. A arquitetura empresarial, de pagamento, fiscal, domínio, hospedagem e recuperação está documentada em `docs/company/`, `docs/billing/`, `docs/fiscal/`, `docs/infrastructure/` e `docs/operations/`. A futura página pública de políticas e seus rascunhos versionados estão em `docs/policies/`.
+
+Pagamento e emissão fiscal permanecem bloqueados até a formalização da empresa, estabilização do produto, spike dos provedores e validação contábil/jurídica. Preços, quotas e custos em créditos permanecem como campos `PENDENTE`/`null` até benchmarks e aprovação formal; a IA está proibida de preenchê-los por estimativa.
+
 ## MVP Core
 
 O primeiro corte funcional obrigatório é:
