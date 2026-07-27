@@ -11,6 +11,8 @@
   "scripts": {
     "verify:repository": "bash scripts/verify-repository.sh",
     "verify:agent-toolchain": "bash scripts/verify-local-agent-toolchain.sh",
-    "verify:toolchain": "bash scripts/verify-toolchain.sh"
+    "verify:toolchain": "bash scripts/verify-toolchain.sh",
+    "generate:decision-docs": "python3 scripts/generate-decision-docs.py",
+    "check:decision-gate": "python3 scripts/check-decision-gate.py"
   }
 }

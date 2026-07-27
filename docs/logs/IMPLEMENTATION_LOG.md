@@ -146,3 +146,29 @@ Correções documentais preparadas. O grafo deve ser atualizado na máquina do p
 
 Riscos e pendências:
 Aprovação visual humana, versão Python, typechecker, Graphify atualizado e checkpoint Git permanecem pendentes. A Fase 1 não foi iniciada.
+
+<!-- DECISION-GOVERNANCE-IMPLEMENTATION:START -->
+## 2026-07-27 — integração documental de governança
+
+Fase:
+Governança documental pré-implementação.
+
+Objetivo:
+Transformar decisões pendentes em um processo executável, rastreável e bloqueante para agentes.
+
+Resumo técnico:
+
+- 47 decisões `DEC-*` e 48 bundles `EVID-*` registrados;
+- 48 registros de fase/trilha com gates de entrada e saída;
+- 47 pacotes de decisão com brief, requisitos, opções, experimento, evidência, comparação, risco, decisão e validação;
+- ferramentas opcionais isoladas em `FUTURE-*`;
+- trilhas normalizadas para `FE`, `T` e `INF`;
+- backup/DR, observabilidade e contas/organizações formalizados;
+- scripts de geração, consulta de gate e validação integrados.
+
+Resultado:
+Trabalho documental somente. Nenhum frontend, backend, migration, worker ou motor musical foi criado. As escolhas permanecem abertas até evidência e aprovação humana.
+
+Riscos e pendências:
+Graphify precisa ser regenerado no repositório real. A Fase 1 não foi iniciada e não foi liberada automaticamente.
+<!-- DECISION-GOVERNANCE-IMPLEMENTATION:END -->

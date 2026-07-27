@@ -1,6 +1,7 @@
 version: 1
 updated_at: '2026-07-27'
 policy: No reference becomes production-approved without explicit human sign-off.
+brand_identity_status: pending_text_only
 references:
   WF-HOME-001:
     status: pending_product_owner

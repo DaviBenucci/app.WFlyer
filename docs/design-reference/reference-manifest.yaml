@@ -1,6 +1,7 @@
 version: 1
 product: W_Flyer
-updated_at: 2026-07-20
+updated_at: '2026-07-27'
+brand_status: pending_text_only
 precedence:
 - domain_security_accessibility_contracts
 - internal_executable_reference
@@ -9,6 +10,8 @@ precedence:
 - internal_golden_screenshot
 - external_inspiration
 rules:
+  brand_manifest: ../../brand/brand-manifest.yaml
+  require_text_only_branding_while_pending: true
   require_reference_id: true
   require_mobile_reference: true
   require_error_states: true

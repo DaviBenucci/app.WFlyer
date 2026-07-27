@@ -1,0 +1,34 @@
+version: 1
+product: W_Flyer
+status: pending
+updated_at: '2026-07-27'
+identity:
+  approved_symbol: null
+  approved_wordmark: null
+  approved_full_logo: null
+  approved_palette: null
+  approved_typography: null
+  approved_favicon: null
+naming:
+  current_product_label: W_Flyer
+  final_wordmark_spelling: PENDENTE
+  company_brand_relation: PENDENTE
+temporary_policy:
+  mode: text_only
+  text_label: W_Flyer
+  allow_old_logo: false
+  allow_generated_placeholder: false
+  allow_musical_icon_as_logo: false
+  allow_final_favicon: false
+repository_role:
+  current: brand_governance_and_application_exports
+  future_shared_brand_repository: PENDENTE
+distribution:
+  application_target: apps/web/public/brand
+  institutional_site_target: external_repository
+  distribute_before_approval: false
+approval:
+  product_owner: null
+  design_reviewer: null
+  approved_at: null
+  decision_record: null

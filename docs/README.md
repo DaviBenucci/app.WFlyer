@@ -12,18 +12,35 @@ Esta pasta é a fonte normativa para a implementação do W_Flyer. O produto dev
 
 A primeira explica **o produto e sua utilização**. A segunda explica **como o produto será construído e comprovado**.
 
-## Empresa, site, cobrança e produção
+## Limite entre aplicação, empresa e site institucional
 
-A documentação também cobre a preparação para lançamento comercial, sem presumir que a empresa já existe:
+O planejamento privado da empresa e o código do site institucional pertencem a diretórios externos. Esta documentação não orienta a abertura da empresa nem a criação de `wflyer.com.br`.
 
-- `company/`: abertura planejada, site institucional, serviços e hospedagem de clientes;
+A aplicação mantém somente os contratos necessários ao seu próprio lançamento:
+
+- `brand/`: briefing e governança da identidade compartilhada;
 - `billing/`: Stripe versus Mercado Pago, assinaturas, créditos, webhooks e reconciliação;
 - `fiscal/`: NFS-e, certificado, emissor e contingência;
 - `infrastructure/`: domínio, AWS, banco, filas, backup e custos;
 - `operations/`: runbooks de incidentes;
 - `policies/`: central pública, termos, privacidade, pagamentos, conteúdo, retenção, suporte e segurança.
 
-Essas pastas preparam o futuro lançamento, mas não autorizam cobrança, emissão fiscal, publicação de políticas finais ou infraestrutura de produção antes dos respectivos gates. Valores comerciais permanecem explicitamente pendentes.
+Essas pastas preparam o futuro lançamento do SaaS, mas não autorizam cobrança, emissão fiscal, publicação de políticas finais ou infraestrutura de produção antes dos respectivos gates. Valores comerciais permanecem explicitamente pendentes.
+
+
+## Decisões que ainda dependem de evidência
+
+Antes de uma fase ou capability, consulte `decision-governance/phase-decision-gates.yaml`. O registro `decision-register.yaml` informa owner, estado, blockers e evidências `EVID-*`; a IA não pode substituir aprovação humana. A leitura detalhada deve se limitar ao pacote `decision-governance/decisions/DEC-*` relacionado à tarefa.
+
+```text
+pergunta DEC-*
+→ evidência EVID-*
+→ aprovação
+→ ADR
+→ OpenSpec
+→ implementação
+→ validação
+```
 
 ## Compromisso realista
 
@@ -45,12 +62,15 @@ Não é permitido converter ausência de erro detectado em certeza musical. A pa
 1. `00-visao-geral/08-hierarquia-documental.md`
 2. `00-visao-geral/05-escopo-mvp-app-wflyer.md`
 3. `00-visao-geral/06-matriz-suporte-mvp.md`
-4. `00-visao-geral/13-visao-critica-musical-produto.md`
-5. `00-visao-geral/14-registro-riscos-pre-mortem.md`
-6. `00-visao-geral/15-principios-controle-humano.md`
-7. `qa/19-matriz-falhas-pre-mortem.md`
-8. `100-implementacao/matriz-rastreabilidade-requisitos.md`
-9. `100-implementacao/guia-codex-app-wflyer.md`
+4. `decision-governance/README.md`
+5. `decision-governance/05-registro-humano-decisoes.md`
+6. `decision-governance/phase-decision-gates.yaml`
+6. `00-visao-geral/13-visao-critica-musical-produto.md`
+7. `00-visao-geral/14-registro-riscos-pre-mortem.md`
+8. `00-visao-geral/15-principios-controle-humano.md`
+9. `qa/19-matriz-falhas-pre-mortem.md`
+10. `100-implementacao/matriz-rastreabilidade-requisitos.md`
+11. `100-implementacao/guia-codex-app-wflyer.md`
 
 ## Leitura do MVP Core
 
@@ -68,6 +88,8 @@ Não é permitido converter ausência de erro detectado em certeza musical. A pa
 12. `100-implementacao/criterios-aceite-mvp.md`
 
 ## Leitura do frontend
+
+Antes da interface, confirme o estado em `../brand/brand-manifest.yaml` e leia `brand/README.md`.
 
 1. `frontend/00-direcao-visual-wflyer.md`
 2. `frontend/05-design-system.md`
@@ -168,3 +190,15 @@ OpenSpec → Graphify → Serena → Context7 quando necessário
 ```
 
 Ferramentas opcionais estão bloqueadas até o spike de `implementacao/20-ferramentas-opcionais-spikes.md`.
+
+<!-- DECISION-GOVERNANCE-INDEX:START -->
+## Governança de decisões
+
+- [Visão geral e regras](decision-governance/README.md)
+- [Análise da situação atual](decision-governance/00-analise-situacao-atual.md)
+- [Registro humano gerado](decision-governance/05-registro-humano-decisoes.md)
+- [Matriz decisão × evidência](decision-governance/06-matriz-decisoes-evidencias.md)
+- [Matriz de gates](decision-governance/07-matriz-gates-fases.md)
+
+Os registros YAML são a fonte usada pelos agentes e pelo validador.
+<!-- DECISION-GOVERNANCE-INDEX:END -->

@@ -1,6 +1,18 @@
 # Direção visual e experiência do W_Flyer
 
-> Status: canônico para identidade visual e UX. Revisão: 2026-07-20.
+> Status: canônico para UX e sistema visual do produto; não aprova a identidade corporativa. Revisão: 2026-07-27.
+
+## Limite da identidade corporativa
+
+A logo, o símbolo, o wordmark, a tipografia institucional e a paleta oficial ainda estão pendentes. O estado vinculante está em `../../brand/brand-manifest.yaml`.
+
+Enquanto a identidade estiver pendente:
+
+- cabeçalhos usam somente `W_Flyer` em texto;
+- a tipografia do protótipo não é o wordmark final;
+- as cores descritas nesta documentação são tokens provisórios da interface;
+- nenhum ícone musical representa a empresa;
+- a animação `Ink Transfer` é expressão do produto, não logo corporativa.
 
 ## Objetivo
 

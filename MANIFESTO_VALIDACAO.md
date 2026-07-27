@@ -1,122 +1,169 @@
 # Manifesto de validação do repositório
 
 Data da consolidação: 2026-07-27
-Escopo: arquivos versionados e novos arquivos não ignorados; exclui `.git/`, `node_modules/`, ambientes virtuais, caches, builds, uploads, segredos e o conteúdo gerado de `graphify-out/` do inventário. O grafo é validado separadamente.
+Escopo: documentação, contratos estruturados, governança da IA e artefatos necessários antes da implementação funcional.
 
-## Estado do projeto
+## Estado confirmado do projeto
 
 ```text
 Fase 0: concluída, sincronizada e arquivada no OpenSpec
 Fase 1: não iniciada
 Código funcional do produto: inexistente
+Frontend/API/worker/banco/motor musical: não implementados
+Identidade visual oficial: pendente
 Capabilities avançadas: desabilitadas
 ```
 
-## Inventário atual
+A presente entrega não aprova opções técnicas, musicais, comerciais, fiscais ou jurídicas que ainda dependem de evidência. Ela formaliza como essas decisões deverão ser pesquisadas, comparadas, aprovadas, implementadas e validadas.
+
+## Inventário validado
 
 | Métrica | Quantidade |
 |---|---:|
-| Arquivos relevantes do repositório | 404 |
-| Documentos Markdown | 307 |
-| Arquivos dentro de `docs/` | 344 |
-| JSON parseados fora dos artefatos gerados do Graphify | 16 |
-| YAML/YML parseados | 34 |
-| Contratos JSON Schema verificados | 23 |
+| Arquivos relevantes do repositório | 862 |
+| Documentos Markdown | 757 |
+| Arquivos dentro de `docs/` | 788 |
+| JSON parseados | 20 |
+| YAML/YML parseados | 39 |
+| Contratos JSON Schema verificados | 27 |
+| Links Markdown relativos verificados | 237 |
+| Decisões controladas (`DEC-*`) | 47 |
+| Bundles de evidência (`EVID-*`) | 48 |
+| Registros de fase/trilha | 48 |
+| Lados de gate (entrada + saída) | 96 |
+| Pacotes completos de decisão | 47 |
 | Referências visuais registradas | 16 |
-| Links Markdown relativos verificados | 12 |
+| Políticas públicas especializadas | 10 |
 
-Os números são uma fotografia desta consolidação. O script deve ser executado novamente após qualquer alteração.
+Esses números são uma fotografia desta consolidação e devem ser recalculados por `scripts/validate-repository.py` após qualquer alteração.
 
-## Verificações aprovadas
+## Governança de decisões incorporada
 
-- 44 arquivos obrigatórios presentes, incluindo as visões por público, parâmetros comerciais e políticas públicas;
-- JSON e YAML sintaticamente válidos;
-- 23 pares de dados/JSON Schema válidos;
-- links Markdown relativos existentes;
-- paths do manifesto de referências visuais existentes;
-- references futuras marcadas como `status: reference` quando a capability está desabilitada;
-- hook do Graphify sem caminho absoluto pessoal;
-- spec `phase-zero-foundation` sincronizada;
-- mudanças `bootstrap-core-foundation`, `document-business-launch-readiness` e `document-pricing-credits-policies` arquivadas e sem tarefas incompletas;
-- nenhuma dependência, ambiente virtual ou cache versionado;
-- `graph.json` estruturalmente íntegro;
-- `GRAPH_REPORT.md` coerente com `graph.json`.
+A fonte canônica está em `docs/decision-governance/`:
 
-## Pacote empresarial e de lançamento
+```text
+decision-register.yaml
+→ pergunta, estado, blockers, owner, aprovadores, opções e fase limite
 
-A consolidação inclui documentação nova para:
+evidence-register.yaml
+→ artefatos, origem, revisão, commit, ambiente, validade e freshness
 
-- empresa ainda não aberta, com formalização planejada para o final de agosto de 2026;
-- site institucional em `wflyer.com.br`;
-- aplicação futura em `app.wflyer.com.br`;
-- serviços de programação e hospedagem gerenciada;
-- isolamento de sites de clientes;
-- comparação Stripe/Mercado Pago sem decisão final;
-- ledger de créditos, webhooks e reconciliação;
-- NFS-e e certificado dependentes de validação contábil/municipal;
-- arquitetura AWS, banco, filas, backup, DR e runbooks.
+phase-decision-gates.yaml
+→ decisões e evidências mínimas para entrada e saída de cada fase
 
-Billing e emissão fiscal permanecem desabilitados até seus gates.
+decisions/DEC-XXX-*/
+→ requisitos, opções, experimento, evidências, comparação, risco,
+   registro da decisão e validação pós-implementação
+```
 
-## Preços, créditos e políticas públicas
+Regras verificadas:
 
-A consolidação também inclui:
+- uma IA não pode aprovar decisão ou evidência em nome humano;
+- `REJECTED` e `STALE` nunca satisfazem um requisito `ACCEPTED`;
+- `SUPERSEDED` nunca satisfaz um gate ativo;
+- uma decisão `DECIDED` ainda exige ADR/MDR/FDR e OpenSpec próprio antes de implementação;
+- uma decisão `IMPLEMENTED` ainda exige validação para produção;
+- resultados negativos, falhas e outliers não podem ser apagados;
+- thresholds quantitativos devem ser definidos antes de observar o resultado;
+- ferramentas opcionais possuem fases `FUTURE-*` e não bloqueiam o Core;
+- `PEND-026` e `PEND-027` permanecem reservados, pois site institucional e hospedagem de clientes estão fora deste repositório.
 
-- campos preenchíveis para preços, custos, planos e créditos;
-- template YAML com valores monetários ainda `null` e schema de validação;
-- lifecycle detalhado de cotação, reserva, consumo, liberação, expiração e estorno;
-- formulário para decisão após benchmarks;
-- central pública planejada em `/politicas`;
-- dez políticas especializadas em estado de rascunho pré-empresa;
-- manifesto de políticas com rotas, versões, vigência e gates de revisão;
-- bloqueio contra publicação de política final ou catálogo comercial incompleto.
+Foram formalizadas decisões específicas para backup/restauração/DR, observabilidade/resposta a incidentes e modelo de contas/organizações, que antes apareciam apenas de forma distribuída.
 
-Nenhum preço, quantidade de crédito, prazo comercial, CNPJ ou texto jurídico foi inventado.
+## Situação dos gates neste baseline
+
+Exemplos executados:
+
+```text
+CORE-1:entry
+→ aprovado na camada de decisão
+
+CORE-1:exit
+→ bloqueado por DEC-039 e EVID-040
+
+FUTURE-MUTATION:entry
+→ bloqueado por DEC-038 e EVID-039
+```
+
+Isso é intencional. A fundação pode ser iniciada após o preflight da fase, mas não poderá ser marcada como concluída até que o typechecker Python seja comparado e aprovado. Mutation testing permanece opcional e não interfere no MVP.
+
+## OpenSpec e fontes de orientação
+
+A mudança documental `document-decision-governance` está arquivada e sua especificação vigente está em:
+
+```text
+openspec/specs/decision-governance/spec.md
+```
+
+Também foram atualizados:
+
+- `AGENTS.md`;
+- `README.md`;
+- `TREE.md`;
+- índice, roadmap e hierarquia documental;
+- explicações técnica e não técnica;
+- guia do Codex e critérios de aceite;
+- `openspec/config.yaml`;
+- ADR-053 e logs do projeto.
+
+Nenhuma mudança OpenSpec da Fase 1 foi criada ou iniciada.
+
+## Identidade, billing, fiscal e políticas
+
+Continuam válidas as seguintes restrições:
+
+- identidade oficial pendente; somente `W_Flyer` em texto;
+- logo antiga removida e proibida como referência;
+- preços, custos, créditos e impostos permanecem sem valores inventados;
+- Stripe e Mercado Pago continuam candidatos sujeitos a spike futuro;
+- billing e emissão fiscal permanecem desabilitados;
+- políticas públicas continuam em rascunho pré-empresa e dependem de revisão adequada;
+- site institucional e documentação empresarial privada permanecem fora do aplicativo.
 
 ## Graphify
 
-A fotografia presente no pacote contém:
+`graphify-out/` é um artefato local regenerável e não é fonte de verdade. O validador, quando a pasta existe, confere somente sua integridade estrutural e a coerência entre `graph.json` e `GRAPH_REPORT.md`; isso não comprova frescor.
 
-```text
-3.076 nós
-2.890 relações
-292 comunidades
-```
-
-`graph.json` e `GRAPH_REPORT.md` concordam entre si. Os arquivos `.graphify_health*.json` registram uma etapa intermediária anterior, com 3.043 nós e 2.858 relações; devem ser tratados como diagnóstico histórico.
-
-O grafo foi construído a partir do commit `fdf4c158`. Como esta consolidação altera arquivos depois desse commit, o Graphify deve ser atualizado na máquina do projeto antes do checkpoint final:
+O grafo existente no ambiente de revisão ainda representa o commit anterior às alterações finais. Por isso, ele pode ser omitido do pacote distribuído e deve ser recriado no repositório real:
 
 ```bash
 graphify update .
 ```
 
+Depois da atualização, confirme o commit de origem e execute novamente a validação.
+
 ## Comandos de validação
 
-Validação portável do repositório:
+Gerar novamente as visões humanas derivadas dos YAMLs:
+
+```bash
+pnpm run generate:decision-docs
+```
+
+Validar o repositório:
 
 ```bash
 pnpm run verify:repository
 ```
 
-Equivalente direto:
+Consultar gates:
 
 ```bash
-python3 scripts/validate-repository.py
+python3 scripts/check-decision-gate.py CORE-1 --gate entry
+python3 scripts/check-decision-gate.py CORE-1 --gate exit
 ```
 
-Validação das ferramentas instaladas na máquina do agente:
+Validar a toolchain local do agente:
 
 ```bash
 pnpm run verify:agent-toolchain
 ```
 
-Verificações finais adicionais:
+Verificações adicionais:
 
 ```bash
-bash -n scripts/verify-repository.sh
-bash -n scripts/verify-local-agent-toolchain.sh
-bash -n scripts/verify-toolchain.sh
+python3 -m py_compile scripts/*.py
+bash -n scripts/*.sh
 git diff --check
 ```
 
@@ -124,30 +171,37 @@ git diff --check
 
 Esta validação não comprova:
 
-- frontend, API, worker, banco ou storage;
-- parsing ou transposição MusicXML;
-- testes unitários, integração ou E2E do produto;
-- OMR, harmonização, extração de melodia ou renderização;
-- conexão efetiva de Serena e Context7 no computador do usuário;
-- frescor do Graphify após as correções deste pacote.
+- execução de frontend, API, worker, PostgreSQL, fila ou storage;
+- parsing, normalização, transposição ou verificação MusicXML;
+- OMR, extração de melodia, harmonização, engraving ou áudio;
+- segurança de produção, carga, failover, restore ou disaster recovery;
+- pagamentos, NFS-e ou políticas juridicamente aprovadas;
+- qualidade musical avaliada por corpus e músicos;
+- conexão dos MCPs no computador do usuário;
+- atualização do Graphify após a aplicação desta entrega.
 
-Esses itens não existem ou dependem da máquina do projeto. Não foram simulados.
+Essas comprovações pertencem às fases e evidências registradas.
 
 ## Passos antes da Fase 1
 
-1. substituir os arquivos do repositório por esta versão corrigida;
+1. aplicar esta versão no repositório real;
 2. executar `graphify update .`;
-3. executar as duas validações;
-4. revisar o diff;
-5. criar o commit de consolidação;
-6. criar a tag `phase-0-complete`;
-7. somente depois, mediante autorização, criar a mudança OpenSpec `establish-executable-foundation`.
+3. executar `pnpm run generate:decision-docs`;
+4. executar `pnpm run verify:repository`;
+5. executar `pnpm run verify:agent-toolchain`;
+6. revisar `git diff --check` e o working tree;
+7. criar o checkpoint/tag da Fase 0, caso ainda não existam;
+8. somente mediante autorização, abrir `establish-executable-foundation`;
+9. consultar `CORE-1:entry` antes de alterar código;
+10. não declarar a fase concluída enquanto `CORE-1:exit` estiver bloqueado.
 
 ## Resultado
 
 ```text
-Validação documental/estrutural: APROVADA
-Atualização Graphify pós-correção: PENDENTE NA MÁQUINA DO PROJETO
-Checkpoint Git/tag: PENDENTE
+Validação documental e estrutural: APROVADA
+Governança de decisões: DOCUMENTADA E VERIFICADA
+Decisões técnicas futuras aprovadas nesta entrega: NENHUMA
+Implementação funcional iniciada: NÃO
+Graphify pós-alteração: PENDENTE NA MÁQUINA DO PROJETO
 Fase 1 liberada automaticamente: NÃO
 ```

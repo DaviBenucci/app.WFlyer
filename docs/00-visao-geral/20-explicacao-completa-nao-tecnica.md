@@ -656,3 +656,39 @@ O W_Flyer não deverá ser:
 Os preços não foram escolhidos antecipadamente. A equipe primeiro medirá quanto cada operação realmente custa e preencherá os campos reservados na documentação. O sistema de créditos mostrará o custo antes de iniciar, reservará o saldo durante o processamento e devolverá a reserva quando uma falha interna impedir a entrega.
 
 O site e a aplicação terão uma Central de Políticas pública com termos, privacidade, cookies, pagamentos, cancelamento, direitos autorais, uso aceitável, retenção, suporte e segurança. Enquanto a empresa não estiver formalizada e os textos não forem revisados, essas políticas permanecem como rascunhos internos.
+
+
+
+## 25. Como as decisões futuras serão tomadas
+
+Nem toda escolha pode ser feita antes de existir uma versão funcional. Por exemplo, ainda não é possível afirmar qual serviço de leitura de PDF será melhor, quanto cada operação custará ou qual tamanho de servidor será suficiente sem executar testes reais.
+
+Para evitar improvisação, o W_Flyer mantém um registro de decisões. Cada assunto passa pela mesma sequência:
+
+```text
+pergunta clara
+→ informações e testes necessários
+→ resultados registrados
+→ comparação entre alternativas
+→ aprovação da pessoa responsável
+→ implementação
+→ nova verificação depois de pronto
+```
+
+Isso significa que:
+
+- a inteligência artificial pode pesquisar, organizar testes e explicar resultados;
+- ela não pode escolher sozinha um fornecedor, preço, regra fiscal, limite técnico ou decisão musical;
+- resultados ruins também são guardados, para que o mesmo erro não seja repetido;
+- uma função futura permanece desligada enquanto as provas necessárias não existirem;
+- uma decisão pode ser revista se custos, leis, tecnologia, repertório ou necessidades mudarem.
+
+Exemplos:
+
+- o leitor de PDF só será escolhido depois de comparar precisão, segurança, licença, custo e tempo de processamento;
+- Stripe e Mercado Pago executarão os mesmos cenários de teste antes da escolha;
+- preços e créditos só serão preenchidos depois de medir custos reais e validar impostos;
+- a hospedagem só será dimensionada depois de testes de carga, backup, restauração e simulação de falhas;
+- a logo só será aprovada depois de revisar aplicações, versões SVG, legibilidade, direitos e uso em animações.
+
+Portanto, “pendente” não significa “esquecido”. Significa que a documentação já informa **o que precisa ser feito para chegar a uma decisão confiável**.

@@ -171,3 +171,39 @@ Decisões:
 - Biome, Ruff e typecheckers são gates separados.
 - Style Dictionary gera tokens; outputs não são editados.
 - Temporal, Rive, Pact, StrykerJS e mutmut exigem spike/ADR.
+
+## ADR-051 — Domínio musical compartilhado em pacotes Python internos
+
+Status: ACEITA
+
+Decisão: API e worker usam a mesma implementação versionada em `packages/python/`; o worker não importa a aplicação HTTP e o frontend não duplica a regra musical.
+
+## ADR-052 — Identidade corporativa pendente e uso temporário somente textual
+
+Status: ACEITA
+
+Decisão: enquanto `brand/brand-manifest.yaml` estiver com `status: pending`, protótipos e aplicação usam somente o nome textual `W_Flyer`. A IA não pode inventar símbolo, wordmark, favicon, paleta institucional ou tipografia de marca.
+
+Consequência: os tokens e protótipos atuais continuam como sistema visual provisório do produto, não como identidade corporativa aprovada. A logo antiga removida permanece rejeitada.
+
+## ADR-053 — Documentação empresarial e site institucional fora do repositório da aplicação
+
+Status: ACEITA
+
+Decisão: planejamento privado da empresa e código/documentação do site `wflyer.com.br` ficam em diretórios ou repositórios externos. A aplicação conserva apenas contratos de billing, fiscal, políticas, infraestrutura e operação que afetam o SaaS.
+
+Consequência: agentes do aplicativo não usam materiais empresariais privados como contexto e não alteram o site institucional.
+
+## ADR-054 — Governança formal de decisões, evidências e gates
+
+Status: ACEITA
+
+Decisão: decisões abertas usam IDs `DEC-*`, evidências `EVID-*` e gates `DGATE-*`. A IA não aprova escolhas; ADR e OpenSpec de implementação só surgem após evidência e aprovação humana.
+
+Consequência: uma fase ou capability permanece bloqueada quando o estado mínimo ou a evidência do gate não estiverem presentes.
+
+<!-- ADR-053-DECISION-GOVERNANCE:START -->
+## ADR-053 — Governança de decisões baseada em evidências
+
+Aceita a camada `docs/decision-governance/` com DEC/EVID/gates, aprovação humana e falha fechada para estados rejeitados, stale ou superseded.
+<!-- ADR-053-DECISION-GOVERNANCE:END -->

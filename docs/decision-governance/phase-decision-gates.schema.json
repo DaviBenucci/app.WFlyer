@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase-decision-gates.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "updated_at",
+    "status_rank",
+    "evidence_status_rank",
+    "phases"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "status_rank": {
+      "type": "object"
+    },
+    "evidence_status_rank": {
+      "type": "object"
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "phase_id",
+          "title",
+          "entry",
+          "exit"
+        ],
+        "properties": {
+          "phase_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "entry": {
+            "$ref": "#/$defs/gate"
+          },
+          "exit": {
+            "$ref": "#/$defs/gate"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_requirements",
+        "evidence_requirements",
+        "rule"
+      ],
+      "properties": {
+        "decision_requirements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "decision_id",
+              "minimum_status"
+            ],
+            "properties": {
+              "decision_id": {
+                "type": "string",
+                "pattern": "^DEC-[0-9]{3}$"
+              },
+              "minimum_status": {
+                "enum": [
+                  "IDENTIFIED",
+                  "REQUIREMENTS_DEFINED",
+                  "RESEARCHING",
+                  "EXPERIMENTING",
+                  "EVIDENCE_READY",
+                  "DECISION_PENDING_APPROVAL",
+                  "DECIDED",
+                  "IMPLEMENTED",
+                  "VALIDATED",
+                  "SUPERSEDED"
+                ]
+              }
+            }
+          }
+        },
+        "evidence_requirements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidence_id",
+              "minimum_status"
+            ],
+            "properties": {
+              "evidence_id": {
+                "type": "string",
+                "pattern": "^EVID-[0-9]{3}$"
+              },
+              "minimum_status": {
+                "enum": [
+                  "NOT_STARTED",
+                  "PLANNED",
+                  "IN_PROGRESS",
+                  "READY_FOR_REVIEW",
+                  "ACCEPTED",
+                  "REJECTED",
+                  "STALE"
+                ]
+              }
+            }
+          }
+        },
+        "rule": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

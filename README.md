@@ -22,7 +22,8 @@ Já existem neste repositório:
 - catálogo de riscos e política `fail-closed`;
 - referências visuais internas ainda sujeitas a aprovação humana;
 - OpenSpec, Graphify, Serena e Context7 preparados para orientar agentes;
-- evidências da Fase 0 e scripts de validação do repositório e da toolchain local.
+- evidências da Fase 0 e scripts de validação do repositório e da toolchain local;
+- governança de decisões com registro machine-readable, evidências obrigatórias e gates por fase.
 
 Ainda **não** existem:
 
@@ -48,9 +49,23 @@ app.wflyer.com.br   aplicação musical, quando estiver pronta
 sites de clientes  ambientes e domínios isolados
 ```
 
-O site institucional será desenvolvido antes do SaaS para apresentar serviços de criação de sites, aplicações e integrações, além de explicar o W_Flyer sem anunciar capacidades inexistentes. A arquitetura empresarial, de pagamento, fiscal, domínio, hospedagem e recuperação está documentada em `docs/company/`, `docs/billing/`, `docs/fiscal/`, `docs/infrastructure/` e `docs/operations/`. A futura página pública de políticas e seus rascunhos versionados estão em `docs/policies/`.
+O site institucional e o planejamento privado da futura empresa ficam fora deste repositório. A IA responsável pela aplicação não deve usar esses materiais como contexto. Permanecem aqui apenas os contratos que afetam o SaaS: `docs/billing/`, `docs/fiscal/`, `docs/infrastructure/`, `docs/operations/` e `docs/policies/`.
 
 Pagamento e emissão fiscal permanecem bloqueados até a formalização da empresa, estabilização do produto, spike dos provedores e validação contábil/jurídica. Preços, quotas e custos em créditos permanecem como campos `PENDENTE`/`null` até benchmarks e aprovação formal; a IA está proibida de preenchê-los por estimativa.
+
+## Identidade visual pendente
+
+A logo anterior foi removida e não deve ser recuperada. A estrutura de preparação da nova identidade está em [`brand/`](brand/README.md), e a governança está em [`docs/brand/`](docs/brand/README.md).
+
+Enquanto `brand/brand-manifest.yaml` estiver com `status: pending`:
+
+- usar apenas o nome textual `W_Flyer`;
+- não inventar logo, símbolo, favicon ou wordmark;
+- não considerar os tokens atuais do frontend como paleta institucional definitiva;
+- não reutilizar imagens antigas;
+- não distribuir ativos ao site institucional ou à aplicação.
+
+A criação e aprovação da logo serão uma decisão humana separada do desenvolvimento funcional.
 
 ## MVP Core
 
@@ -111,10 +126,33 @@ Documentos de entrada:
 
 - índice geral: [`docs/00-visao-geral/00-indice.md`](docs/00-visao-geral/00-indice.md);
 - decisões arquiteturais: [`docs/00-visao-geral/01-decisoes-arquiteturais.md`](docs/00-visao-geral/01-decisoes-arquiteturais.md);
-- decisões pendentes: [`docs/00-visao-geral/09-decisoes-pendentes.md`](docs/00-visao-geral/09-decisoes-pendentes.md);
+- resumo das decisões abertas: [`docs/00-visao-geral/09-decisoes-pendentes.md`](docs/00-visao-geral/09-decisoes-pendentes.md);
+- governança de decisões: [`docs/decision-governance/README.md`](docs/decision-governance/README.md);
+- registro machine-readable: [`docs/decision-governance/decision-register.yaml`](docs/decision-governance/decision-register.yaml);
+- gates por fase: [`docs/decision-governance/phase-decision-gates.yaml`](docs/decision-governance/phase-decision-gates.yaml);
 - guia de implementação: [`docs/100-implementacao/guia-codex-app-wflyer.md`](docs/100-implementacao/guia-codex-app-wflyer.md);
 - critérios de aceite: [`docs/100-implementacao/criterios-aceite-mvp.md`](docs/100-implementacao/criterios-aceite-mvp.md);
 - regras dos agentes: [`AGENTS.md`](AGENTS.md).
+
+
+
+<!-- DECISION-GOVERNANCE:START -->
+## Governança de decisões baseada em evidências
+
+O projeto controla **47 decisões**, **48 bundles de evidência** e **48 fases/trilhas com gates de entrada e saída** em [`docs/decision-governance/`](docs/decision-governance/README.md).
+
+```text
+DEC-* → EVID-* → aprovação humana → ADR/MDR/FDR → OpenSpec → implementação → validação
+```
+
+Uma opção citada na documentação não está aprovada. `REJECTED`, `STALE` e `SUPERSEDED` não liberam gates. Ferramentas opcionais usam fases `FUTURE-*` e não bloqueiam a entrada da Fase 1.
+
+```bash
+pnpm run generate:decision-docs
+python3 scripts/check-decision-gate.py CORE-1 --gate entry
+pnpm run verify:repository
+```
+<!-- DECISION-GOVERNANCE:END -->
 
 ## Fluxo obrigatório da IA
 

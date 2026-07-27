@@ -14,7 +14,9 @@ Antes de qualquer código:
 2. `docs/00-visao-geral/08-hierarquia-documental.md`
 3. `docs/00-visao-geral/05-escopo-mvp-app-wflyer.md`
 4. `docs/00-visao-geral/06-matriz-suporte-mvp.md`
-5. `docs/00-visao-geral/09-decisoes-pendentes.md`
+5. `docs/decision-governance/README.md`
+6. `docs/decision-governance/phase-decision-gates.yaml`
+7. `docs/00-visao-geral/09-decisoes-pendentes.md`
 6. `docs/music/01-modelo-transposicao.md`
 7. `docs/music/02-musicxml-canonico.md`
 8. `docs/backend/03-endpoints-api.md`
@@ -94,7 +96,7 @@ NAO_INICIADA | EM_ANDAMENTO | BLOQUEADA | CONCLUIDA
 
 - inventário do código existente;
 - matriz de divergências documento↔código;
-- decisões pendentes sem resolução inventada;
+- decisões DEC-* preservadas, evidências EVID-* e gate DGATE-* conferidos;
 - comandos padrão de lint, typecheck, test e desenvolvimento;
 - baseline dos testes existentes.
 
@@ -340,7 +342,7 @@ contratos/tabelas/artefatos afetados
 invariantes
 estratégia de teste
 rollback/feature flag
-lacunas ou decisões pendentes
+lacunas ou decisões DEC-* pendentes
 ```
 
 Sem esse preflight, a fase não começa.
@@ -409,3 +411,15 @@ Quando a documentação não resolver uma decisão, a IA deve parar, registrar `
 8. atualizar OpenSpec, rastreabilidade, logs, documentação e grafo.
 
 A instalação completa está em `../implementacao/12-bootstrap-toolchain.md`. A IA deve ler `../implementacao/21-fluxo-operacional-ia.md` antes do primeiro código.
+
+<!-- DECISION-GOVERNANCE-CODEX:START -->
+## Preflight de decisões para o Codex
+
+Antes de qualquer fase ou capability:
+
+```bash
+python3 scripts/check-decision-gate.py <PHASE_ID> --gate entry
+```
+
+O plano deve citar `DEC-*`, `EVID-*`, owner e approvers. Um spike autorizado produz evidência, não código de produção. Ao terminar a fase, execute o gate `exit`, atualize registros e gere novamente as visões humanas. A IA nunca muda `DECIDED` ou `ACCEPTED` em nome de aprovadores.
+<!-- DECISION-GOVERNANCE-CODEX:END -->

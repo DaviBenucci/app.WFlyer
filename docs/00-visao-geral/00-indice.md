@@ -9,6 +9,9 @@
 - `05-escopo-mvp-app-wflyer.md`
 - `06-matriz-suporte-mvp.md`
 - `09-decisoes-pendentes.md`
+- `../decision-governance/README.md`
+- `../decision-governance/decision-register.yaml`
+- `../decision-governance/phase-decision-gates.yaml`
 - `07-relatorio-revisao-tecnica-2026-07-20.md`
 - `10-relatorio-modernizacao-frontend-2026-07-20.md`
 - `11-relatorio-arquitetura-motion-2026-07-20.md`
@@ -20,17 +23,32 @@
 - `20-explicacao-completa-nao-tecnica.md` — explicação integral sem exigir conhecimento de programação;
 - `21-visao-tecnica-completa.md` — visão consolidada para desenvolvedores e arquitetos experientes.
 
-## Empresa, site institucional e lançamento comercial
+## Identidade visual e limite de contexto externo
 
-- `../company/README.md`
-- `../company/00-contexto-fases-empresa.md`
-- `../company/01-site-institucional-wflyer.md`
-- `../company/02-catalogo-servicos-programacao.md`
-- `../company/03-hospedagem-sites-clientes.md`
-- `../company/04-dominios-subdominios-dns.md`
-- `../company/05-separacao-site-app-clientes.md`
-- `../company/06-checklist-abertura-empresa.md`
-- `../company/07-contratos-privacidade-e-atendimento.md`
+- `../brand/README.md`
+- `../brand/01-briefing-identidade.md`
+- `../brand/02-governanca-assets.md`
+- `../brand/03-checklist-aprovacao-logo.md`
+- `../../brand/brand-manifest.yaml`
+
+O site institucional e a documentação privada da empresa são mantidos fora deste repositório. A aplicação não depende desses diretórios para ser implementada.
+
+
+## Governança de decisões e evidências
+
+- `../decision-governance/README.md`;
+- `../decision-governance/00-analise-situacao-atual.md`;
+- `../decision-governance/01-papeis-aprovacoes.md`;
+- `../decision-governance/02-fluxo-decisao.md`;
+- `../decision-governance/03-evidencias-freshness.md`;
+- `../decision-governance/04-gates-fases-e-ia.md`;
+- `../decision-governance/05-registro-humano-decisoes.md`;
+- `../decision-governance/06-matriz-decisoes-evidencias.md`;
+- `../decision-governance/07-matriz-gates-fases.md`;
+- `../decision-governance/08-migracao-ids-legados.md`;
+- `../decision-governance/decision-register.yaml`;
+- `../decision-governance/evidence-register.yaml`;
+- `../decision-governance/phase-decision-gates.yaml`.
 
 ## Billing e fiscal
 
@@ -321,3 +339,15 @@ Esta camada converte a visão crítica de produto, prática musical, confiabilid
 
 - `18-relatorio-integracao-toolchain-2026-07-21.md`;
 - `19-validacao-toolchain-2026-07-21.md`.
+
+<!-- DECISION-GOVERNANCE-INDEX:START -->
+## Governança de decisões futuras
+
+- [`../decision-governance/README.md`](../decision-governance/README.md)
+- [`../decision-governance/decision-register.yaml`](../decision-governance/decision-register.yaml)
+- [`../decision-governance/evidence-register.yaml`](../decision-governance/evidence-register.yaml)
+- [`../decision-governance/phase-decision-gates.yaml`](../decision-governance/phase-decision-gates.yaml)
+- [`09-decisoes-pendentes.md`](09-decisoes-pendentes.md)
+
+Use essa camada quando a resposta depender de benchmark, custo, corpus, empresa, revisão musical, segurança, jurídico, contabilidade ou aprovação de produto.
+<!-- DECISION-GOVERNANCE-INDEX:END -->

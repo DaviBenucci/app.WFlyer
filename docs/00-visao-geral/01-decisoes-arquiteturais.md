@@ -252,3 +252,34 @@ Consequências:
 - contratos de rede continuam derivados do OpenAPI;
 - TypeScript não contém uma segunda implementação do motor musical;
 - Nx pode orquestrar targets Python por meio de comandos `uv run`.
+
+## ADR-052 — Identidade corporativa pendente e uso temporário somente textual
+
+Enquanto `brand/brand-manifest.yaml` estiver com `status: pending`, site, protótipos e aplicação usam somente o nome textual `W_Flyer`. A IA não pode inventar símbolo, wordmark, favicon, paleta institucional ou tipografia de marca. A logo antiga removida permanece rejeitada.
+
+## ADR-053 — Empresa e site institucional fora do repositório da aplicação
+
+Planejamento empresarial privado e o código/documentação de `wflyer.com.br` pertencem a contextos externos. Este repositório conserva somente contratos do SaaS que afetam billing, fiscal, políticas, infraestrutura e operação.
+
+## ADR-054 — Decisões dependentes de evidência usam registro e gates formais
+
+Escolhas ainda abertas são controladas por `docs/decision-governance/decision-register.yaml`, `evidence-register.yaml` e `phase-decision-gates.yaml`. A IA pode pesquisar, executar experimento autorizado e propor recomendação, mas não aprovar a decisão. Uma fase/capability não começa nem termina quando seu gate exige estado ou evidência ausente.
+
+Consequências:
+
+- IDs antigos `PEND-*` são preservados apenas como rastreabilidade e novos registros usam `DEC-*`;
+- métricas e thresholds são pré-registrados antes do benchmark final;
+- ADR aceita só existe depois da aprovação humana;
+- implementação usa mudança OpenSpec posterior à decisão;
+- `IMPLEMENTED` e `VALIDATED` permanecem estados diferentes;
+- decisões externas do site e hospedagem de clientes são mantidas como `SUPERSEDED` no registro da aplicação.
+
+<!-- ADR-053-DECISION-GOVERNANCE:START -->
+## ADR-053 — Governança de decisões baseada em evidências
+
+**Status:** ACEITA — 2026-07-27
+
+Decisões pendentes passam a usar registros machine-readable, pacotes completos e gates por fase. A IA pode pesquisar e recomendar, mas não aprovar. Evidência rejeitada/stale e decisão superseded falham fechado. Ferramentas opcionais possuem gates `FUTURE-*`. Implementação só ocorre após decision record e OpenSpec próprios.
+
+**Consequência:** a documentação pode ficar preparada do começo ao lançamento sem inventar escolhas dependentes de benchmark, empresa ou revisão especializada.
+<!-- ADR-053-DECISION-GOVERNANCE:END -->

@@ -4,6 +4,8 @@
 
 Este diretório contém referências internas próprias. Ele não é um catálogo de screenshots de terceiros.
 
+A identidade corporativa está pendente. Os protótipos usam apenas o nome textual `W_Flyer`; nenhum símbolo, favicon, tipografia ou paleta neles deve ser interpretado como marca aprovada. O estado oficial fica em `../../brand/brand-manifest.yaml`.
+
 ## Ordem
 
 1. `reference-manifest.yaml`;

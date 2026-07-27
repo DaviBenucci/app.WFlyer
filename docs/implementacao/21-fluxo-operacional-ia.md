@@ -5,20 +5,22 @@
 ## Fluxo principal
 
 ```text
-1. identificar a mudança OpenSpec
-2. ler requisitos, riscos, ADRs e gates
-3. verificar Graphify atualizado
-4. consultar impacto macro
-5. ativar Serena e localizar símbolos
-6. consultar Context7 apenas para dependências externas
-7. escrever plano pequeno e verificável
-8. criar/ajustar teste que demonstra o requisito
-9. implementar o menor corte completo
-10. executar Nx affected
-11. ampliar testes conforme risco
-12. atualizar docs, OpenSpec, logs e grafo
-13. revisar diff e rollback
-14. só então declarar conclusão
+1. identificar fase/capability e DGATE-*
+2. consultar DEC-* e EVID-* aplicáveis
+3. identificar a mudança OpenSpec autorizada
+4. ler requisitos, riscos, ADRs e gates
+5. verificar Graphify atualizado
+6. consultar impacto macro
+7. ativar Serena e localizar símbolos
+8. consultar Context7 apenas para dependências externas
+9. escrever plano pequeno e verificável
+10. criar/ajustar teste que demonstra o requisito
+11. implementar o menor corte completo
+12. executar Nx affected
+13. ampliar testes conforme risco
+14. atualizar decisões/evidências quando aplicável, docs, OpenSpec, logs e grafo
+15. revisar diff e rollback
+16. só então declarar conclusão
 ```
 
 ## Prompt-base para a IA
@@ -27,19 +29,20 @@
 Trabalhe exclusivamente na mudança OpenSpec <ID>.
 
 Antes de editar:
-1. leia proposal.md, design.md, tasks.md e specs afetadas;
-2. consulte Graphify com orçamento inicial de 1200 tokens;
-3. confirme as relações críticas com Serena no nível de símbolos;
-4. consulte Context7 apenas para APIs externas cuja versão esteja no lockfile;
-5. liste invariantes, riscos, contratos e testes afetados;
-6. proponha o menor corte vertical.
+1. confirme o DGATE-* e os DEC-*/EVID-* relacionados;
+2. leia proposal.md, design.md, tasks.md e specs afetadas;
+3. consulte Graphify com orçamento inicial de 1200 tokens;
+4. confirme as relações críticas com Serena no nível de símbolos;
+5. consulte Context7 apenas para APIs externas cuja versão esteja no lockfile;
+6. liste invariantes, riscos, contratos e testes afetados;
+7. proponha o menor corte vertical.
 
 Durante a implementação:
 - não invente requisito, endpoint, migration ou estado;
 - não degrade gate musical, segurança ou acessibilidade;
 - crie teste que falhe pelo motivo esperado antes da correção;
 - use Nx affected para o ciclo rápido;
-- pare em decisão pendente.
+- pare em decisão pendente e responda com DEC-*, DGATE-* e EVID-* ausentes.
 
 Ao finalizar:
 - execute os gates aplicáveis;
@@ -98,6 +101,8 @@ Checklist:
 
 - [ ] diretório e branch corretos;
 - [ ] working tree compreendida;
+- [ ] gate DGATE-* atendido;
+- [ ] decisões DEC-* e evidências EVID-* conferidas;
 - [ ] mudança OpenSpec selecionada;
 - [ ] grafo atualizado;
 - [ ] projeto Serena ativo;
@@ -139,7 +144,7 @@ corpus completo
 
 - mudança executada;
 - arquivos e símbolos alterados;
-- decisão técnica;
+- decisão técnica e IDs DEC-*/EVID-* afetados;
 - testes/comandos e resultado;
 - cache hits relevantes;
 - migrations/contratos;

@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision-register.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "updated_at",
+    "canonical_id_prefix",
+    "legacy_id_policy",
+    "project_state",
+    "lifecycle_order",
+    "decision_rules",
+    "decisions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "canonical_id_prefix": {
+      "const": "DEC-"
+    },
+    "legacy_id_policy": {
+      "type": "object"
+    },
+    "project_state": {
+      "type": "object"
+    },
+    "lifecycle_order": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "IDENTIFIED",
+          "REQUIREMENTS_DEFINED",
+          "RESEARCHING",
+          "EXPERIMENTING",
+          "EVIDENCE_READY",
+          "DECISION_PENDING_APPROVAL",
+          "DECIDED",
+          "IMPLEMENTED",
+          "VALIDATED",
+          "SUPERSEDED"
+        ]
+      },
+      "minItems": 10,
+      "uniqueItems": true
+    },
+    "decision_rules": {
+      "type": "object"
+    },
+    "decisions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "legacy_ids",
+          "slug",
+          "title",
+          "category",
+          "status",
+          "blockers",
+          "required_by",
+          "owner_role",
+          "approver_roles",
+          "brief",
+          "required_evidence_ids",
+          "options",
+          "implementation_authorized",
+          "decision_record",
+          "openspec_change",
+          "review_trigger"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^DEC-[0-9]{3}$"
+          },
+          "legacy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^PEND-[0-9]{3}$"
+            },
+            "uniqueItems": true
+          },
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3
+          },
+          "category": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "IDENTIFIED",
+              "REQUIREMENTS_DEFINED",
+              "RESEARCHING",
+              "EXPERIMENTING",
+              "EVIDENCE_READY",
+              "DECISION_PENDING_APPROVAL",
+              "DECIDED",
+              "IMPLEMENTED",
+              "VALIDATED",
+              "SUPERSEDED"
+            ]
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^BLOCKED_BY_[A-Z0-9_]+$"
+            },
+            "uniqueItems": true
+          },
+          "required_by": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "track",
+              "phase",
+              "gate"
+            ],
+            "properties": {
+              "track": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "gate": {
+                "enum": [
+                  "entry",
+                  "exit"
+                ]
+              }
+            }
+          },
+          "owner_role": {
+            "type": "string"
+          },
+          "approver_roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "brief": {
+            "type": "string"
+          },
+          "required_evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVID-[0-9]{3}$"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "implementation_authorized": {
+            "type": "boolean"
+          },
+          "decision_record": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "openspec_change": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "review_trigger": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

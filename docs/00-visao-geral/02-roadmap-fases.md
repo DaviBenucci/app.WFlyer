@@ -1,10 +1,15 @@
 # Roadmap técnico do W_Flyer
 
-> Status: canônico. Revisão: 2026-07-20.
+> Status: canônico. Revisão: 2026-07-27.
 
 ## Regra de progressão
 
 Uma fase só termina com código, testes, evidência e documentação coerentes. Bloqueios permanecem visíveis; não se avança criando stubs que fingem atender o gate.
+
+
+## Gate transversal de decisões
+
+Além do gate técnico de cada fase, o início e a saída são controlados por `../decision-governance/phase-decision-gates.yaml`. Uma decisão necessária abaixo do estado mínimo ou uma evidência obrigatória ausente bloqueia a fase. A IA não pode conceder waiver nem promover decisão para `DECIDED`.
 
 ## MVP Core — MusicXML
 
@@ -43,16 +48,9 @@ Não bloqueia o Core e não pode ser ativada por conveniência:
 | P3 | UX de incerteza | Warnings/falha segura/revisão externa validados. |
 | P4 | Habilitação controlada | `pdf_omr=true` apenas no ambiente aprovado. |
 
-## Trilha S — empresa e site institucional
+## Dependência externa — empresa e site institucional
 
-Esta trilha pode avançar em paralelo ao Core, sem afirmar que a pessoa jurídica já existe.
-
-| Fase | Nome | Gate |
-|---:|---|---|
-| S0 | Planejamento empresarial | serviços, domínio, riscos e checklist documentados |
-| S1 | Site institucional | conteúdo, acessibilidade, privacidade, formulário e deploy aprovados |
-| S2 | Formalização | CNPJ, inscrições, regime e dados empresariais confirmados |
-| S3 | Prestação de serviços | contrato, proposta, hospedagem e suporte operacionais |
+A abertura da empresa e o site `wflyer.com.br` possuem diretórios/repositórios próprios. Este roadmap não governa a implementação desses projetos. A aplicação apenas registra dependências de lançamento, como dados legais reais, políticas, billing e fiscal. Os IDs legados `PEND-026` e `PEND-027` permanecem reservados para registrar que site institucional e hospedagem de clientes foram movidos para contextos externos. As decisões canônicas `DEC-026` e `DEC-027` tratam, respectivamente, de provedor de pagamento e modelo de preços/créditos.
 
 ## Trilha B — billing
 
@@ -73,14 +71,14 @@ Esta trilha pode avançar em paralelo ao Core, sem afirmar que a pessoa jurídic
 | F2 | Integração assíncrona | fila, retries, contingência e reconciliação testados |
 | F3 | Produção | contador aprova e emissão real é monitorada |
 
-## Trilha I — infraestrutura comercial
+## Trilha INF — infraestrutura comercial
 
 | Fase | Nome | Gate |
 |---:|---|---|
-| I0 | Domínio e ambientes | DNS, HTTPS, contas e separação definidas |
-| I1 | Staging | deploy reproduzível, observabilidade e backup |
-| I2 | Produção AWS | HA, filas, RDS, S3 e segurança aprovados |
-| I3 | Disaster recovery | restore e runbooks exercitados |
+| INF0 | Domínio e ambientes | DNS, HTTPS, contas e separação definidas |
+| INF1 | Staging | deploy reproduzível, observabilidade e backup |
+| INF2 | Produção AWS | HA, filas, RDS, S3 e segurança aprovados |
+| INF3 | Disaster recovery | restore e runbooks exercitados |
 
 Billing e fiscal não bloqueiam a construção técnica do Core, mas bloqueiam o lançamento pago.
 
@@ -92,6 +90,48 @@ Billing e fiscal não bloqueiam a construção técnica do Core, mas bloqueiam o
 - login/biblioteca/pagamento/compartilhamento/push;
 - reprodução/MIDI e integração Spotify;
 - identidade tipográfica/layout idênticos ao original.
+
+## Trilha FE — referências visuais e frontend
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| FE0 | Aprovação das referências | golden examples do Core, mobile, acessibilidade e identidade provisória aprovados |
+
+## Trilha D — Musical Diff
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| D0 | Diff verificável | IDs, proveniência, cobertura e gaps materiais aprovados |
+
+## Trilha A — Áudio e modo de ensaio
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| A0 | Engines e mapa de playback | licenças, privacidade e score following avaliados |
+
+## Trilha T — Tocabilidade e adaptação idiomática
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| T0 | Gate instrumental | perfis, corpus e revisão por instrumentistas aprovados |
+
+## Trilha E — Ensemble
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| E0 | Score e partes | consistência, transposição e tocabilidade validadas |
+
+## Trilha C — Colaboração
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| C0 | Revisão colaborativa | identidade, autorização, concorrência e retenção aprovadas |
+
+## Trilha Q — qualidade musical e conselho
+
+| Fase | Nome | Gate |
+|---:|---|---|
+| Q0 | Conselho e corpus | papéis, licenças, protocolo e auditoria aprovados |
 
 ## Trilha M — Multipauta, multiparte e modelo polifônico
 
@@ -150,22 +190,22 @@ As trilhas abaixo não alteram a promessa do MVP Core; elas evitam que a arquite
 
 | Trilha | Objetivo | Dependência mínima | Gate de início |
 |---|---|---|---|
-| F0 | referências internas, stories e estados | Fase 0 do Core | manifesto validado e aprovação de composição |
+| FE | referências internas, stories e estados | Fase 0 do Core | manifesto validado e aprovação de composição |
 | D | IDs, proveniência e Musical Diff | Core 2–5 | grafo semântico e mapeamento estável |
 | A | áudio A/B e modo de ensaio | D + renderer/playback | licenças de samples e mapa de ocorrência |
-| I | tocabilidade e adaptação idiomática | M + perfis | conselho instrumental e corpus |
-| E | score, partes e pacote ensemble | M + I + R | fonte única e verificador score/partes |
+| T | tocabilidade e adaptação idiomática | M + perfis | conselho instrumental e corpus |
+| E | score, partes e pacote ensemble | M + T + R | fonte única e verificador score/partes |
 | C | revisão colaborativa | D + revisões | autorização, ETag e política de retenção |
 | Q | pre-mortem, conselho musical e rollout | todas | métricas e riscos pré-registrados |
 
 ### Sequência recomendada
 
 ```text
-Core 0 -> F0
+Core 0 -> FE0
 Core 2/3 -> D0
-M -> L -> I
-L + I + análise formal -> H
-M + I + H + R -> E
+M -> L -> T
+L + T + análise formal -> H
+M + T + H + R -> E
 D + mapa de playback -> A
 D + revisões + segurança -> C
 Q acompanha cada gate
@@ -177,6 +217,10 @@ Q acompanha cada gate
 - Um modelo de IA disponível não autoriza capability.
 - Um resultado “bonito” não substitui corpus, invariantes e revisão musical.
 - Infraestrutura para IDs, versões e proveniência pode ser criada cedo; comportamento avançado permanece desligado.
+
+## Mapa de decisões por trilha
+
+A relação executável não é mantida manualmente nesta página. Consulte `../decision-governance/phase-decision-gates.yaml`, que liga `DGATE-*`, `DEC-*` e `EVID-*` a cada fase.
 
 ## Gate de documentação antes do primeiro commit funcional
 
@@ -193,12 +237,24 @@ O detalhamento está em `../100-implementacao/plano-evolucao-avancada.md`.
 
 | Trilha | Entrega | Pré-requisito bloqueante |
 |---|---|---|
-| F0 | pacote de referências visuais executáveis | tokens, specs, protótipos e aprovação de baseline |
+| FE | pacote de referências visuais executáveis | tokens, specs, protótipos e aprovação de baseline |
 | D | Musical Diff e audição A/B | IDs/proveniência estáveis e playback manifest |
 | M/L | modelo polifônico e extração de melodia | grafo multipauta, corpus anotado e revisão humana |
-| A | tocabilidade e adaptação idiomática | perfis revisados por instrumentistas |
+| T | tocabilidade e adaptação idiomática | perfis revisados por instrumentistas |
 | H | análise/harmonização | melodia confirmada, análise por região e avaliação cega |
 | E | ensemble, score e partes | grafo multiparte e verificador de consistência |
 | Q | ensaio e colaboração | reprodução estável, âncoras versionadas e segurança |
 
 A ordem não implica que todas as trilhas entrarão no primeiro produto comercial. Cada uma permanece `off` até seus gates.
+
+<!-- DECISION-GATES:START -->
+## Gate adicional de decisões e evidências
+
+Cada fase conserva seus critérios técnicos originais e também consulta `../decision-governance/phase-decision-gates.yaml`.
+
+```text
+gate de entrada → trabalho autorizado → gate de saída → conclusão da fase
+```
+
+Um gate vazio significa apenas que não há decisão adicional naquele momento; testes, segurança, documentação e aceite continuam obrigatórios. Ferramentas opcionais foram movidas para fases `FUTURE-*` para não bloquear o Core.
+<!-- DECISION-GATES:END -->

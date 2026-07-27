@@ -8,15 +8,16 @@ Em caso de conflito, prevalece a ordem abaixo:
 
 1. escopo e matriz de suporte;
 2. ADRs e decisões aceitas;
-3. especificações do modelo musical;
-4. contratos de API, modelo de dados e máquinas de estado;
-5. segurança e privacidade;
-6. critérios de aceite e QA;
-7. direção visual, design system e acessibilidade do frontend;
-8. features e páginas;
-9. guias de implementação;
-10. exemplos e textos de UX;
-11. logs históricos.
+3. gates e estados da governança de decisões (para autorizar início/saída de fase);
+4. especificações do modelo musical;
+5. contratos de API, modelo de dados e máquinas de estado;
+6. segurança e privacidade;
+7. critérios de aceite e QA;
+8. manifesto de identidade aprovado, direção visual, design system e acessibilidade do frontend;
+9. features e páginas;
+10. guias de implementação;
+11. exemplos e textos de UX;
+12. logs históricos.
 
 ## Documentos de síntese por público
 
@@ -32,6 +33,9 @@ Eles devem permanecer coerentes com as fontes canônicas, mas não criam capabil
 São canônicos:
 
 - `01-decisoes-arquiteturais.md`;
+- `../decision-governance/decision-register.yaml`;
+- `../decision-governance/evidence-register.yaml`;
+- `../decision-governance/phase-decision-gates.yaml`;
 - `05-escopo-mvp-app-wflyer.md`;
 - `06-matriz-suporte-mvp.md`;
 - todos os arquivos de `music/`;
@@ -41,16 +45,34 @@ São canônicos:
 - `../backend/17-sessao-anonima-autorizacao.md`;
 - `../security/02-checklist-seguranca.md`;
 - `../qa/01-estrategia-testes.md`;
+- `../../brand/brand-manifest.yaml`;
+- `../brand/02-governanca-assets.md`;
 - `../frontend/00-direcao-visual-wflyer.md`;
 - `../frontend/05-design-system.md`;
 - `../frontend/06-acessibilidade.md`;
 - `../frontend/09-guia_detalhado_frontend.md`;
 - `../100-implementacao/criterios-aceite-mvp.md`.
 
+
+## Precedência da governança de decisões
+
+Para responder **se uma fase pode começar ou terminar**, prevalece:
+
+```text
+phase-decision-gates.yaml
+> decision-register.yaml
+> evidence-register.yaml
+> pacote detalhado DEC-*
+> OpenSpec de implementação
+> inferência da IA
+```
+
+Para responder **qual comportamento foi aprovado**, ADRs e contratos especializados continuam acima de uma decisão ainda aberta. Uma entrada `IDENTIFIED` ou `REQUIREMENTS_DEFINED` não cria requisito de produto além do próprio processo de decisão.
+
 ## Regras para a IA
 
 - Não inferir requisito a partir de log histórico.
-- Não escolher item marcado como pendente.
+- Não escolher item marcado como pendente nem promover `DEC-*` para `DECIDED`.
 - Não alterar contrato público sem atualizar OpenAPI, frontend, testes e changelog.
 - Não implementar capacidade fora da matriz por estar disponível em uma biblioteca.
 - Ao encontrar contradição, parar a fase, registrar a divergência e corrigir a documentação canônica antes do código.
@@ -61,6 +83,19 @@ São canônicos:
 Arquivos com título “substituído” permanecem apenas como ponte histórica. Eles não devem ser usados como fonte normativa.
 
 <!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
+
+## Precedência da identidade visual
+
+```text
+brand-manifest aprovado e assets registrados
+> decisão humana de identidade
+> diretrizes de marca
+> sistema visual do produto
+> protótipo e screenshot
+> inferência da IA
+```
+
+Enquanto o manifesto estiver `pending`, o texto `W_Flyer` é o único identificador visual autorizado. Os tokens do frontend não se tornam paleta institucional por estarem documentados.
 
 ## Precedência específica do frontend
 
@@ -131,7 +166,7 @@ Esses artefatos não podem contrariar segurança, escopo e invariantes canônico
 
 ## Precedência empresarial, comercial e fiscal
 
-Os documentos de `company/`, `billing/`, `fiscal/`, `infrastructure/` e `operations/` são propostas arquiteturais até que suas decisões sejam aprovadas.
+Os documentos privados da empresa e do site institucional ficam fora deste repositório. Os documentos de `billing/`, `fiscal/`, `infrastructure/` e `operations/` são propostas arquiteturais do SaaS até que suas decisões sejam aprovadas.
 
 Em assuntos empresariais e fiscais, prevalece:
 
@@ -173,3 +208,16 @@ legislação/documentação oficial vigente
 ```
 
 A central `/politicas` é uma página de publicação e navegação. Ela não pode modificar regras técnicas, prazos ou direitos por conta própria.
+
+<!-- DECISION-HIERARCHY:START -->
+## Posição da governança de decisões na hierarquia
+
+- ADR/MDR/FDR **aprovado** define a decisão vigente;
+- `decision-register.yaml` define o estado de decisões ainda abertas e aponta o record aprovado quando existir;
+- `evidence-register.yaml` define a validade das provas;
+- `phase-decision-gates.yaml` define quando uma fase pode começar ou terminar;
+- OpenSpec implementa uma decisão já autorizada;
+- Graphify e inferências nunca superam essas fontes.
+
+Em conflito entre opção mencionada e decisão aprovada, prevalece o decision record/ADR. Em ausência de decisão, prevalece o bloqueio.
+<!-- DECISION-HIERARCHY:END -->

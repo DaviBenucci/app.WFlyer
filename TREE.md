@@ -14,6 +14,12 @@ app.WFlyer/
 ├── .serena/
 │   └── project.yml                   # configuração versionada do projeto
 ├── AGENTS.md                         # contrato operacional dos agentes
+├── brand/                             # identidade pendente e ativos aprovados futuros
+│   ├── source/
+│   ├── variants/
+│   ├── favicons/
+│   ├── guidelines/
+│   └── brand-manifest.yaml
 ├── README.md
 ├── TREE.md
 ├── MANIFESTO_VALIDACAO.md
@@ -25,7 +31,8 @@ app.WFlyer/
 │   ├── 100-implementacao/            # guia, aceite e rastreabilidade
 │   ├── backend/
 │   ├── billing/                       # assinaturas, créditos e provedores
-│   ├── company/                       # empresa, site e serviços
+│   ├── brand/                         # briefing e governança da identidade
+│   ├── decision-governance/           # decisões, evidências e gates por fase
 │   ├── design-reference/              # specs, protótipos e baselines candidatos
 │   ├── features/
 │   ├── fiscal/                        # NFS-e e prontidão contábil
@@ -47,12 +54,15 @@ app.WFlyer/
 │   ├── specs/
 │   │   ├── phase-zero-foundation/spec.md
 │   │   ├── business-launch-readiness/spec.md
-│   │   └── pricing-credits-policies/spec.md
+│   │   ├── pricing-credits-policies/spec.md
+│   │   └── brand-identity-foundation/spec.md
 │   └── changes/
 │       └── archive/
 │           ├── 2026-07-27-bootstrap-core-foundation/
 │           ├── 2026-07-27-document-business-launch-readiness/
-│           └── 2026-07-27-document-pricing-credits-policies/
+│           ├── 2026-07-27-document-pricing-credits-policies/
+│           ├── 2026-07-27-document-brand-identity-foundation/
+│           └── 2026-07-27-document-decision-governance/
 ├── scripts/
 │   ├── validate-repository.py
 │   ├── verify-repository.sh
@@ -63,6 +73,61 @@ app.WFlyer/
 ```
 
 `node_modules/`, caches, arquivos locais da Serena, segredos, uploads e builds são descartáveis e não pertencem ao pacote versionado.
+
+
+## Governança de decisões
+
+```text
+docs/decision-governance/
+├── README.md
+├── decision-register.yaml
+├── evidence-register.yaml
+├── phase-decision-gates.yaml
+├── decisions/DEC-XXX-slug/
+└── templates/
+```
+
+`DEC-*` identifica a pergunta; `EVID-*` identifica a prova; `DGATE-*` liga a decisão à fase. O Graphify indexa esses artefatos, mas o estado canônico permanece nos registros YAML.
+
+<!-- DECISION-GOVERNANCE-TREE:START -->
+## Estrutura de governança de decisões
+
+```text
+docs/decision-governance/
+├── README.md
+├── 00-analise-situacao-atual.md
+├── 01-papeis-aprovacoes.md
+├── 02-fluxo-decisao.md
+├── 03-evidencias-freshness.md
+├── 04-gates-fases-e-ia.md
+├── 05-registro-humano-decisoes.md       # gerado
+├── 06-matriz-decisoes-evidencias.md     # gerado
+├── 07-matriz-gates-fases.md             # gerado
+├── 08-migracao-ids-legados.md
+├── decision-register.yaml
+├── evidence-register.yaml
+├── phase-decision-gates.yaml
+├── *.schema.json
+├── decisions/
+│   └── DEC-XXX-slug/
+│       ├── 00-decision-brief.md
+│       ├── 01-requirements.md
+│       ├── 02-options.md
+│       ├── 03-experiment-plan.md
+│       ├── 04-evidence/README.md
+│       ├── 05-comparison.md
+│       ├── 06-risk-analysis.md
+│       ├── 07-decision-record.md
+│       └── 08-validation.md
+└── templates/
+
+scripts/
+├── generate-decision-docs.py
+└── check-decision-gate.py
+```
+
+Os YAMLs são canônicos; os índices humanos são gerados; o pacote registra o processo completo. O Graphify apenas indexa esses artefatos.
+<!-- DECISION-GOVERNANCE-TREE:END -->
 
 ## Arquitetura física planejada para a Fase 1
 

@@ -4,7 +4,7 @@
 
 ```text
 Leia docs/README.md, a hierarquia documental, o escopo, a matriz de suporte,
-as decisões pendentes e a Fase <N> do guia canônico.
+o DGATE-*, as decisões DEC-*, as evidências EVID-* e a Fase <N> do guia canônico.
 Inspecione o código e descreva o comportamento atual, os arquivos afetados,
 os riscos e os testes antes de alterar.
 Execute somente a Fase <N>. Não habilite capability futura.
@@ -51,7 +51,7 @@ Antes de implementar extração, harmonização ou watermark, a IA deve responde
 6. como o resultado é reproduzido e verificado;
 7. quais fixtures e métricas provarão o gate.
 
-Se alguma resposta não estiver na documentação, parar e registrar decisão pendente. Não preencher lacunas com “melhores práticas” genéricas.
+Se alguma resposta não estiver na documentação, parar, registrar DEC-* e as evidências necessárias. Não preencher lacunas com “melhores práticas” genéricas.
 
 <!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
 
@@ -66,7 +66,7 @@ Para a capacidade solicitada, produza:
 4. comportamento fail-closed;
 5. estados de interface;
 6. testes, fixtures e observabilidade;
-7. decisões pendentes.
+7. decisões DEC-*, evidências EVID-* e gate DGATE-* aplicáveis.
 Não escreva código até resolver contradições documentais.
 ```
 

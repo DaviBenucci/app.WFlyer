@@ -1,0 +1,1463 @@
+schema_version: 1
+updated_at: '2026-07-27'
+canonical_id_prefix: DEC-
+legacy_id_policy:
+  preserve_existing_pend_ids: true
+  unused_legacy_ids:
+  - PEND-026
+  - PEND-027
+  rule: Não renumerar nem reutilizar IDs legados. PEND-026 e PEND-027 permanecem reservados; novas automações usam
+    DEC-*.
+  reserved_legacy_ids:
+    PEND-026: 'Reservado: decisão sobre site institucional foi movida para o repositório próprio do site.'
+    PEND-027: 'Reservado: hospedagem de clientes pertence ao planejamento empresarial privado, fora do app.'
+project_state:
+  phase_zero: TECHNICALLY_COMPLETE_ARCHIVED
+  phase_one: NOT_STARTED
+  functional_code: NOT_STARTED
+  next_openspec_change: establish-executable-foundation
+  graphify_refresh_required_after_this_change: true
+  decision_governance: DOCUMENTED_NOT_YET_POPULATED_WITH_RUNTIME_EVIDENCE
+  decision_count: 47
+lifecycle_order:
+- IDENTIFIED
+- REQUIREMENTS_DEFINED
+- RESEARCHING
+- EXPERIMENTING
+- EVIDENCE_READY
+- DECISION_PENDING_APPROVAL
+- DECIDED
+- IMPLEMENTED
+- VALIDATED
+- SUPERSEDED
+decision_rules:
+  ai_may_approve: false
+  minimum_for_implementation: DECIDED
+  minimum_for_production: VALIDATED
+  evidence_must_precede_decision: true
+  adr_must_follow_approval: true
+  openspec_must_follow_decision_for_implementation: true
+decisions:
+- id: DEC-001
+  legacy_ids:
+  - PEND-001
+  slug: omr-engine
+  title: Engine OMR de produção
+  category: music-processing
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_CORPUS
+  - BLOCKED_BY_LICENSE_REVIEW
+  required_by:
+    track: P
+    phase: P0
+    gate: exit
+  owner_role: engineering_lead
+  approver_roles:
+  - product_owner
+  - music_director
+  - security_lead
+  - legal_reviewer
+  brief: docs/decision-governance/decisions/DEC-001-omr-engine/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-001
+  - EVID-002
+  options:
+  - Audiveris em sandbox
+  - outra engine a identificar por pesquisa
+  - pipeline híbrido somente após benchmark
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-002
+  legacy_ids:
+  - PEND-002
+  slug: music-renderer
+  title: Engine de renderização e engraving
+  category: music-rendering
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_LICENSE_REVIEW
+  - BLOCKED_BY_MUSICAL_REVIEW
+  required_by:
+    track: R
+    phase: R0
+    gate: exit
+  owner_role: engineering_lead
+  approver_roles:
+  - product_owner
+  - music_director
+  - frontend_lead
+  - legal_reviewer
+  brief: docs/decision-governance/decisions/DEC-002-music-renderer/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-003
+  options:
+  - MuseScore Studio por adapter de spike
+  - renderer alternativo a avaliar
+  - serviço próprio somente se evidência justificar
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-003
+  legacy_ids:
+  - PEND-003
+  slug: operational-limits
+  title: Limites operacionais por formato e operação
+  category: reliability
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  required_by:
+    track: CORE
+    phase: CORE-4
+    gate: exit
+  owner_role: platform_lead
+  approver_roles:
+  - engineering_lead
+  - security_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-003-operational-limits/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-004
+  options:
+  - limites conservadores por configuração
+  - limites por plano após custos
+  - limites adaptativos somente após observabilidade
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-004
+  legacy_ids:
+  - PEND-004
+  slug: pdf-quantitative-gate
+  title: Gate quantitativo para PDF/OMR
+  category: quality-gate
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_CORPUS
+  - BLOCKED_BY_MUSICAL_REVIEW
+  required_by:
+    track: P
+    phase: P2
+    gate: exit
+  owner_role: qa_lead
+  approver_roles:
+  - music_director
+  - engineering_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-004-pdf-quantitative-gate/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-005
+  - EVID-001
+  options:
+  - gate por estrato de corpus
+  - habilitação restrita por formato/complexidade
+  - manter capability desligada
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-005
+  legacy_ids:
+  - PEND-005
+  slug: mxl-support
+  title: Suporte a MusicXML comprimido (.mxl)
+  category: file-security
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_SECURITY_REVIEW
+  - BLOCKED_BY_BENCHMARK
+  required_by:
+    track: CORE
+    phase: FUTURE-MXL
+    gate: entry
+  owner_role: security_lead
+  approver_roles:
+  - engineering_lead
+  - qa_lead
+  brief: docs/decision-governance/decisions/DEC-005-mxl-support/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-006
+  options:
+  - manter somente MusicXML não comprimido
+  - habilitar MXL com parser de container dedicado
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-006
+  legacy_ids:
+  - PEND-006
+  slug: multipart-multistaff
+  title: Expansão para multiparte e multipauta
+  category: music-model
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_CORPUS
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_PRODUCT_SCOPE
+  required_by:
+    track: M
+    phase: M0
+    gate: exit
+  owner_role: music_engineering_lead
+  approver_roles:
+  - music_director
+  - product_owner
+  - frontend_lead
+  brief: docs/decision-governance/decisions/DEC-006-multipart-multistaff/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-007
+  options:
+  - seleção explícita de parte/pauta
+  - processamento de score completo em trilha futura
+  - manter Core de parte única
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-007
+  legacy_ids:
+  - PEND-007
+  slug: melody-extraction-baseline
+  title: Baseline de extração de melodia
+  category: music-inference
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_CORPUS
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_MUSICAL_REVIEW
+  required_by:
+    track: L
+    phase: L1
+    gate: exit
+  owner_role: music_engineering_lead
+  approver_roles:
+  - music_director
+  - qa_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-007-melody-extraction-baseline/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-008
+  options:
+  - regras simbólicas
+  - otimização por caminho/frase
+  - modelo treinado apenas com governança aprovada
+  - combinação com revisão humana
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-008
+  legacy_ids:
+  - PEND-008
+  slug: harmonic-profiles
+  title: Perfis harmônicos do primeiro release
+  category: music-creation
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_PRODUCT_SCOPE
+  required_by:
+    track: H
+    phase: H0
+    gate: exit
+  owner_role: music_director
+  approver_roles:
+  - product_owner
+  - music_engineering_lead
+  - instrument_reviewers
+  brief: docs/decision-governance/decisions/DEC-008-harmonic-profiles/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-009
+  options:
+  - tonal clássico restrito
+  - popular funcional
+  - modal selecionado
+  - adiar linguagem não validada
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-009
+  legacy_ids:
+  - PEND-009
+  slug: harmony-engine
+  title: Engine ou solver de harmonização
+  category: music-creation
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_LICENSE_REVIEW
+  required_by:
+    track: H
+    phase: H1
+    gate: exit
+  owner_role: music_engineering_lead
+  approver_roles:
+  - music_director
+  - security_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-009-harmony-engine/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-010
+  - EVID-009
+  options:
+  - regras + busca
+  - constraint solver
+  - modelo apenas como proponente
+  - abordagem híbrida com verificador independente
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-010
+  legacy_ids:
+  - PEND-010
+  slug: musical-corpus-council
+  title: Corpus musical e conselho revisor
+  category: governance
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_CORPUS
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_LICENSE_REVIEW
+  required_by:
+    track: Q
+    phase: Q0
+    gate: entry
+  owner_role: product_owner
+  approver_roles:
+  - music_director
+  - legal_reviewer
+  - qa_lead
+  brief: docs/decision-governance/decisions/DEC-010-musical-corpus-council/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-011
+  options:
+  - conselho interno inicial
+  - revisores externos contratados
+  - rede por instrumento/estilo
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-011
+  legacy_ids:
+  - PEND-011
+  slug: signature-infrastructure
+  title: Infraestrutura de assinatura e verificação
+  category: integrity
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_SECURITY_REVIEW
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  required_by:
+    track: W
+    phase: W2
+    gate: exit
+  owner_role: security_lead
+  approver_roles:
+  - platform_lead
+  - legal_reviewer
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-011-signature-infrastructure/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-012
+  options:
+  - KMS gerenciado
+  - HSM conforme necessidade
+  - assinatura desabilitada no primeiro release
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-012
+  legacy_ids:
+  - PEND-012
+  slug: watermark-design
+  title: Intensidade e desenho do watermark
+  category: visual-integrity
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_USER_APPROVAL
+  - BLOCKED_BY_IMPLEMENTATION
+  required_by:
+    track: W
+    phase: W1
+    gate: exit
+  owner_role: design_owner
+  approver_roles:
+  - music_director
+  - accessibility_reviewer
+  - legal_reviewer
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-012-watermark-design/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-013
+  options:
+  - marca distribuída discreta
+  - token em áreas seguras
+  - sem marca visual em perfis específicos após decisão
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-013
+  legacy_ids:
+  - PEND-013
+  slug: semantic-graph-schema
+  title: Schema final do grafo semântico musical
+  category: music-model
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_CORPUS
+  - BLOCKED_BY_MUSICAL_REVIEW
+  required_by:
+    track: M
+    phase: M0
+    gate: exit
+  owner_role: music_engineering_lead
+  approver_roles:
+  - engineering_lead
+  - music_director
+  - qa_lead
+  brief: docs/decision-governance/decisions/DEC-013-semantic-graph-schema/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-014
+  options:
+  - event graph tipado interno
+  - modelo hierárquico com relações explícitas
+  - extensões versionadas
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-014
+  legacy_ids:
+  - PEND-014
+  slug: golden-examples-approval
+  title: Baseline e aprovação dos golden examples
+  category: frontend
+  status: RESEARCHING
+  blockers:
+  - BLOCKED_BY_USER_APPROVAL
+  - BLOCKED_BY_BRAND_DECISION
+  required_by:
+    track: FE
+    phase: FE0
+    gate: exit
+  owner_role: design_owner
+  approver_roles:
+  - product_owner
+  - frontend_lead
+  - accessibility_reviewer
+  brief: docs/decision-governance/decisions/DEC-014-golden-examples-approval/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-015
+  options:
+  - aprovar composição atual com ajustes
+  - substituir baselines após identidade
+  - aprovar somente estados do Core
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-015
+  legacy_ids:
+  - PEND-015
+  slug: instrument-profiles
+  title: Perfis instrumentais iniciais
+  category: music-domain
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_CORPUS
+  required_by:
+    track: CORE
+    phase: CORE-2
+    gate: exit
+  owner_role: music_director
+  approver_roles:
+  - instrument_reviewers
+  - music_engineering_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-015-instrument-profiles/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-016
+  options:
+  - catálogo Core restrito
+  - expansão por família após gate
+  - perfis avançados versionados fora do Core
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-016
+  legacy_ids:
+  - PEND-016
+  slug: audio-engine-license
+  title: Engine, samples e licenças de áudio
+  category: audio
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_LICENSE_REVIEW
+  - BLOCKED_BY_BENCHMARK
+  required_by:
+    track: A
+    phase: A0
+    gate: exit
+  owner_role: audio_lead
+  approver_roles:
+  - legal_reviewer
+  - music_director
+  - platform_lead
+  brief: docs/decision-governance/decisions/DEC-016-audio-engine-license/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-017
+  options:
+  - síntese local
+  - soundfont/sample pack licenciado
+  - serviço externo somente com privacidade aprovada
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-017
+  legacy_ids:
+  - PEND-017
+  slug: score-following-policy
+  title: Política de score following
+  category: audio
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_PRIVACY_REVIEW
+  - BLOCKED_BY_PRODUCT_SCOPE
+  required_by:
+    track: A
+    phase: A0
+    gate: exit
+  owner_role: audio_lead
+  approver_roles:
+  - music_director
+  - privacy_reviewer
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-017-score-following-policy/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-018
+  options:
+  - somente playback gerado
+  - performance ao vivo em fase posterior
+  - sem score following inicial
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-018
+  legacy_ids:
+  - PEND-018
+  slug: musical-diff-metrics
+  title: Métricas e cobertura do Musical Diff
+  category: verification
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_MUSICAL_REVIEW
+  required_by:
+    track: D
+    phase: D0
+    gate: exit
+  owner_role: qa_lead
+  approver_roles:
+  - music_engineering_lead
+  - music_director
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-018-musical-diff-metrics/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-019
+  options:
+  - cobertura por evento e relação
+  - cobertura por operação
+  - bloqueio por gaps materiais
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-019
+  legacy_ids:
+  - PEND-019
+  slug: playability-gate
+  title: Gate de tocabilidade e dificuldade
+  category: instrumentation
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_CORPUS
+  required_by:
+    track: T
+    phase: T0
+    gate: exit
+  owner_role: music_director
+  approver_roles:
+  - instrument_reviewers
+  - qa_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-019-playability-gate/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-016
+  - EVID-020
+  options:
+  - regras por instrumento/nível
+  - classificador de severidade
+  - somente warnings no primeiro rollout aprovado
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-020
+  legacy_ids:
+  - PEND-020
+  slug: engraving-gate
+  title: Gate de engraving e legibilidade
+  category: music-rendering
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_MUSICAL_REVIEW
+  required_by:
+    track: R
+    phase: R1
+    gate: exit
+  owner_role: qa_lead
+  approver_roles:
+  - music_director
+  - design_owner
+  - accessibility_reviewer
+  brief: docs/decision-governance/decisions/DEC-020-engraving-gate/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-021
+  - EVID-003
+  options:
+  - detector automático + revisão
+  - revisão obrigatória por perfil complexo
+  - bloqueio de PDF em casos não suportados
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-021
+  legacy_ids:
+  - PEND-021
+  slug: ensemble-package
+  title: Pacote ensemble inicial
+  category: arrangement
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_PRODUCT_SCOPE
+  - BLOCKED_BY_IMPLEMENTATION
+  required_by:
+    track: E
+    phase: E0
+    gate: exit
+  owner_role: music_director
+  approver_roles:
+  - product_owner
+  - instrument_reviewers
+  - music_engineering_lead
+  brief: docs/decision-governance/decisions/DEC-021-ensemble-package/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-022
+  options:
+  - formação pequena predefinida
+  - formações configuráveis depois
+  - score e partes sem arranjo automático inicialmente
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-022
+  legacy_ids:
+  - PEND-022
+  slug: collaboration-retention
+  title: Colaboração, identidade e retenção
+  category: collaboration
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_SECURITY_REVIEW
+  - BLOCKED_BY_PRIVACY_REVIEW
+  - BLOCKED_BY_PRODUCT_SCOPE
+  required_by:
+    track: C
+    phase: C0
+    gate: exit
+  owner_role: product_owner
+  approver_roles:
+  - security_lead
+  - privacy_reviewer
+  - engineering_lead
+  brief: docs/decision-governance/decisions/DEC-022-collaboration-retention/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-023
+  options:
+  - revisão por convite
+  - organizações
+  - colaboração adiada
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-023
+  legacy_ids:
+  - PEND-023
+  slug: ai-data-governance
+  title: Governança de dados para motores de IA
+  category: privacy
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_PRIVACY_REVIEW
+  - BLOCKED_BY_LEGAL_REVIEW
+  - BLOCKED_BY_SECURITY_REVIEW
+  required_by:
+    track: GOV
+    phase: AI-PROVIDER
+    gate: entry
+  owner_role: privacy_reviewer
+  approver_roles:
+  - security_lead
+  - legal_reviewer
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-023-ai-data-governance/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-024
+  options:
+  - execução local
+  - provedor com retenção zero aprovada
+  - nenhum uso de modelo externo
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-024
+  legacy_ids:
+  - PEND-024
+  slug: musical-council-protocol
+  title: Protocolo do conselho musical
+  category: governance
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_MUSICAL_REVIEW
+  - BLOCKED_BY_USER_APPROVAL
+  required_by:
+    track: Q
+    phase: Q0
+    gate: exit
+  owner_role: product_owner
+  approver_roles:
+  - music_director
+  - qa_lead
+  brief: docs/decision-governance/decisions/DEC-024-musical-council-protocol/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-025
+  options:
+  - painel por família instrumental
+  - revisores por estilo
+  - revisão externa sob demanda
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-025
+  legacy_ids:
+  - PEND-025
+  slug: legal-entity-tax-regime
+  title: Natureza jurídica, CNAEs e regime tributário
+  category: business-fiscal
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_COMPANY_FORMATION
+  - BLOCKED_BY_ACCOUNTING_REVIEW
+  - BLOCKED_BY_LEGAL_REVIEW
+  required_by:
+    track: F
+    phase: F0
+    gate: exit
+  owner_role: business_owner
+  approver_roles:
+  - accountant
+  - legal_reviewer
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-025-legal-entity-tax-regime/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-026
+  options:
+  - definidas somente com contador após abertura
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-026
+  legacy_ids:
+  - PEND-028
+  slug: payment-provider
+  title: Provedor de pagamento
+  category: billing
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_COMPANY_FORMATION
+  - BLOCKED_BY_SANDBOX
+  - BLOCKED_BY_COST_DATA
+  - BLOCKED_BY_LEGAL_REVIEW
+  required_by:
+    track: B
+    phase: B2
+    gate: exit
+  owner_role: billing_lead
+  approver_roles:
+  - product_owner
+  - finance_owner
+  - security_lead
+  - accountant
+  brief: docs/decision-governance/decisions/DEC-026-payment-provider/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-027
+  options:
+  - Stripe
+  - Mercado Pago
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-027
+  legacy_ids:
+  - PEND-029
+  slug: pricing-credit-model
+  title: Modelo de planos, preços e créditos
+  category: billing
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_COST_DATA
+  - BLOCKED_BY_ACCOUNTING_REVIEW
+  - BLOCKED_BY_LEGAL_REVIEW
+  required_by:
+    track: B
+    phase: B0
+    gate: exit
+  owner_role: product_owner
+  approver_roles:
+  - finance_owner
+  - accountant
+  - billing_lead
+  brief: docs/decision-governance/decisions/DEC-027-pricing-credit-model/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-028
+  options:
+  - assinatura com créditos
+  - créditos avulsos
+  - combinação aprovada após simulações
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-028
+  legacy_ids:
+  - PEND-030
+  slug: nfse-provider-certificate
+  title: Emissor de NFS-e, autenticação e certificado
+  category: fiscal
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_COMPANY_FORMATION
+  - BLOCKED_BY_ACCOUNTING_REVIEW
+  - BLOCKED_BY_LEGAL_REVIEW
+  - BLOCKED_BY_SANDBOX
+  required_by:
+    track: F
+    phase: F1
+    gate: exit
+  owner_role: fiscal_lead
+  approver_roles:
+  - accountant
+  - security_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-028-nfse-provider-certificate/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-029
+  - EVID-026
+  options:
+  - NFS-e padrão nacional quando aplicável
+  - emissor municipal
+  - provedor fiscal terceiro
+  - operação manual temporária aprovada
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-029
+  legacy_ids:
+  - PEND-031
+  slug: authoritative-dns
+  title: DNS autoritativo e gestão de domínios
+  category: infrastructure
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  - BLOCKED_BY_COST_DATA
+  required_by:
+    track: INF
+    phase: INF0
+    gate: exit
+  owner_role: platform_lead
+  approver_roles:
+  - security_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-029-authoritative-dns/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-030
+  options:
+  - Registro.br DNS
+  - Cloudflare DNS
+  - Route 53
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-030
+  legacy_ids:
+  - PEND-032
+  slug: production-broker
+  title: Broker e orquestração de produção
+  category: infrastructure
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  required_by:
+    track: INF
+    phase: INF2
+    gate: exit
+  owner_role: platform_lead
+  approver_roles:
+  - engineering_lead
+  - security_lead
+  - finance_owner
+  brief: docs/decision-governance/decisions/DEC-030-production-broker/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-031
+  options:
+  - Celery + Redis com controles aprovados
+  - SQS com adapter de worker
+  - Temporal somente se DEC-035 justificar
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-031
+  legacy_ids:
+  - PEND-033
+  slug: commercial-slo-rpo-rto
+  title: Metas comerciais de SLO, RPO e RTO
+  category: reliability
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_COST_DATA
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  required_by:
+    track: INF
+    phase: INF3
+    gate: exit
+  owner_role: product_owner
+  approver_roles:
+  - platform_lead
+  - finance_owner
+  - support_owner
+  brief: docs/decision-governance/decisions/DEC-031-commercial-slo-rpo-rto/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-032
+  options:
+  - metas internas sem SLA
+  - SLA comercial somente após histórico
+  - tiers institucionais futuros
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-032
+  legacy_ids:
+  - PEND-034
+  slug: credit-lifecycle
+  title: Lifecycle comercial dos créditos
+  category: billing
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_COST_DATA
+  - BLOCKED_BY_LEGAL_REVIEW
+  - BLOCKED_BY_ACCOUNTING_REVIEW
+  required_by:
+    track: B
+    phase: B0
+    gate: exit
+  owner_role: billing_lead
+  approver_roles:
+  - product_owner
+  - finance_owner
+  - legal_reviewer
+  brief: docs/decision-governance/decisions/DEC-032-credit-lifecycle/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-033
+  - EVID-028
+  options:
+  - lotes mensais e avulsos separados
+  - ordem de consumo definida
+  - validade/acúmulo PENDENTE
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-033
+  legacy_ids:
+  - PEND-035
+  slug: public-policies-approval
+  title: Aprovação das políticas públicas
+  category: legal-privacy
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_COMPANY_FORMATION
+  - BLOCKED_BY_LEGAL_REVIEW
+  - BLOCKED_BY_IMPLEMENTATION
+  required_by:
+    track: LAUNCH
+    phase: LAUNCH
+    gate: entry
+  owner_role: legal_reviewer
+  approver_roles:
+  - product_owner
+  - privacy_reviewer
+  - security_lead
+  - accountant
+  brief: docs/decision-governance/decisions/DEC-033-public-policies-approval/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-034
+  options:
+  - publicar somente documentos aprovados
+  - manter rascunhos fora da rota
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-034
+  legacy_ids:
+  - PEND-036
+  slug: brand-identity
+  title: Identidade visual oficial
+  category: brand
+  status: RESEARCHING
+  blockers:
+  - BLOCKED_BY_USER_APPROVAL
+  - BLOCKED_BY_BRAND_DECISION
+  required_by:
+    track: BRAND
+    phase: BRAND-0
+    gate: exit
+  owner_role: design_owner
+  approver_roles:
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-034-brand-identity/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-035
+  options:
+  - direções conceituais a desenvolver em projeto separado
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-035
+  legacy_ids: []
+  slug: celery-temporal-orchestration
+  title: Celery versus Temporal para workflows longos
+  category: toolchain-infrastructure
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  required_by:
+    track: TOOL
+    phase: FUTURE-TEMPORAL
+    gate: entry
+  owner_role: platform_lead
+  approver_roles:
+  - engineering_lead
+  - finance_owner
+  brief: docs/decision-governance/decisions/DEC-035-celery-temporal-orchestration/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-036
+  options:
+  - manter Celery
+  - adotar Temporal
+  - não misturar ambos no mesmo pipeline
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-036
+  legacy_ids: []
+  slug: rive-adoption
+  title: Adoção de Rive para microilustrações
+  category: frontend
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_USER_APPROVAL
+  - BLOCKED_BY_BENCHMARK
+  required_by:
+    track: TOOL
+    phase: FUTURE-RIVE
+    gate: entry
+  owner_role: design_owner
+  approver_roles:
+  - frontend_lead
+  - accessibility_reviewer
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-036-rive-adoption/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-037
+  options:
+  - não usar Rive
+  - usar apenas microilustrações aprovadas
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-037
+  legacy_ids: []
+  slug: pact-activation
+  title: Ativação de testes de contrato com Pact
+  category: testing
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_IMPLEMENTATION
+  required_by:
+    track: TOOL
+    phase: FUTURE-PACT
+    gate: entry
+  owner_role: qa_lead
+  approver_roles:
+  - frontend_lead
+  - backend_lead
+  brief: docs/decision-governance/decisions/DEC-037-pact-activation/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-038
+  options:
+  - OpenAPI/cliente gerado suficiente
+  - Pact quando evolução independente justificar
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-038
+  legacy_ids: []
+  slug: mutation-testing
+  title: Escopo e cadência de mutation testing
+  category: testing
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_IMPLEMENTATION
+  - BLOCKED_BY_COST_DATA
+  required_by:
+    track: TOOL
+    phase: FUTURE-MUTATION
+    gate: entry
+  owner_role: qa_lead
+  approver_roles:
+  - engineering_lead
+  brief: docs/decision-governance/decisions/DEC-038-mutation-testing/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-039
+  options:
+  - somente módulos críticos alterados
+  - execução noturna/semanal
+  - adiar até suíte madura
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-039
+  legacy_ids: []
+  slug: python-typechecker
+  title: Typechecker Python definitivo
+  category: toolchain
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  required_by:
+    track: CORE
+    phase: CORE-1
+    gate: exit
+  owner_role: backend_lead
+  approver_roles:
+  - engineering_lead
+  brief: docs/decision-governance/decisions/DEC-039-python-typechecker/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-040
+  options:
+  - mypy
+  - pyright/basedpyright
+  - outro somente com justificativa
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-040
+  legacy_ids: []
+  slug: nx-remote-cache
+  title: Cache remoto Nx e política de segurança
+  category: toolchain
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_SECURITY_REVIEW
+  - BLOCKED_BY_COST_DATA
+  - BLOCKED_BY_IMPLEMENTATION
+  required_by:
+    track: TOOL
+    phase: FUTURE-NX-CACHE
+    gate: entry
+  owner_role: platform_lead
+  approver_roles:
+  - security_lead
+  - finance_owner
+  brief: docs/decision-governance/decisions/DEC-040-nx-remote-cache/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-041
+  options:
+  - cache local somente
+  - Nx Cloud
+  - backend remoto aprovado
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-041
+  legacy_ids: []
+  slug: production-hosting
+  title: Arquitetura final de hospedagem e ambientes
+  category: infrastructure
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_COST_DATA
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  - BLOCKED_BY_SECURITY_REVIEW
+  required_by:
+    track: INF
+    phase: INF0
+    gate: exit
+  owner_role: platform_lead
+  approver_roles:
+  - product_owner
+  - security_lead
+  - finance_owner
+  brief: docs/decision-governance/decisions/DEC-041-production-hosting/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-042
+  options:
+  - AWS São Paulo como alvo planejado
+  - alternativa gerenciada somente se comparada
+  - VPS apenas dev/demo
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-042
+  legacy_ids: []
+  slug: database-production-topology
+  title: Topologia e dimensionamento do banco de produção
+  category: database
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  - BLOCKED_BY_COST_DATA
+  required_by:
+    track: INF
+    phase: INF2
+    gate: exit
+  owner_role: database_owner
+  approver_roles:
+  - platform_lead
+  - security_lead
+  - finance_owner
+  brief: docs/decision-governance/decisions/DEC-042-database-production-topology/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-043
+  options:
+  - RDS PostgreSQL Multi-AZ planejado
+  - instância menor em pré-produção
+  - read replicas somente por evidência
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-043
+  legacy_ids: []
+  slug: security-privacy-production-gate
+  title: Gate de segurança e privacidade para produção
+  category: security
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_IMPLEMENTATION
+  - BLOCKED_BY_SECURITY_REVIEW
+  - BLOCKED_BY_PRIVACY_REVIEW
+  required_by:
+    track: LAUNCH
+    phase: LAUNCH
+    gate: entry
+  owner_role: security_lead
+  approver_roles:
+  - privacy_reviewer
+  - product_owner
+  - engineering_lead
+  brief: docs/decision-governance/decisions/DEC-043-security-privacy-production-gate/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-044
+  options:
+  - produção bloqueada até pacote aceito
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-044
+  legacy_ids: []
+  slug: launch-readiness
+  title: Decisão final de lançamento comercial
+  category: release
+  status: IDENTIFIED
+  blockers:
+  - BLOCKED_BY_IMPLEMENTATION
+  - BLOCKED_BY_COMPANY_FORMATION
+  - BLOCKED_BY_LEGAL_REVIEW
+  - BLOCKED_BY_ACCOUNTING_REVIEW
+  - BLOCKED_BY_SECURITY_REVIEW
+  required_by:
+    track: LAUNCH
+    phase: LAUNCH
+    gate: exit
+  owner_role: product_owner
+  approver_roles:
+  - engineering_lead
+  - music_director
+  - security_lead
+  - accountant
+  - legal_reviewer
+  - support_owner
+  brief: docs/decision-governance/decisions/DEC-044-launch-readiness/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-045
+  options:
+  - GO
+  - NO-GO
+  - GO com escopo/segmento reduzido
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, corpus, custos, legislação, licença, fornecedor ou requisitos materiais mudarem.
+- id: DEC-045
+  legacy_ids: []
+  slug: backup-disaster-recovery
+  title: Backup, restore e recuperação de desastre
+  category: infrastructure-resilience
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_IMPLEMENTATION
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_COST_DATA
+  required_by:
+    track: INF
+    phase: INF3
+    gate: exit
+  owner_role: platform_lead
+  approver_roles:
+  - engineering_lead
+  - security_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-045-backup-disaster-recovery/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-046
+  options:
+  - PITR + backups versionados + cópia cross-region + IaC e runbooks
+  - estratégia alternativa somente após teste comparável
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, custos, infraestrutura, legislação, incidente ou requisitos materiais mudarem.
+- id: DEC-046
+  legacy_ids: []
+  slug: observability-incident-readiness
+  title: Observabilidade, alertas e prontidão de incidentes
+  category: operations
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_IMPLEMENTATION
+  - BLOCKED_BY_INFRASTRUCTURE_DATA
+  - BLOCKED_BY_BENCHMARK
+  - BLOCKED_BY_COST_DATA
+  required_by:
+    track: INF
+    phase: INF2
+    gate: exit
+  owner_role: platform_lead
+  approver_roles:
+  - engineering_lead
+  - security_lead
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-046-observability-incident-readiness/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-047
+  options:
+  - stack gerenciada da AWS
+  - stack alternativa aprovada por custo e operação
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, custos, infraestrutura, legislação, incidente ou requisitos materiais mudarem.
+- id: DEC-047
+  legacy_ids: []
+  slug: account-organization-model
+  title: Modelo de conta, autenticação e organizações
+  category: identity-access
+  status: REQUIREMENTS_DEFINED
+  blockers:
+  - BLOCKED_BY_PRODUCT_SCOPE
+  - BLOCKED_BY_SECURITY_REVIEW
+  - BLOCKED_BY_PRIVACY_REVIEW
+  - BLOCKED_BY_IMPLEMENTATION
+  required_by:
+    track: B
+    phase: B0
+    gate: entry
+  owner_role: product_owner
+  approver_roles:
+  - engineering_lead
+  - security_lead
+  - privacy_reviewer
+  - product_owner
+  brief: docs/decision-governance/decisions/DEC-047-account-organization-model/00-decision-brief.md
+  required_evidence_ids:
+  - EVID-048
+  options:
+  - Core anônimo + conversão posterior para conta
+  - magic link e/ou senha após revisão de segurança
+  - organizações e SSO em rollout posterior
+  implementation_authorized: false
+  decision_record: null
+  openspec_change: null
+  review_trigger: Reabrir se escopo, custos, infraestrutura, legislação, incidente ou requisitos materiais mudarem.

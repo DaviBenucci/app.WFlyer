@@ -14,6 +14,10 @@ tokens
 
 O projeto pode usar componentes headless por meio de shadcn/ui, Base UI ou adapter equivalente. A biblioteca fornece comportamento; **a identidade visual pertence ao W_Flyer**. Não copiar tema, radius e composição padrão sem revisão.
 
+## Relação com a marca
+
+Este documento define o sistema visual provisório da aplicação. Ele não aprova logo, wordmark, tipografia institucional ou paleta corporativa. Antes de usar qualquer ativo de marca, consultar `../../brand/brand-manifest.yaml`.
+
 ## Tokens semânticos
 
 Usar CSS variables e, no Tailwind CSS atual, mapear tokens apropriados em `@theme`. Valores abaixo são baseline para protótipo e devem passar por contraste e revisão visual.

@@ -2,7 +2,8 @@
 
 ## Antes
 
-- [ ] Li hierarquia, escopo, matriz e decisões pendentes.
+- [ ] Li hierarquia, escopo, matriz e o gate DGATE-* da fase.
+- [ ] Consultei `decision-register.yaml` e `evidence-register.yaml`.
 - [ ] Li o documento musical/backend/security/QA específico.
 - [ ] Em tarefa de frontend, li direção visual, design system, arquitetura e antipadrões.
 - [ ] Confirmei fase e evidência do gate anterior.

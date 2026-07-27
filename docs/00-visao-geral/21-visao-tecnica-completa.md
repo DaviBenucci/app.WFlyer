@@ -1322,6 +1322,8 @@ Uma capability não está concluída apenas porque o happy path funciona.
 
 Requisitos mínimos:
 
+- gate `DGATE-*` aplicável consultado e liberado;
+- decisões `DEC-*` e evidências `EVID-*` no estado mínimo;
 - OpenSpec aprovado;
 - contratos de domínio/API;
 - migrations;
@@ -1379,3 +1381,82 @@ Ordem recomendada após este documento:
 O domínio comercial utilizará catálogo versionado, valores monetários em unidades mínimas, percentuais em basis points, `usage_quote`, `usage_reservation` e ledger imutável. `pricing-config.template.yaml` mantém valores não decididos como `null`; produção deve rejeitar catálogo incompleto.
 
 A publicação jurídica será governada por `docs/policies/policy-manifest.yaml`. A rota `/politicas` apenas apresenta versões aprovadas; rascunhos, dados empresariais pendentes e políticas sem vigência não podem ser expostos como finais.
+
+
+
+## 34. Governança de decisões, evidências e gates
+
+Escolhas ainda dependentes de benchmark, custo, corpus, empresa formalizada ou parecer especializado são controladas em `docs/decision-governance/`.
+
+### 34.1 Registros canônicos
+
+```text
+decision-register.yaml
+→ pergunta, owner, aprovadores, opções, blockers, fase e estado
+
+evidence-register.yaml
+→ artefatos, provenance, ambiente, review, validade e freshness
+
+phase-decision-gates.yaml
+→ estado mínimo de DEC/EVID para entrada e saída de cada fase
+```
+
+Os IDs possuem semântica distinta:
+
+- `DEC-*`: decisão;
+- `EVID-*`: bundle de evidência;
+- `DGATE-*`: autorização de fase ou capability;
+- ADR/MDR/FDR: resultado humano aprovado;
+- OpenSpec: implementação da decisão aprovada.
+
+### 34.2 Lifecycle
+
+```text
+IDENTIFIED
+→ REQUIREMENTS_DEFINED
+→ RESEARCHING
+→ EXPERIMENTING
+→ EVIDENCE_READY
+→ DECISION_PENDING_APPROVAL
+→ DECIDED
+→ IMPLEMENTED
+→ VALIDATED
+```
+
+`SUPERSEDED` preserva histórico e não satisfaz gate ativo. Evidências `REJECTED` ou `STALE` também não satisfazem requisito `ACCEPTED`.
+
+### 34.3 Regras de execução
+
+1. métricas e thresholds são pré-registrados;
+2. opções usam a mesma matriz de teste;
+3. versões, corpus, ambiente, comandos e resultados brutos são preservados;
+4. resultados negativos e risco residual permanecem visíveis;
+5. a IA recomenda, mas não aprova;
+6. `DECIDED` exige approval record e decision record;
+7. implementação exige OpenSpec;
+8. `IMPLEMENTED` não equivale a `VALIDATED`;
+9. mudança material de versão, custo, legislação, corpus ou incidente reabre a decisão.
+
+### 34.4 Consulta automatizada
+
+```bash
+pnpm run generate:decision-docs
+python3 scripts/check-decision-gate.py CORE-1 --gate entry
+python3 scripts/check-decision-gate.py P0 --gate exit
+python3 scripts/check-decision-gate.py LAUNCH --gate entry
+pnpm run verify:repository
+```
+
+O código de saída do verificador cobre apenas a camada de decisão. Lint, typecheck, testes, segurança, música, acessibilidade e operação continuam obrigatórios.
+
+### 34.5 Estado atual
+
+A governança registra 47 decisões e 48 bundles de evidência. A Fase 1 ainda não começou. Decisões futuras de OMR, billing, fiscal, produção e identidade não bloqueiam a fundação, salvo quando o gate estruturado da fase exigir explicitamente o contrário.
+
+## 35. Leitura sobre decisões ainda abertas
+
+1. `../decision-governance/README.md`;
+2. `../decision-governance/05-registro-humano-decisoes.md`;
+3. `../decision-governance/06-matriz-decisoes-evidencias.md`;
+4. `../decision-governance/07-matriz-gates-fases.md`;
+5. `09-decisoes-pendentes.md`.

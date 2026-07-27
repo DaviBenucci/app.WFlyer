@@ -68,11 +68,34 @@ def validate_required() -> None:
         "docs/00-visao-geral/02-roadmap-fases.md",
         "docs/00-visao-geral/08-hierarquia-documental.md",
         "docs/00-visao-geral/09-decisoes-pendentes.md",
+        "docs/decision-governance/README.md",
+        "docs/decision-governance/00-analise-situacao-atual.md",
+        "docs/decision-governance/01-papeis-aprovacoes.md",
+        "docs/decision-governance/02-fluxo-decisao.md",
+        "docs/decision-governance/03-evidencias-freshness.md",
+        "docs/decision-governance/04-gates-fases-e-ia.md",
+        "docs/decision-governance/05-registro-humano-decisoes.md",
+        "docs/decision-governance/06-matriz-decisoes-evidencias.md",
+        "docs/decision-governance/07-matriz-gates-fases.md",
+        "docs/decision-governance/08-migracao-ids-legados.md",
+        "docs/decision-governance/decision-register.yaml",
+        "docs/decision-governance/decision-register.schema.json",
+        "docs/decision-governance/evidence-register.yaml",
+        "docs/decision-governance/evidence-register.schema.json",
+        "docs/decision-governance/phase-decision-gates.yaml",
+        "docs/decision-governance/phase-decision-gates.schema.json",
+        "docs/decision-governance/decisions/README.md",
         "docs/00-visao-geral/20-explicacao-completa-nao-tecnica.md",
         "docs/00-visao-geral/21-visao-tecnica-completa.md",
         "docs/backend/13-estrutura-pastas.md",
-        "docs/company/00-contexto-fases-empresa.md",
-        "docs/company/01-site-institucional-wflyer.md",
+        "brand/README.md",
+        "brand/brand-manifest.yaml",
+        "brand/brand-manifest.schema.json",
+        "brand/guidelines/brand-guidelines.md",
+        "docs/brand/README.md",
+        "docs/brand/01-briefing-identidade.md",
+        "docs/brand/02-governanca-assets.md",
+        "docs/brand/03-checklist-aprovacao-logo.md",
         "docs/billing/01-comparativo-stripe-mercado-pago.md",
         "docs/billing/08-parametros-precos-planos.md",
         "docs/billing/09-sistema-creditos-detalhado.md",
@@ -101,9 +124,15 @@ def validate_required() -> None:
         "openspec/specs/phase-zero-foundation/spec.md",
         "openspec/specs/business-launch-readiness/spec.md",
         "openspec/specs/pricing-credits-policies/spec.md",
+        "openspec/specs/brand-identity-foundation/spec.md",
+        "openspec/specs/decision-governance/spec.md",
+        "scripts/generate-decision-docs.py",
+        "scripts/check-decision-gate.py",
         "openspec/changes/archive/2026-07-27-bootstrap-core-foundation/tasks.md",
         "openspec/changes/archive/2026-07-27-document-business-launch-readiness/tasks.md",
         "openspec/changes/archive/2026-07-27-document-pricing-credits-policies/tasks.md",
+        "openspec/changes/archive/2026-07-27-document-brand-identity-foundation/tasks.md",
+        "openspec/changes/archive/2026-07-27-document-decision-governance/tasks.md",
     ]
     missing = [item for item in required if not (ROOT / item).is_file()]
     if missing:
@@ -144,6 +173,10 @@ def validate_json_schemas() -> int:
         (ROOT / "docs/riscos/failure-mode-catalog.yaml", ROOT / "docs/riscos/failure-mode-catalog.schema.json"),
         (ROOT / "docs/billing/pricing-config.template.yaml", ROOT / "docs/billing/pricing-config.schema.json"),
         (ROOT / "docs/policies/policy-manifest.yaml", ROOT / "docs/policies/policy-manifest.schema.json"),
+        (ROOT / "brand/brand-manifest.yaml", ROOT / "brand/brand-manifest.schema.json"),
+        (ROOT / "docs/decision-governance/decision-register.yaml", ROOT / "docs/decision-governance/decision-register.schema.json"),
+        (ROOT / "docs/decision-governance/evidence-register.yaml", ROOT / "docs/decision-governance/evidence-register.schema.json"),
+        (ROOT / "docs/decision-governance/phase-decision-gates.yaml", ROOT / "docs/decision-governance/phase-decision-gates.schema.json"),
     ]
     pairs.extend((path, design / "schemas/component-spec.schema.json") for path in (design / "golden-components").glob("*/specification.yaml"))
     pairs.extend((path, design / "schemas/page-spec.schema.json") for path in (design / "golden-pages").glob("*/specification.yaml"))
@@ -211,6 +244,32 @@ def validate_design_manifest() -> None:
         ok(f"manifesto visual: {len(refs)} referências com paths existentes")
 
 
+def validate_brand_state() -> None:
+    path = ROOT / "brand/brand-manifest.yaml"
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    status = data.get("status")
+    identity = data.get("identity", {})
+    temp = data.get("temporary_policy", {})
+    if status == "pending":
+        if any(value is not None for value in identity.values()):
+            fail("brand pendente contém asset aprovado")
+        elif temp.get("mode") != "text_only":
+            fail("brand pendente deve usar mode=text_only")
+        elif temp.get("allow_old_logo") is not False:
+            fail("brand pendente deve bloquear logo antiga")
+        else:
+            ok("identidade visual pendente e limitada a texto")
+    legacy = ROOT / "docs/design-reference/Logo"
+    if legacy.exists() and any(legacy.rglob("*")):
+        fail("diretório legado de logo ainda contém arquivos")
+    else:
+        ok("nenhum asset legado de logo presente")
+    for html in (ROOT / "docs/design-reference/prototypes").glob("*.html"):
+        text = html.read_text(encoding="utf-8", errors="replace")
+        if "brand-mark" in text:
+            fail(f"protótipo ainda usa marca provisória: {html.relative_to(ROOT)}")
+
+
 def validate_hooks() -> None:
     path = ROOT / ".codex/hooks.json"
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -243,6 +302,18 @@ def validate_openspec_state() -> None:
             ROOT / "openspec/specs/pricing-credits-policies/spec.md",
             "document-pricing-credits-policies",
         ),
+        (
+            ROOT / "openspec/changes/document-brand-identity-foundation",
+            ROOT / "openspec/changes/archive/2026-07-27-document-brand-identity-foundation",
+            ROOT / "openspec/specs/brand-identity-foundation/spec.md",
+            "document-brand-identity-foundation",
+        ),
+        (
+            ROOT / "openspec/changes/document-decision-governance",
+            ROOT / "openspec/changes/archive/2026-07-27-document-decision-governance",
+            ROOT / "openspec/specs/decision-governance/spec.md",
+            "document-decision-governance",
+        ),
     ]
     for active, archived, main_spec, name in changes:
         if active.exists():
@@ -256,6 +327,174 @@ def validate_openspec_state() -> None:
             fail(f"mudança arquivada {name} contém tarefas incompletas")
         else:
             ok(f"OpenSpec {name} sincronizado e arquivado")
+
+
+def validate_decision_governance() -> tuple[int, int, int]:
+    base = ROOT / "docs/decision-governance"
+    register = yaml.safe_load((base / "decision-register.yaml").read_text(encoding="utf-8"))
+    evidence_doc = yaml.safe_load((base / "evidence-register.yaml").read_text(encoding="utf-8"))
+    gates = yaml.safe_load((base / "phase-decision-gates.yaml").read_text(encoding="utf-8"))
+
+    decisions = register.get("decisions", [])
+    evidence = evidence_doc.get("evidence", [])
+    phases = gates.get("phases", [])
+    dmap = {item.get("id"): item for item in decisions}
+    emap = {item.get("id"): item for item in evidence}
+    pmap = {item.get("phase_id"): item for item in phases}
+
+    if len(dmap) != len(decisions):
+        fail("decision-register contém IDs DEC duplicados")
+    if len(emap) != len(evidence):
+        fail("evidence-register contém IDs EVID duplicados")
+    if len(pmap) != len(phases):
+        fail("phase-decision-gates contém phase_id duplicado")
+
+    legacy_ids: list[str] = []
+    expected_packages: set[str] = set()
+    package_files = {
+        "00-decision-brief.md",
+        "01-requirements.md",
+        "02-options.md",
+        "03-experiment-plan.md",
+        "04-evidence/README.md",
+        "05-comparison.md",
+        "06-risk-analysis.md",
+        "07-decision-record.md",
+        "08-validation.md",
+    }
+    lifecycle = register.get("lifecycle_order", [])
+    status_rank = gates.get("status_rank", {})
+    evidence_rank = gates.get("evidence_status_rank", {})
+
+    if status_rank.get("SUPERSEDED", 0) >= status_rank.get("DECIDED", 0):
+        fail("SUPERSEDED não pode satisfazer gate ativo por rank")
+    for bad in ("REJECTED", "STALE"):
+        if evidence_rank.get(bad, 0) >= evidence_rank.get("ACCEPTED", 0):
+            fail(f"{bad} não pode satisfazer gate ACCEPTED por rank")
+
+    for decision in decisions:
+        did = decision["id"]
+        legacy_ids.extend(decision.get("legacy_ids", []))
+        phase_id = decision["required_by"]["phase"]
+        if phase_id not in pmap:
+            fail(f"{did} referencia fase sem gate: {phase_id}")
+        for evid in decision.get("required_evidence_ids", []):
+            if evid not in emap:
+                fail(f"{did} referencia evidência ausente: {evid}")
+            elif did not in emap[evid].get("decision_ids", []):
+                fail(f"{did}/{evid} sem referência bidirecional")
+        brief = ROOT / decision["brief"]
+        if not brief.is_file():
+            fail(f"brief ausente para {did}: {decision['brief']}")
+            continue
+        package = brief.parent
+        expected_packages.add(package.name)
+        for rel in package_files:
+            if not (package / rel).is_file():
+                fail(f"pacote incompleto {did}: {rel}")
+        if decision["status"] in {"DECIDED", "IMPLEMENTED", "VALIDATED"}:
+            record = decision.get("decision_record")
+            if not record or not (ROOT / record).is_file():
+                fail(f"{did} está {decision['status']} sem decision_record existente")
+            if not decision.get("implementation_authorized"):
+                fail(f"{did} está {decision['status']} mas implementation_authorized=false")
+        if decision["status"] in {"IMPLEMENTED", "VALIDATED"}:
+            change = decision.get("openspec_change")
+            if not change or not (ROOT / change).exists():
+                fail(f"{did} está {decision['status']} sem OpenSpec existente")
+        if decision["status"] == "VALIDATED":
+            for evid in decision.get("required_evidence_ids", []):
+                if emap[evid]["status"] != "ACCEPTED":
+                    fail(f"{did} VALIDATED com evidência não aceita: {evid}")
+        if decision["status"] not in lifecycle:
+            fail(f"status desconhecido em {did}: {decision['status']}")
+
+    if len(set(legacy_ids)) != len(legacy_ids):
+        fail("IDs PEND legados foram reutilizados")
+    reserved = register.get("legacy_id_policy", {}).get("reserved_legacy_ids", {})
+    for legacy in ("PEND-026", "PEND-027"):
+        if legacy not in reserved:
+            fail(f"ID legado reservado sem justificativa: {legacy}")
+        if legacy in legacy_ids:
+            fail(f"ID legado reservado foi reutilizado: {legacy}")
+
+    packages_root = base / "decisions"
+    actual_packages = {path.name for path in packages_root.glob("DEC-*") if path.is_dir()}
+    extras = sorted(actual_packages - expected_packages)
+    missing = sorted(expected_packages - actual_packages)
+    if extras:
+        fail("pacotes DEC sem registro: " + ", ".join(extras))
+    if missing:
+        fail("registros DEC sem pacote: " + ", ".join(missing))
+
+    for item in evidence:
+        eid = item["id"]
+        for did in item.get("decision_ids", []):
+            if did not in dmap:
+                fail(f"{eid} referencia decisão ausente: {did}")
+            elif eid not in dmap[did].get("required_evidence_ids", []):
+                fail(f"{eid}/{did} sem referência bidirecional")
+        if item["status"] == "ACCEPTED":
+            required = ("artifact_paths", "review_record", "source_commit", "environment", "collected_at")
+            for field in required:
+                if not item.get(field):
+                    fail(f"{eid} ACCEPTED sem {field}")
+            for artifact in item.get("artifact_paths", []):
+                if not (ROOT / artifact).exists():
+                    fail(f"{eid} aponta artefato inexistente: {artifact}")
+            review = item.get("review_record")
+            if review and not (ROOT / review).is_file():
+                fail(f"{eid} aponta review_record inexistente: {review}")
+        if item["status"] == "REJECTED" and not item.get("review_record"):
+            fail(f"{eid} REJECTED sem review_record")
+
+    valid_decision_statuses = set(status_rank)
+    valid_evidence_statuses = set(evidence_rank)
+    for phase in phases:
+        for side in ("entry", "exit"):
+            gate = phase[side]
+            for req in gate.get("decision_requirements", []):
+                if req["decision_id"] not in dmap:
+                    fail(f"gate {phase['phase_id']}:{side} referencia decisão ausente: {req['decision_id']}")
+                if req["minimum_status"] not in valid_decision_statuses:
+                    fail(f"gate {phase['phase_id']}:{side} usa status DEC inválido")
+            for req in gate.get("evidence_requirements", []):
+                if req["evidence_id"] not in emap:
+                    fail(f"gate {phase['phase_id']}:{side} referencia evidência ausente: {req['evidence_id']}")
+                if req["minimum_status"] not in valid_evidence_statuses:
+                    fail(f"gate {phase['phase_id']}:{side} usa status EVID inválido")
+
+    optional = {"DEC-035", "DEC-036", "DEC-037", "DEC-038", "DEC-040"}
+    for phase in phases:
+        if phase["phase_id"].startswith("CORE-"):
+            referenced = {
+                req["decision_id"]
+                for side in ("entry", "exit")
+                for req in phase[side].get("decision_requirements", [])
+            }
+            bad = referenced & optional
+            if bad:
+                fail(f"ferramenta opcional bloqueia Core em {phase['phase_id']}: {', '.join(sorted(bad))}")
+
+    generated = [
+        base / "05-registro-humano-decisoes.md",
+        base / "06-matriz-decisoes-evidencias.md",
+        base / "07-matriz-gates-fases.md",
+        ROOT / "docs/00-visao-geral/09-decisoes-pendentes.md",
+    ]
+    for generated_path in generated:
+        if not generated_path.is_file():
+            fail(f"visão gerada ausente: {generated_path.relative_to(ROOT)}")
+            continue
+        body = generated_path.read_text(encoding="utf-8", errors="replace")
+        if generated_path.name in {"05-registro-humano-decisoes.md", "09-decisoes-pendentes.md"}:
+            absent = [did for did in dmap if did not in body]
+            if absent:
+                fail(f"visão gerada desatualizada {generated_path.relative_to(ROOT)}: {absent[:5]}")
+
+    if not FAILURES:
+        ok(f"governança: {len(decisions)} decisões; {len(evidence)} evidências; {len(phases)} registros de fase/trilha; {len(phases) * 2} lados de gate")
+    return len(decisions), len(evidence), len(phases)
 
 
 def validate_policy_manifest() -> None:
@@ -353,8 +592,10 @@ def main() -> int:
     validate_design_manifest()
     validate_policy_manifest()
     validate_pricing_template()
+    validate_brand_state()
     validate_hooks()
     validate_openspec_state()
+    decision_count, evidence_count, phase_gate_count = validate_decision_governance()
     graph_nodes, graph_edges = validate_graphify()
     validate_no_tracked_generated(paths)
 
@@ -368,6 +609,10 @@ def main() -> int:
         "yaml_files_parsed": yaml_count,
         "json_schema_contracts": schema_count,
         "markdown_links_checked": links,
+        "decision_count": decision_count,
+        "evidence_count": evidence_count,
+        "phase_gate_count": phase_gate_count,
+        "gate_side_count": phase_gate_count * 2,
         "graph_nodes": graph_nodes,
         "graph_edges": graph_edges,
         "failures": len(FAILURES),

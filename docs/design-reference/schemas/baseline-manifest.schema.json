@@ -55,6 +55,9 @@
           },
           "generated_at": {
             "type": "string"
+          },
+          "branding": {
+            "type": "string"
           }
         },
         "additionalProperties": false

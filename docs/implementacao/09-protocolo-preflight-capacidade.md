@@ -1,6 +1,6 @@
 # Protocolo de preflight por capacidade
 
-> Status: canônico. Revisão: 2026-07-20.
+> Status: canônico. Revisão: 2026-07-27.
 
 ## Objetivo
 
@@ -11,7 +11,8 @@ Impedir que uma capability comece por tela, biblioteca ou algoritmo antes de ter
 Cada capacidade deve criar `preflight/<capability>-<version>.md` com:
 
 ```text
-capability e owner
+capability, owner e gate DGATE-*
+IDs DEC-* e EVID-* aplicáveis
 objetivo e não objetivos
 matriz suportada
 operações e níveis de garantia
@@ -25,13 +26,16 @@ estados de frontend e reference_id
 segurança, privacidade, autoria e retenção
 observabilidade, custo e quotas
 feature flag, rollout e rollback
-decisões pendentes
+decisões pendentes e estado mínimo exigido
 ```
 
 ## Gate de entrada
 
+Antes do gate de entrada, consultar `../decision-governance/phase-decision-gates.yaml`.
+
 Não iniciar código quando houver:
 
+- decisão DEC-* abaixo do estado mínimo do gate ou evidência EVID-* ausente;
 - decisão musical ou legal pendente que altere o contrato;
 - corpus sem proveniência/licença;
 - ausência de comportamento fail-closed;

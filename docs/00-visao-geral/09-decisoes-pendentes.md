@@ -1,227 +1,69 @@
-# Decisões pendentes
-
-> Status: canônico. Revisão: 2026-07-20.
-
-A IA não pode decidir os itens abaixo sem aprovação explícita.
-
-## PEND-001 — Engine OMR de produção
-
-Avaliar pelo menos:
-
-- qualidade no corpus do W_Flyer;
-- execução automatizável;
-- isolamento;
-- manutenção;
-- licença e obrigações de distribuição;
-- custo operacional;
-- formato e qualidade do MusicXML exportado.
-
-Candidato de spike: Audiveris. Não é decisão de produção.
-
-## PEND-002 — Engine de renderização
-
-Avaliar CLI/API, determinismo, fontes, licença, consumo de recursos e fidelidade. MuseScore Studio pode ser usado no spike, mas não deve ser acoplado diretamente ao domínio.
-
-## PEND-003 — Limites operacionais
-
-Definir após benchmark:
-
-- tamanho máximo por formato;
-- páginas por PDF;
-- medidas/notas por MusicXML;
-- profundidade/nós XML;
-- tempo por etapa;
-- memória e CPU por worker;
-- jobs simultâneos por sessão/IP.
-
-Antes da decisão, usar limites conservadores em configuração e manter PDF desabilitado.
-
-## PEND-004 — Gate quantitativo de PDF
-
-Definir métricas e limiares mínimos do corpus antes de ativar `pdf_omr`. O gate deve medir estrutura, alturas, ritmos, armaduras, estabilidade e taxa de revisão necessária.
-
-## PEND-005 — Suporte a `.mxl`
-
-Só habilitar após validação de container, prevenção de zip slip/zip bomb, limite de entries, tamanho descompactado e recursos referenciados.
-
-## PEND-006 — Expansão para multiparte/multipauta
-
-Exige UX de seleção de parte, instrumentos por parte, política de pauta/clave e novos testes. Não deve ser implementada como “loop sobre parts”.
-
-## PEND-007 — Baseline de extração de melodia
-
-Comparar regras simbólicas, otimização por caminho e modelos treinados no corpus do W_Flyer. Definir métricas, limiar de ambiguidade e política de confirmação antes de escolher implementação.
-
-## PEND-008 — Perfis harmônicos do primeiro release
-
-Aprovar estilos, modos, cromatismo, condução de vozes, densidade e instrumentos inicialmente suportados. Não habilitar todos os modos apenas porque a escala pode ser enumerada.
-
-## PEND-009 — Engine/solver de harmonização
-
-Decidir entre regras + busca, constraint solver e modelo gerador de candidatos. Avaliar explicabilidade, licença, reprodutibilidade, custo, dados de treino e capacidade de executar localmente.
-
-## PEND-010 — Corpus musical e conselho revisor
-
-Definir músicos responsáveis, protocolo de rotulagem, licenças, independência do conjunto de release e critério de desempate.
-
-## PEND-011 — Infraestrutura de assinatura
-
-Selecionar KMS/HSM, algoritmo, rotação, cadeia de confiança, endpoint de verificação e política após purge.
-
-## PEND-012 — Intensidade e desenho do watermark
-
-Validar por impressão e ensaio: posições, opacidade, repetição, token, perfis preview/final e compatibilidade com acessibilidade.
-
-<!-- CRITICAL-VISION-INTEGRATION-2026-07-20 -->
-
-## PEND-013 — Schema final do grafo semântico
-
-Definir IDs, round trip, relações, eventos de direção, cross-staff, grace/cue/ossia, extensões e política de estabilidade entre revisões.
-
-## PEND-014 — Baseline e aprovação dos golden examples
-
-Aprovar composição, tokens, viewports, estados e screenshots em `../design-reference/`. Protótipos atuais são baseline documental original, não aceite visual de produção.
-
-## PEND-015 — Perfis instrumentais iniciais
-
-Selecionar instrumentos, revisores, ranges absoluto/confortável, polifonia, técnicas, dificuldade por andamento e política de versões.
-
-## PEND-016 — Engine e licenças de áudio
-
-Escolher síntese/samples, licenças de distribuição, normalização de loudness, render offline, latência e suporte mobile.
-
-## PEND-017 — Política de score following
-
-Definir escopo inicial: apenas playback gerado ou também acompanhamento de performance ao vivo. A segunda opção exige pesquisa, microfone, privacidade e benchmark próprios.
-
-## PEND-018 — Métricas de Musical Diff
-
-Definir cobertura mínima de eventos por operação, tolerâncias, categorias de mudança e quais gaps impedem garantia.
-
-## PEND-019 — Gate de tocabilidade e dificuldade
-
-Definir separação entre impossibilidade física, dificuldade, preferência idiomática e nível pedagógico; aprovar por instrumento.
-
-## PEND-020 — Gate de engraving
-
-Definir renderer, fonte, detector de colisões, thresholds de virada, revisão de impressão e matriz de dispositivos.
-
-## PEND-021 — Pacote ensemble inicial
-
-Definir formações, papéis, política de divisi/doubling, score em concerto/escrito, transposição, partes e artefatos.
-
-## PEND-022 — Colaboração e retenção
-
-Definir identidade, convite, revogação, comentários, ETag, auditoria, anonimização, retenção e moderação.
-
-## PEND-023 — Governança de dados para IA
-
-Definir provedores permitidos, localização, retenção zero, uso para treino, consentimento, redaction e avaliação de fornecedores.
-
-## PEND-024 — Protocolo do conselho musical
-
-Definir composição, conflito de interesse, número de revisores, instrumento/estilo, desempate, registro de parecer e validade da aprovação.
-
-## Pendências da visão crítica
-
-As decisões abaixo permanecem abertas e bloqueiam ativação das respectivas capabilities:
-
-- instrumentos e níveis de intérprete do primeiro gate de tocabilidade;
-- política por instrumento para oitava, respiração, double stops, span e técnicas especiais;
-- taxonomia formal/modal e vocabulário de cadências suportado no primeiro analisador;
-- como tratar repertório atonal, politonal, microtonal ou com notação contemporânea;
-- pesos e métricas do benchmark de melodia por família de textura;
-- linguagens harmônicas do primeiro rollout e regras que são hard constraints versus preferências;
-- engine e licença de síntese/sons, além do pacote de samples permitido;
-- estratégia de score following quando há repeats ambíguos ou improvisação;
-- formação inicial do pacote ensemble;
-- modelo de identidade necessário para colaboração e aprovação;
-- composição visual final dos baselines internos após revisão humana;
-- níveis de severidade que podem degradar para warning sem bloquear publicação;
-- owners e datas de revisão de cada risco crítico.
-
-A IA deve registrar essas lacunas em preflight e manter a feature flag desligada.
-
-<!-- TOOLCHAIN-IA-2026-07-21 -->
-
-## Toolchain e ferramentas opcionais
-
-Decisões bloqueadas até spike/ADR:
-
-- manter Celery ou substituir a orquestração por Temporal;
-- adotar ou rejeitar Rive para microilustrações;
-- ativar Pact quando consumidor/provedor tiverem evolução independente;
-- definir escopo e cadência de StrykerJS e mutmut;
-- selecionar typechecker Python definitivo;
-- definir cache remoto Nx e sua política de segurança.
-
-A ausência de decisão mantém a opção desabilitada; não autoriza instalação preventiva.
-
-## PEND-025 — natureza jurídica, CNAEs e regime tributário
-
-Definir somente após abertura planejada e análise contábil. A IA não pode inferir enquadramento a partir do nome dos serviços.
-
-## PEND-026 — provedor do site institucional
-
-Comparar hospedagem gerenciada/static e VPS conforme Next.js, formulários, preview, custo, backup e exportação. O site não deve depender da infraestrutura de produção do SaaS.
-
-## PEND-027 — modelo de hospedagem para clientes
-
-Decidir quando usar conta do cliente, hospedagem gerenciada isolada ou compartilhada de baixo risco. A produção do W_Flyer não pode hospedar clientes.
-
-## PEND-028 — provedor de pagamento
-
-Stripe é candidato preferencial e Mercado Pago é alternativa. A decisão permanece proposta até spike sandbox, análise comercial e validação contábil/jurídica.
-
-## PEND-029 — modelo de planos, créditos e preços
-
-Definir após medir custos reais de CPU, OMR, storage, tráfego, suporte, taxas e tributos. Não publicar quotas arbitrárias.
-
-## PEND-030 — emissor de NFS-e e certificado
-
-Depende de CNPJ, município, inscrição municipal, regime, código de serviço e documentação vigente. Não presumir API estadual da SEFAZ nem tipo de certificado.
-
-## PEND-031 — DNS autoritativo
-
-Decidir entre Registro.br, Cloudflare ou Route 53. O domínio pode continuar no Registro.br independentemente do provedor DNS.
-
-## PEND-032 — broker de produção
-
-Comparar Celery/Redis com SQS/adapters antes da fundação de produção AWS. PostgreSQL permanece fonte de verdade e outbox continua obrigatória.
-
-## PEND-033 — metas comerciais de RPO, RTO e SLO
-
-Os valores preliminares devem ser validados por orçamento e exercícios. Não converter meta interna em SLA antes de comprovação.
-
-## PEND-034 — lifecycle comercial dos créditos
-
-Definir após benchmark e revisão jurídica/comercial:
-
-- validade por tipo de lote;
-- acúmulo mensal;
-- ordem de consumo;
-- trial;
-- tratamento de resultado parcial;
-- upgrade/downgrade;
-- créditos institucionais;
-- relação entre reembolso e crédito consumido.
-
-A ausência de decisão mantém campos `null`/`PENDENTE` e billing desabilitado.
-
-## PEND-035 — aprovação das políticas públicas
-
-Antes de publicar `/politicas`, definir e aprovar:
-
-- razão social, CNPJ, endereço e contatos;
-- versões e datas de vigência;
-- termos de uso;
-- privacidade e inventário de fornecedores;
-- cookies reais;
-- pagamentos, créditos, cancelamento e reembolso;
-- direitos autorais e procedimento de denúncia;
-- uso aceitável;
-- retenção e exclusão;
-- suporte, disponibilidade e incidentes;
-- situações que exigem aceite e novo aceite.
-
-Rascunhos não substituem revisão jurídica nem controles implementados.
+# Decisões pendentes e governança de evidências
+
+> Índice humano GERADO. Fontes canônicas: `../decision-governance/*.yaml`.
+
+A IA não pode transformar opção em decisão sem evidência e aprovação. Fase 0 está arquivada; Fase 1 ainda não começou.
+
+## Registro
+
+| ID | Legado | Decisão | Estado | Fase/gate |
+|---|---|---|---|---|
+| [DEC-001](../decision-governance/decisions/DEC-001-omr-engine/00-decision-brief.md) | PEND-001 | Engine OMR de produção | `REQUIREMENTS_DEFINED` | `P0:exit` |
+| [DEC-002](../decision-governance/decisions/DEC-002-music-renderer/00-decision-brief.md) | PEND-002 | Engine de renderização e engraving | `REQUIREMENTS_DEFINED` | `R0:exit` |
+| [DEC-003](../decision-governance/decisions/DEC-003-operational-limits/00-decision-brief.md) | PEND-003 | Limites operacionais por formato e operação | `REQUIREMENTS_DEFINED` | `CORE-4:exit` |
+| [DEC-004](../decision-governance/decisions/DEC-004-pdf-quantitative-gate/00-decision-brief.md) | PEND-004 | Gate quantitativo para PDF/OMR | `REQUIREMENTS_DEFINED` | `P2:exit` |
+| [DEC-005](../decision-governance/decisions/DEC-005-mxl-support/00-decision-brief.md) | PEND-005 | Suporte a MusicXML comprimido (.mxl) | `IDENTIFIED` | `FUTURE-MXL:entry` |
+| [DEC-006](../decision-governance/decisions/DEC-006-multipart-multistaff/00-decision-brief.md) | PEND-006 | Expansão para multiparte e multipauta | `REQUIREMENTS_DEFINED` | `M0:exit` |
+| [DEC-007](../decision-governance/decisions/DEC-007-melody-extraction-baseline/00-decision-brief.md) | PEND-007 | Baseline de extração de melodia | `REQUIREMENTS_DEFINED` | `L1:exit` |
+| [DEC-008](../decision-governance/decisions/DEC-008-harmonic-profiles/00-decision-brief.md) | PEND-008 | Perfis harmônicos do primeiro release | `REQUIREMENTS_DEFINED` | `H0:exit` |
+| [DEC-009](../decision-governance/decisions/DEC-009-harmony-engine/00-decision-brief.md) | PEND-009 | Engine ou solver de harmonização | `REQUIREMENTS_DEFINED` | `H1:exit` |
+| [DEC-010](../decision-governance/decisions/DEC-010-musical-corpus-council/00-decision-brief.md) | PEND-010 | Corpus musical e conselho revisor | `IDENTIFIED` | `Q0:entry` |
+| [DEC-011](../decision-governance/decisions/DEC-011-signature-infrastructure/00-decision-brief.md) | PEND-011 | Infraestrutura de assinatura e verificação | `IDENTIFIED` | `W2:exit` |
+| [DEC-012](../decision-governance/decisions/DEC-012-watermark-design/00-decision-brief.md) | PEND-012 | Intensidade e desenho do watermark | `REQUIREMENTS_DEFINED` | `W1:exit` |
+| [DEC-013](../decision-governance/decisions/DEC-013-semantic-graph-schema/00-decision-brief.md) | PEND-013 | Schema final do grafo semântico musical | `REQUIREMENTS_DEFINED` | `M0:exit` |
+| [DEC-014](../decision-governance/decisions/DEC-014-golden-examples-approval/00-decision-brief.md) | PEND-014 | Baseline e aprovação dos golden examples | `RESEARCHING` | `FE0:exit` |
+| [DEC-015](../decision-governance/decisions/DEC-015-instrument-profiles/00-decision-brief.md) | PEND-015 | Perfis instrumentais iniciais | `REQUIREMENTS_DEFINED` | `CORE-2:exit` |
+| [DEC-016](../decision-governance/decisions/DEC-016-audio-engine-license/00-decision-brief.md) | PEND-016 | Engine, samples e licenças de áudio | `IDENTIFIED` | `A0:exit` |
+| [DEC-017](../decision-governance/decisions/DEC-017-score-following-policy/00-decision-brief.md) | PEND-017 | Política de score following | `IDENTIFIED` | `A0:exit` |
+| [DEC-018](../decision-governance/decisions/DEC-018-musical-diff-metrics/00-decision-brief.md) | PEND-018 | Métricas e cobertura do Musical Diff | `REQUIREMENTS_DEFINED` | `D0:exit` |
+| [DEC-019](../decision-governance/decisions/DEC-019-playability-gate/00-decision-brief.md) | PEND-019 | Gate de tocabilidade e dificuldade | `REQUIREMENTS_DEFINED` | `T0:exit` |
+| [DEC-020](../decision-governance/decisions/DEC-020-engraving-gate/00-decision-brief.md) | PEND-020 | Gate de engraving e legibilidade | `REQUIREMENTS_DEFINED` | `R1:exit` |
+| [DEC-021](../decision-governance/decisions/DEC-021-ensemble-package/00-decision-brief.md) | PEND-021 | Pacote ensemble inicial | `REQUIREMENTS_DEFINED` | `E0:exit` |
+| [DEC-022](../decision-governance/decisions/DEC-022-collaboration-retention/00-decision-brief.md) | PEND-022 | Colaboração, identidade e retenção | `IDENTIFIED` | `C0:exit` |
+| [DEC-023](../decision-governance/decisions/DEC-023-ai-data-governance/00-decision-brief.md) | PEND-023 | Governança de dados para motores de IA | `REQUIREMENTS_DEFINED` | `AI-PROVIDER:entry` |
+| [DEC-024](../decision-governance/decisions/DEC-024-musical-council-protocol/00-decision-brief.md) | PEND-024 | Protocolo do conselho musical | `IDENTIFIED` | `Q0:exit` |
+| [DEC-025](../decision-governance/decisions/DEC-025-legal-entity-tax-regime/00-decision-brief.md) | PEND-025 | Natureza jurídica, CNAEs e regime tributário | `IDENTIFIED` | `F0:exit` |
+| [DEC-026](../decision-governance/decisions/DEC-026-payment-provider/00-decision-brief.md) | PEND-028 | Provedor de pagamento | `REQUIREMENTS_DEFINED` | `B2:exit` |
+| [DEC-027](../decision-governance/decisions/DEC-027-pricing-credit-model/00-decision-brief.md) | PEND-029 | Modelo de planos, preços e créditos | `REQUIREMENTS_DEFINED` | `B0:exit` |
+| [DEC-028](../decision-governance/decisions/DEC-028-nfse-provider-certificate/00-decision-brief.md) | PEND-030 | Emissor de NFS-e, autenticação e certificado | `IDENTIFIED` | `F1:exit` |
+| [DEC-029](../decision-governance/decisions/DEC-029-authoritative-dns/00-decision-brief.md) | PEND-031 | DNS autoritativo e gestão de domínios | `IDENTIFIED` | `INF0:exit` |
+| [DEC-030](../decision-governance/decisions/DEC-030-production-broker/00-decision-brief.md) | PEND-032 | Broker e orquestração de produção | `REQUIREMENTS_DEFINED` | `INF2:exit` |
+| [DEC-031](../decision-governance/decisions/DEC-031-commercial-slo-rpo-rto/00-decision-brief.md) | PEND-033 | Metas comerciais de SLO, RPO e RTO | `IDENTIFIED` | `INF3:exit` |
+| [DEC-032](../decision-governance/decisions/DEC-032-credit-lifecycle/00-decision-brief.md) | PEND-034 | Lifecycle comercial dos créditos | `REQUIREMENTS_DEFINED` | `B0:exit` |
+| [DEC-033](../decision-governance/decisions/DEC-033-public-policies-approval/00-decision-brief.md) | PEND-035 | Aprovação das políticas públicas | `REQUIREMENTS_DEFINED` | `LAUNCH:entry` |
+| [DEC-034](../decision-governance/decisions/DEC-034-brand-identity/00-decision-brief.md) | PEND-036 | Identidade visual oficial | `RESEARCHING` | `BRAND-0:exit` |
+| [DEC-035](../decision-governance/decisions/DEC-035-celery-temporal-orchestration/00-decision-brief.md) | — | Celery versus Temporal para workflows longos | `IDENTIFIED` | `FUTURE-TEMPORAL:entry` |
+| [DEC-036](../decision-governance/decisions/DEC-036-rive-adoption/00-decision-brief.md) | — | Adoção de Rive para microilustrações | `IDENTIFIED` | `FUTURE-RIVE:entry` |
+| [DEC-037](../decision-governance/decisions/DEC-037-pact-activation/00-decision-brief.md) | — | Ativação de testes de contrato com Pact | `IDENTIFIED` | `FUTURE-PACT:entry` |
+| [DEC-038](../decision-governance/decisions/DEC-038-mutation-testing/00-decision-brief.md) | — | Escopo e cadência de mutation testing | `REQUIREMENTS_DEFINED` | `FUTURE-MUTATION:entry` |
+| [DEC-039](../decision-governance/decisions/DEC-039-python-typechecker/00-decision-brief.md) | — | Typechecker Python definitivo | `IDENTIFIED` | `CORE-1:exit` |
+| [DEC-040](../decision-governance/decisions/DEC-040-nx-remote-cache/00-decision-brief.md) | — | Cache remoto Nx e política de segurança | `IDENTIFIED` | `FUTURE-NX-CACHE:entry` |
+| [DEC-041](../decision-governance/decisions/DEC-041-production-hosting/00-decision-brief.md) | — | Arquitetura final de hospedagem e ambientes | `REQUIREMENTS_DEFINED` | `INF0:exit` |
+| [DEC-042](../decision-governance/decisions/DEC-042-database-production-topology/00-decision-brief.md) | — | Topologia e dimensionamento do banco de produção | `REQUIREMENTS_DEFINED` | `INF2:exit` |
+| [DEC-043](../decision-governance/decisions/DEC-043-security-privacy-production-gate/00-decision-brief.md) | — | Gate de segurança e privacidade para produção | `REQUIREMENTS_DEFINED` | `LAUNCH:entry` |
+| [DEC-044](../decision-governance/decisions/DEC-044-launch-readiness/00-decision-brief.md) | — | Decisão final de lançamento comercial | `IDENTIFIED` | `LAUNCH:exit` |
+| [DEC-045](../decision-governance/decisions/DEC-045-backup-disaster-recovery/00-decision-brief.md) | — | Backup, restore e recuperação de desastre | `REQUIREMENTS_DEFINED` | `INF3:exit` |
+| [DEC-046](../decision-governance/decisions/DEC-046-observability-incident-readiness/00-decision-brief.md) | — | Observabilidade, alertas e prontidão de incidentes | `REQUIREMENTS_DEFINED` | `INF2:exit` |
+| [DEC-047](../decision-governance/decisions/DEC-047-account-organization-model/00-decision-brief.md) | — | Modelo de conta, autenticação e organizações | `REQUIREMENTS_DEFINED` | `B0:entry` |
+
+## IDs legados reservados
+
+- `PEND-026`: site institucional fora deste repositório;
+- `PEND-027`: hospedagem de clientes no planejamento empresarial privado.
+
+## Atualização
+
+```bash
+pnpm run generate:decision-docs
+pnpm run verify:repository
+```

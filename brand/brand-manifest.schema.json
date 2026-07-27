@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wflyer.local/schemas/brand-manifest.schema.json",
+  "type": "object",
+  "required": [
+    "version",
+    "product",
+    "status",
+    "identity",
+    "temporary_policy",
+    "distribution",
+    "approval"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "product": {
+      "const": "W_Flyer"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "approved",
+        "deprecated"
+      ]
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "approved_symbol",
+        "approved_wordmark",
+        "approved_full_logo",
+        "approved_palette",
+        "approved_typography",
+        "approved_favicon"
+      ],
+      "properties": {
+        "approved_symbol": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_wordmark": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_full_logo": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_palette": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_typography": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_favicon": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "naming": {
+      "type": "object"
+    },
+    "temporary_policy": {
+      "type": "object",
+      "required": [
+        "mode",
+        "text_label",
+        "allow_old_logo",
+        "allow_generated_placeholder",
+        "allow_musical_icon_as_logo",
+        "allow_final_favicon"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "text_only",
+            "approved_assets"
+          ]
+        },
+        "text_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allow_old_logo": {
+          "type": "boolean"
+        },
+        "allow_generated_placeholder": {
+          "type": "boolean"
+        },
+        "allow_musical_icon_as_logo": {
+          "type": "boolean"
+        },
+        "allow_final_favicon": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "repository_role": {
+      "type": "object"
+    },
+    "distribution": {
+      "type": "object",
+      "required": [
+        "application_target",
+        "institutional_site_target",
+        "distribute_before_approval"
+      ],
+      "properties": {
+        "application_target": {
+          "type": "string"
+        },
+        "institutional_site_target": {
+          "type": "string"
+        },
+        "distribute_before_approval": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "approval": {
+      "type": "object",
+      "required": [
+        "product_owner",
+        "design_reviewer",
+        "approved_at",
+        "decision_record"
+      ],
+      "properties": {
+        "product_owner": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "design_reviewer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_record": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

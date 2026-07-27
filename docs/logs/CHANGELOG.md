@@ -220,3 +220,52 @@ A entrega é documental. Protótipos e baselines não são código de produção
 ### Limite
 
 O Graphify precisa ser atualizado e o checkpoint Git precisa ser criado na máquina do projeto. Nenhum código funcional foi implementado.
+
+## 2026-07-27 — Estrutura da nova identidade visual
+
+### Adicionado
+
+- diretório raiz `brand/` com fontes, variantes, favicons e diretrizes;
+- manifesto e JSON Schema da identidade;
+- briefing, governança e checklist de aprovação em `docs/brand/`;
+- spec OpenSpec `brand-identity-foundation` e mudança arquivada;
+- validação automática do estado `pending` e bloqueio de assets antigos.
+
+### Alterado
+
+- protótipos e dezoito baselines passaram a usar somente o nome textual `W_Flyer`;
+- README, TREE, AGENTS, índice, hierarquia, sistema visual e validação foram sincronizados;
+- referências ao diretório empresarial privado e ao repositório institucional foram removidas do contexto da aplicação;
+- a mudança ativa duplicada da Fase 0 foi removida porque já existia no arquivo histórico.
+
+### Removido
+
+- sete imagens da logo antiga rejeitada.
+
+### Limite
+
+Nenhuma logo, paleta institucional, tipografia de marca ou favicon foi criada ou aprovada. O Graphify precisa ser atualizado no repositório local.
+
+<!-- DECISION-GOVERNANCE-CHANGELOG:START -->
+## 2026-07-27 — governança de decisões
+
+### Adicionado
+
+- 47 registros `DEC-*` e 48 bundles `EVID-*`;
+- 48 registros de fase/trilha com gates de entrada e saída;
+- pacote documental completo para cada decisão;
+- schemas, gerador de visões humanas e verificador de gates;
+- decisões específicas de backup/DR, observabilidade e contas/organizações.
+
+### Corrigido
+
+- ferramentas opcionais deixaram de bloquear o Core;
+- trilhas antigas `F0`/`I0`/`I2`/`I3` foram normalizadas para `FE0`/`INF0`/`INF2`/`INF3` e tocabilidade para `T0`;
+- IDs legados `PEND-026`/`PEND-027` ficaram reservados sem conflitar com `DEC-026`/`DEC-027`;
+- IA não pode aprovar decisão, aceitar evidência ou habilitar implementação em nome humano;
+- `REJECTED`, `STALE` e `SUPERSEDED` passaram a falhar fechado.
+
+### Limite
+
+OpenSpec documental foi arquivado sem iniciar a Fase 1. Nenhuma decisão pendente foi artificialmente resolvida e nenhum código funcional foi criado.
+<!-- DECISION-GOVERNANCE-CHANGELOG:END -->

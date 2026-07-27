@@ -3,6 +3,7 @@
 Uma tarefa/fase só está concluída quando:
 
 - [ ] comportamento atende escopo e matriz;
+- [ ] DGATE-* aplicável foi atendido e DEC-*/EVID-* foram atualizados;
 - [ ] código de produção, migrations e contratos estão completos;
 - [ ] autorização, validação, erro e observabilidade foram tratados;
 - [ ] regra musical/invariantes afetados possuem testes;
@@ -73,6 +74,7 @@ Uma capability não está concluída enquanto:
 Uma mudança material não está concluída sem:
 
 - OpenSpec atualizado e tarefas com evidência;
+- decisão aprovada não foi confundida com validação pós-implementação;
 - impacto Graphify revisado e grafo atualizado se estrutural;
 - símbolos/consumidores conferidos;
 - dependências externas usadas conforme versão instalada;

@@ -1,0 +1,1066 @@
+schema_version: 1
+updated_at: '2026-07-27'
+status_order:
+- NOT_STARTED
+- PLANNED
+- IN_PROGRESS
+- READY_FOR_REVIEW
+- ACCEPTED
+- REJECTED
+- STALE
+evidence:
+- id: EVID-001
+  title: Corpus e benchmark OMR
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-001
+  - DEC-004
+  required_artifacts:
+  - corpus licenciado e estratificado
+  - anotação de notas, durações, acidentes, armaduras, vozes e estrutura
+  - relatório reproduzível por engine/versão
+  planned_location: decisions/DEC-001-*/04-evidence/
+  owner_role: engineering_lead
+  due_before: P0/P2
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-002
+  title: Revisão de licença, sandbox, segurança e custo OMR
+  status: PLANNED
+  type: review
+  decision_ids:
+  - DEC-001
+  required_artifacts:
+  - licença e distribuição
+  - container sem rede/privilégios
+  - CPU, memória, tempo e custo por página
+  planned_location: decisions/DEC-001-*/04-evidence/
+  owner_role: engineering_lead
+  due_before: P0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-003
+  title: Benchmark de renderer e engraving
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-002
+  - DEC-020
+  required_artifacts:
+  - golden MusicXML/PDF
+  - detector de colisões
+  - impressão e dispositivos
+  - licença/fontes/performance
+  planned_location: decisions/DEC-002-*/04-evidence/
+  owner_role: engineering_lead
+  due_before: R0/R1
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-004
+  title: Benchmark de limites e capacidade
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-003
+  required_artifacts:
+  - arquivos simples, médios, extremos e hostis
+  - CPU/memória/tempo/storage
+  - concorrência e backpressure
+  planned_location: decisions/DEC-003-*/04-evidence/
+  owner_role: platform_lead
+  due_before: CORE-4/CORE-8
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-005
+  title: Relatório quantitativo de habilitação PDF
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-004
+  required_artifacts:
+  - thresholds pré-registrados
+  - métricas estratificadas
+  - false verified rate e review rate
+  planned_location: decisions/DEC-004-*/04-evidence/
+  owner_role: qa_lead
+  due_before: P2
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-006
+  title: Corpus hostil e parser seguro de MXL
+  status: PLANNED
+  type: security-test
+  decision_ids:
+  - DEC-005
+  required_artifacts:
+  - zip slip/zip bomb
+  - limites de entries/tamanho
+  - recursos e caminhos internos
+  planned_location: decisions/DEC-005-*/04-evidence/
+  owner_role: security_lead
+  due_before: FUTURE-MXL
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-007
+  title: Corpus e round trip multiparte/multipauta
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-006
+  required_artifacts:
+  - parts/staves/voices/cross-staff
+  - IDs estáveis
+  - score e partes
+  planned_location: decisions/DEC-006-*/04-evidence/
+  owner_role: music_engineering_lead
+  due_before: M0/M1
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-008
+  title: Corpus anotado e benchmark de melodia
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-007
+  required_artifacts:
+  - rótulos por frase e evento
+  - múltiplos revisores
+  - texturas e cross-staff
+  - calibração de ambiguidade
+  planned_location: decisions/DEC-007-*/04-evidence/
+  owner_role: music_engineering_lead
+  due_before: L0/L1
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-009
+  title: Perfis harmônicos e revisão musical
+  status: PLANNED
+  type: music-review
+  decision_ids:
+  - DEC-008
+  - DEC-009
+  required_artifacts:
+  - linguagens e repertório
+  - hard constraints
+  - cadências/frases/tensão
+  - parecer por estilo
+  planned_location: decisions/DEC-008-*/04-evidence/
+  owner_role: music_director
+  due_before: H0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-010
+  title: Comparativo de motores de harmonização
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-009
+  required_artifacts:
+  - regras/busca/solver/modelo proponente
+  - reprodutibilidade
+  - tocabilidade
+  - avaliação cega/custo/licença
+  planned_location: decisions/DEC-009-*/04-evidence/
+  owner_role: music_engineering_lead
+  due_before: H1-H4
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-011
+  title: Governança do corpus e conselho
+  status: PLANNED
+  type: governance
+  decision_ids:
+  - DEC-010
+  required_artifacts:
+  - proveniência/licenças
+  - separação de conjuntos
+  - rotulagem/desempate
+  - conflitos de interesse
+  planned_location: decisions/DEC-010-*/04-evidence/
+  owner_role: product_owner
+  due_before: Q0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-012
+  title: Spike de assinatura, KMS e verificação
+  status: PLANNED
+  type: spike
+  decision_ids:
+  - DEC-011
+  required_artifacts:
+  - algoritmo/chaves
+  - rotação/revogação
+  - endpoint e pós-purge
+  planned_location: decisions/DEC-011-*/04-evidence/
+  owner_role: security_lead
+  due_before: W2
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-013
+  title: Teste visual, impressão e acessibilidade do watermark
+  status: PLANNED
+  type: user-test
+  decision_ids:
+  - DEC-012
+  required_artifacts:
+  - safe zones
+  - opacidade/repetição
+  - sem PII
+  - ensaio e impressão
+  planned_location: decisions/DEC-012-*/04-evidence/
+  owner_role: design_owner
+  due_before: W1
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-014
+  title: Round trip e estabilidade do grafo semântico
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-013
+  required_artifacts:
+  - schema/versionamento
+  - IDs estáveis
+  - eventos/relações/playback
+  - migração
+  planned_location: decisions/DEC-013-*/04-evidence/
+  owner_role: music_engineering_lead
+  due_before: M0/CORE-3
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-015
+  title: Aprovação humana dos golden examples
+  status: PLANNED
+  type: approval
+  decision_ids:
+  - DEC-014
+  required_artifacts:
+  - reference_id por página/componente
+  - desktop/mobile/zoom/reduced motion
+  - capabilities e brand
+  planned_location: decisions/DEC-014-*/04-evidence/
+  owner_role: design_owner
+  due_before: FE0/CORE-7
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-016
+  title: Fontes e revisão dos perfis instrumentais
+  status: PLANNED
+  type: music-review
+  decision_ids:
+  - DEC-015
+  - DEC-019
+  required_artifacts:
+  - transposição/ranges/tessitura
+  - polifonia/técnicas
+  - revisor por instrumento
+  - fixtures
+  planned_location: decisions/DEC-015-*/04-evidence/
+  owner_role: music_director
+  due_before: CORE-2/T0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-017
+  title: Spike de áudio, samples e licenças
+  status: PLANNED
+  type: spike
+  decision_ids:
+  - DEC-016
+  required_artifacts:
+  - licença
+  - loudness/latência
+  - mobile/render offline
+  - custo
+  planned_location: decisions/DEC-016-*/04-evidence/
+  owner_role: audio_lead
+  due_before: A0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-018
+  title: Benchmark e política de score following
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-017
+  required_artifacts:
+  - repeats/saltos
+  - playback versus performance ao vivo
+  - microfone/privacidade
+  - fallback
+  planned_location: decisions/DEC-017-*/04-evidence/
+  owner_role: audio_lead
+  due_before: A0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-019
+  title: Cobertura e testes do Musical Diff
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-018
+  required_artifacts:
+  - event mapping
+  - categorias/tolerâncias
+  - gaps bloqueantes
+  - metamorphic tests
+  planned_location: decisions/DEC-018-*/04-evidence/
+  owner_role: qa_lead
+  due_before: D0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-020
+  title: Avaliação de tocabilidade por instrumento
+  status: PLANNED
+  type: music-review
+  decision_ids:
+  - DEC-019
+  required_artifacts:
+  - níveis e andamento
+  - respiração/span/registros
+  - severidade e discordância
+  planned_location: decisions/DEC-019-*/04-evidence/
+  owner_role: music_director
+  due_before: T0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-021
+  title: Gate de legibilidade e engraving
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-020
+  required_artifacts:
+  - colisões
+  - viradas/densidade
+  - tela/impressão
+  - watermark
+  planned_location: decisions/DEC-020-*/04-evidence/
+  owner_role: qa_lead
+  due_before: R1
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-022
+  title: Consistência de score, partes e ensemble
+  status: PLANNED
+  type: integration-test
+  decision_ids:
+  - DEC-021
+  required_artifacts:
+  - eventos/IDs
+  - marcas/compassos
+  - transposição
+  - publicação atômica
+  planned_location: decisions/DEC-021-*/04-evidence/
+  owner_role: music_director
+  due_before: E0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-023
+  title: Threat model e teste de colaboração
+  status: PLANNED
+  type: security-test
+  decision_ids:
+  - DEC-022
+  required_artifacts:
+  - convites/revogação/IDOR
+  - ETag/conflitos
+  - retenção/moderação
+  - âncoras
+  planned_location: decisions/DEC-022-*/04-evidence/
+  owner_role: product_owner
+  due_before: C0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-024
+  title: Revisão de fornecedores e dados para IA
+  status: PLANNED
+  type: privacy-review
+  decision_ids:
+  - DEC-023
+  required_artifacts:
+  - DPA/termos/região
+  - retenção/treino
+  - redaction/consentimento
+  - kill switch
+  planned_location: decisions/DEC-023-*/04-evidence/
+  owner_role: privacy_reviewer
+  due_before: AI-PROVIDER
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-025
+  title: Charter e registros do conselho musical
+  status: PLANNED
+  type: approval
+  decision_ids:
+  - DEC-024
+  required_artifacts:
+  - composição/competência
+  - conflito/desempate
+  - parecer/versionamento/validade
+  planned_location: decisions/DEC-024-*/04-evidence/
+  owner_role: product_owner
+  due_before: Q0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-026
+  title: Memorando contábil e jurídico da empresa
+  status: PLANNED
+  type: legal-review
+  decision_ids:
+  - DEC-025
+  - DEC-028
+  required_artifacts:
+  - CNPJ/município/regime
+  - CNAEs/matriz de serviços
+  - inscrições/códigos
+  planned_location: decisions/DEC-025-*/04-evidence/
+  owner_role: business_owner
+  due_before: F0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-027
+  title: Spike sandbox Stripe versus Mercado Pago
+  status: PLANNED
+  type: spike
+  decision_ids:
+  - DEC-026
+  required_artifacts:
+  - checkout/assinatura/Pix/cartão
+  - webhook/idempotência
+  - upgrade/downgrade/reembolso
+  - custos/suporte
+  planned_location: decisions/DEC-026-*/04-evidence/
+  owner_role: billing_lead
+  due_before: B1/B2
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-028
+  title: Modelo de custo e simulação de preços
+  status: PLANNED
+  type: cost-analysis
+  decision_ids:
+  - DEC-027
+  - DEC-032
+  required_artifacts:
+  - custo por operação p50/p95
+  - falha/reprocessamento/storage/tráfego
+  - gateway/tributos/suporte/margem
+  - perfis de uso
+  planned_location: decisions/DEC-027-*/04-evidence/
+  owner_role: product_owner
+  due_before: B0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-029
+  title: Homologação de NFS-e e contingência
+  status: PLANNED
+  type: integration-test
+  decision_ids:
+  - DEC-028
+  required_artifacts:
+  - emissão/consulta/cancelamento
+  - autenticação/certificado
+  - fila/retry/reconciliação
+  planned_location: decisions/DEC-028-*/04-evidence/
+  owner_role: fiscal_lead
+  due_before: F1/F2
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-030
+  title: Análise e exercício de DNS
+  status: PLANNED
+  type: spike
+  decision_ids:
+  - DEC-029
+  required_artifacts:
+  - DNSSEC/MFA
+  - TTL/failover/rollback
+  - custo/automação
+  - runbook
+  planned_location: decisions/DEC-029-*/04-evidence/
+  owner_role: platform_lead
+  due_before: INF0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-031
+  title: Fault injection e custo do broker
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-030
+  required_artifacts:
+  - duplicata/crash/ACK/timeout
+  - DLQ/backpressure/prioridade
+  - durabilidade/custo/operação
+  planned_location: decisions/DEC-030-*/04-evidence/
+  owner_role: platform_lead
+  due_before: INF2
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-032
+  title: Exercício de backup, restore e DR
+  status: PLANNED
+  type: exercise
+  decision_ids:
+  - DEC-031
+  required_artifacts:
+  - PITR/restore
+  - RPO/RTO medidos
+  - runbooks/comunicação
+  - custo
+  planned_location: decisions/DEC-031-*/04-evidence/
+  owner_role: product_owner
+  due_before: INF3
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-033
+  title: Cenários de lifecycle e ledger de créditos
+  status: PLANNED
+  type: integration-test
+  decision_ids:
+  - DEC-032
+  required_artifacts:
+  - reserva/consumo/liberação/expiração
+  - concorrência
+  - refund/chargeback
+  - organizações
+  planned_location: decisions/DEC-032-*/04-evidence/
+  owner_role: billing_lead
+  due_before: B0/B4
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-034
+  title: Revisão jurídica e inventário de controles das políticas
+  status: PLANNED
+  type: legal-review
+  decision_ids:
+  - DEC-033
+  required_artifacts:
+  - dados empresariais
+  - inventário de dados/cookies/fornecedores
+  - controles reais
+  - versão/vigência/aceite
+  planned_location: decisions/DEC-033-*/04-evidence/
+  owner_role: legal_reviewer
+  due_before: LAUNCH
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-035
+  title: Pacote de aprovação da identidade visual
+  status: PLANNED
+  type: approval
+  decision_ids:
+  - DEC-034
+  required_artifacts:
+  - direções e briefing
+  - SVG modular/lockups/favicon
+  - legibilidade/similaridade/licença
+  - aprovação humana
+  planned_location: decisions/DEC-034-*/04-evidence/
+  owner_role: design_owner
+  due_before: BRAND-0
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-036
+  title: Spike Celery versus Temporal
+  status: PLANNED
+  type: spike
+  decision_ids:
+  - DEC-035
+  required_artifacts:
+  - workflow longo
+  - signals/timers/cancelamento
+  - custo/operação/migração
+  planned_location: decisions/DEC-035-*/04-evidence/
+  owner_role: platform_lead
+  due_before: FUTURE-TEMPORAL
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-037
+  title: Protótipo Rive e orçamento de performance
+  status: PLANNED
+  type: spike
+  decision_ids:
+  - DEC-036
+  required_artifacts:
+  - bundle/CPU
+  - reduced motion
+  - ownership visual
+  - acessibilidade
+  planned_location: decisions/DEC-036-*/04-evidence/
+  owner_role: design_owner
+  due_before: FUTURE-RIVE
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-038
+  title: Avaliação de necessidade do Pact
+  status: PLANNED
+  type: analysis
+  decision_ids:
+  - DEC-037
+  required_artifacts:
+  - independência de releases
+  - gaps do OpenAPI
+  - piloto consumidor/provedor
+  - ownership
+  planned_location: decisions/DEC-037-*/04-evidence/
+  owner_role: qa_lead
+  due_before: CORE-8
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-039
+  title: Piloto de mutation testing
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-038
+  required_artifacts:
+  - módulos críticos
+  - tempo/sobreviventes
+  - threshold/cadência
+  planned_location: decisions/DEC-038-*/04-evidence/
+  owner_role: qa_lead
+  due_before: CORE-8
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-040
+  title: Comparativo de typecheckers Python
+  status: PLANNED
+  type: spike
+  decision_ids:
+  - DEC-039
+  required_artifacts:
+  - scaffold real
+  - compatibilidade de libs
+  - tempo e diagnóstico
+  - strictness
+  planned_location: decisions/DEC-039-*/04-evidence/
+  owner_role: backend_lead
+  due_before: CORE-1
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-041
+  title: Análise de cache remoto Nx
+  status: PLANNED
+  type: security-review
+  decision_ids:
+  - DEC-040
+  required_artifacts:
+  - outputs/segredos
+  - acesso/retenção
+  - ganho de CI/custo
+  - fallback
+  planned_location: decisions/DEC-040-*/04-evidence/
+  owner_role: platform_lead
+  due_before: CORE-8
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-042
+  title: Modelo de capacidade, custo e arquitetura de hosting
+  status: PLANNED
+  type: cost-analysis
+  decision_ids:
+  - DEC-041
+  required_artifacts:
+  - cenários de carga
+  - topologia/HA
+  - custos/gatilhos de escala
+  - isolamento/IaC
+  planned_location: decisions/DEC-041-*/04-evidence/
+  owner_role: platform_lead
+  due_before: INF0/INF2
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-043
+  title: Benchmark e failover do PostgreSQL
+  status: PLANNED
+  type: benchmark
+  decision_ids:
+  - DEC-042
+  required_artifacts:
+  - queries/índices/pool
+  - p95/p99/concurrency
+  - PITR/failover
+  - crescimento/custo
+  planned_location: decisions/DEC-042-*/04-evidence/
+  owner_role: database_owner
+  due_before: INF2
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-044
+  title: Pacote de segurança e privacidade de produção
+  status: PLANNED
+  type: security-review
+  decision_ids:
+  - DEC-043
+  required_artifacts:
+  - threat model
+  - testes ofensivos/IDOR/CSRF/upload
+  - dependências/pentest
+  - restore/runbooks/riscos
+  planned_location: decisions/DEC-043-*/04-evidence/
+  owner_role: security_lead
+  due_before: LAUNCH
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-045
+  title: Release Readiness Package
+  status: PLANNED
+  type: approval
+  decision_ids:
+  - DEC-044
+  required_artifacts:
+  - produto/música/QA
+  - infra/custos/security
+  - empresa/billing/fiscal/políticas quando pagos
+  - support/rollback/approvals
+  planned_location: decisions/DEC-044-*/04-evidence/
+  owner_role: product_owner
+  due_before: LAUNCH
+  acceptance: Somente ACEITA após artefatos reproduzíveis, revisão dos aprovadores aplicáveis e registro de versão/ambiente.
+  freshness_policy: Reabrir quando formato, engine, licença, infraestrutura, corpus ou escopo material mudar.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-046
+  title: Exercícios de backup, restore e disaster recovery
+  status: PLANNED
+  type: exercise
+  decision_ids:
+  - DEC-045
+  required_artifacts:
+  - inventário de dados e dependências
+  - restore PostgreSQL/PITR com integridade e tempo
+  - restore S3/objetos/manifests com hashes
+  - simulação regional por IaC
+  - comparação RPO/RTO e plano de correção
+  planned_location: decisions/DEC-045-backup-disaster-recovery/04-evidence/
+  owner_role: platform_lead
+  due_before: INF3
+  acceptance: Somente ACEITA após restore real, revisão dos aprovadores e registro reproduzível de ambiente, tempo,
+    perda e correções.
+  freshness_policy: Reabrir após mudança material de topologia, política de retenção, região, banco, storage ou
+    incidente de recuperação.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-047
+  title: Teste de observabilidade, alertas e resposta a incidentes
+  status: PLANNED
+  type: incident-exercise
+  decision_ids:
+  - DEC-046
+  required_artifacts:
+  - catálogo de SLIs/logs/traces
+  - matriz alerta-owner-runbook
+  - fault injection de API/worker/fila/banco/storage
+  - tabletop de incidente
+  - overhead, cardinalidade, retenção e custo
+  planned_location: decisions/DEC-046-observability-incident-readiness/04-evidence/
+  owner_role: platform_lead
+  due_before: INF2/LAUNCH
+  acceptance: Somente ACEITA quando falhas críticas forem detectadas, escaladas e tratadas em exercício reproduzível
+    sem exposição de dados sensíveis.
+  freshness_policy: Reabrir quando arquitetura, SLO, fornecedores, volume, incidentes ou retenção mudarem.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null
+- id: EVID-048
+  title: Threat model e teste do modelo de conta e organizações
+  status: PLANNED
+  type: security-product-review
+  decision_ids:
+  - DEC-047
+  required_artifacts:
+  - fluxos visitante/conta/organização
+  - migração de ownership anônimo
+  - threat model de autenticação e recuperação
+  - teste de convite/revogação/RBAC
+  - avaliação de privacidade e retenção
+  - teste UX e acessibilidade
+  planned_location: decisions/DEC-047-account-organization-model/04-evidence/
+  owner_role: product_owner
+  due_before: B0
+  acceptance: Somente ACEITA após revisão de segurança, privacidade, produto e teste do fluxo de migração sem perda
+    ou apropriação indevida de recursos.
+  freshness_policy: Reabrir quando métodos de login, organizações, billing, retenção ou ameaças materiais mudarem.
+  artifact_paths: []
+  review_record: null
+  source_commit: null
+  environment: null
+  collected_at: null
+  expires_at: null

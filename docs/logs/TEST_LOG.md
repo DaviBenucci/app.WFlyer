@@ -133,3 +133,69 @@ As correções constam em `FASE-0-CONSOLIDACAO-2026-07-27.md`.
 
 Testes não executados e motivo:
 A atualização do Graphify e a verificação dos MCPs não foram executadas porque essas CLIs não existem no ambiente de revisão. Devem ser executadas na máquina do projeto antes do checkpoint Git.
+
+## 2026-07-27 — Governança de decisões baseada em evidências
+
+Comandos executados:
+
+- `python3 scripts/generate-decision-docs.py`;
+- `python3 scripts/validate-repository.py`;
+- `python3 -m py_compile scripts/*.py`;
+- `bash -n scripts/*.sh`;
+- `python3 scripts/check-decision-gate.py CORE-1 --gate entry`;
+- `python3 scripts/check-decision-gate.py CORE-1 --gate exit`;
+- `python3 scripts/check-decision-gate.py FE0 --gate exit`;
+- `python3 scripts/check-decision-gate.py T0 --gate exit`;
+- `python3 scripts/check-decision-gate.py INF3 --gate exit`;
+- `python3 scripts/check-decision-gate.py FUTURE-MUTATION --gate entry`;
+- `git diff --check`.
+
+Ambiente/versões:
+Ambiente isolado de revisão com Python 3 e dependências de validação. O Graphify presente foi gerado a partir do commit anterior às alterações e não foi aceito como prova de freshness.
+
+Fixtures:
+Não aplicável ao produto. Os registros `DEC-*`, `EVID-*` e `phase-decision-gates.yaml` são os artefatos de entrada da validação documental.
+
+Resultado:
+
+- 47 decisões controladas;
+- 48 bundles de evidência;
+- 48 registros de fase/trilha, totalizando 96 lados de gate (entrada e saída);
+- 47 pacotes de decisão completos, cada um com nove arquivos previstos;
+- 27 contratos JSON Schema validados;
+- 237 links Markdown relativos verificados;
+- zero falhas no validador do repositório;
+- todos os scripts Python compilaram;
+- todos os scripts shell passaram em `bash -n`;
+- `git diff --check` não encontrou erro de whitespace;
+- `CORE-1:entry` retornou sucesso;
+- `CORE-1:exit` permaneceu bloqueado por `DEC-039` e `EVID-040`, como esperado;
+- `FE0:exit` permaneceu bloqueado por `DEC-014` e `EVID-015`, como esperado;
+- `T0:exit` permaneceu bloqueado por `DEC-019`, `EVID-016` e `EVID-020`, como esperado;
+- `INF3:exit` permaneceu bloqueado por `DEC-031`, `DEC-045`, `EVID-032` e `EVID-046`, como esperado;
+- `FUTURE-MUTATION:entry` permaneceu bloqueado por `DEC-038` e `EVID-039`, como esperado;
+- estados `REJECTED`, `STALE` e `SUPERSEDED` foram tratados como incapazes de satisfazer gates ativos.
+
+Falhas encontradas durante a revisão:
+
+- a documentação anterior não possuía registro machine-readable único para owner, aprovadores, evidência e fase limite;
+- ferramentas opcionais poderiam ser interpretadas como bloqueadoras do Core;
+- backup/DR, observabilidade e contas/organizações não possuíam pacotes próprios;
+- as trilhas de frontend, tocabilidade e infraestrutura possuíam IDs antigos (`F0`/`I0`/`I2`/`I3`) em referências humanas;
+- `DEC-019` não listava em seus arquivos humanos a evidência compartilhada `EVID-016`, embora a relação já existisse no registro estruturado;
+- o número de fases estava desatualizado em logs e tarefas OpenSpec.
+
+Correções aplicadas:
+
+- registros canônicos e schemas criados;
+- 47 pacotes completos por decisão gerados;
+- ferramentas opcionais movidas para gates `FUTURE-*`;
+- trilhas normalizadas para `FE`, `T` e `INF`;
+- decisões `DEC-045`, `DEC-046` e `DEC-047` adicionadas;
+- proveniência e freshness tornadas obrigatórias para evidência aceita;
+- `DEC-019` sincronizada com `EVID-016` e `EVID-020`;
+- 48 registros de fase/trilha sincronizados nos gates e nas visões geradas;
+- integração realizada em AGENTS, roadmap, hierarquia, OpenSpec, ADR, guias e logs.
+
+Testes não executados e motivo:
+Não existem implementações de produto para testes de frontend, backend, banco, fila, MusicXML, carga, segurança runtime, billing ou fiscal. O Graphify deve ser atualizado no repositório real após a aplicação desta entrega.

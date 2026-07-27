@@ -1,37 +1,60 @@
 schema: spec-driven
+context: 'Produto: W_Flyer, aplicação web de preparação musical verificável.
 
-context: |
-  Produto: W_Flyer, aplicação web de preparação musical verificável.
   Estado: Fase 0 concluída e arquivada; Fase 1 ainda não iniciada.
+
   MVP Core: MusicXML não comprimido, uma parte e uma pauta, transposição determinística,
+
   verificação independente, processamento assíncrono e sessão anônima privada.
+
   Fora do Core: PDF/OMR, multiparte/multipauta, extração de melodia, adaptação,
+
   harmonização, áudio, ensemble, watermark, login e cobrança até seus gates.
+
   Fonte normativa: docs/ conforme docs/00-visao-geral/08-hierarquia-documental.md.
+
+  Decisões abertas: docs/decision-governance/decision-register.yaml; evidências e gates são bloqueantes.
+
   Backend: Python; API e worker separados; domínio compartilhado em packages/python/.
+
   Frontend: TypeScript/Next.js; sem regra musical canônica no cliente.
+
+  Identidade: logo anterior removida; brand-manifest pendente; usar somente W_Flyer em texto.
+
   Segurança: fail-closed para impacto musical, autorização, integridade e autoria.
+
   Processo: OpenSpec -> Graphify -> Serena -> Context7 externo -> implementação -> testes
+
   -> documentação/logs/Graphify. Nenhuma fase avança automaticamente.
 
+  '
 rules:
   proposal:
-    - Declare a fase e a capability afetadas.
-    - Inclua objetivo, não objetivos, motivação, riscos e rollback.
-    - Não proponha capability fora da matriz de suporte sem ADR e gate.
-    - Identifique decisões pendentes que continuam bloqueadas.
+  - Declare a fase e a capability afetadas.
+  - Inclua objetivo, não objetivos, motivação, riscos e rollback.
+  - Não proponha capability fora da matriz de suporte sem ADR e gate.
+  - Identifique IDs DEC-* e DGATE-* afetados; não proponha implementação quando o gate estiver bloqueado.
+  - Identifique evidências EVID-* ausentes e o owner/approvers necessários.
+  - Execute e registre o gate de entrada da fase; se bloqueado, limite a proposta ao experimento autorizado.
   design:
-    - Cite documentos canônicos e contratos afetados.
-    - Separe comportamento determinístico, inferencial e criativo.
-    - Inclua estados de falha, observabilidade, segurança e estratégia de migração.
-    - Evite duplicação de regra musical entre Python e TypeScript.
+  - Cite documentos canônicos e contratos afetados.
+  - Separe comportamento determinístico, inferencial e criativo.
+  - Inclua estados de falha, observabilidade, segurança e estratégia de migração.
+  - Evite duplicação de regra musical entre Python e TypeScript.
+  - Não invente identidade, logo ou paleta corporativa quando o brand-manifest estiver pendente.
+  - Quando houver decisão aberta, cite o pacote DEC-* e preserve a separação entre experimento, aprovação e implementação.
+  - Diferencie evidência pré-decisão de validação pós-implementação; preserve resultados negativos e freshness.
   specs:
-    - Use requisitos verificáveis e cenários WHEN/THEN.
-    - Defina entradas suportadas, rejeições, invariantes e níveis de garantia.
-    - Inclua cenários de falha, retry, cancelamento, autorização e rollback quando aplicáveis.
-    - Não use linguagem vaga como “inteligente”, “perfeito” ou “automático” sem métrica.
+  - Use requisitos verificáveis e cenários WHEN/THEN.
+  - Defina entradas suportadas, rejeições, invariantes e níveis de garantia.
+  - Inclua cenários de falha, retry, cancelamento, autorização e rollback quando aplicáveis.
+  - Não use linguagem vaga como “inteligente”, “perfeito” ou “automático” sem métrica.
+  - Não converta opção pendente em requisito; use o estado e os critérios do decision-register.
+  - Não trate REJECTED, STALE ou SUPERSEDED como satisfação de gate.
   tasks:
-    - Ordene tarefas por dependência e por gate.
-    - Cada tarefa deve produzir evidência verificável.
-    - Inclua lint, typecheck, testes, documentação e atualização do Graphify.
-    - A última tarefa deve impedir avanço automático para a fase seguinte.
+  - Ordene tarefas por dependência e por gate.
+  - Cada tarefa deve produzir evidência verificável.
+  - Inclua lint, typecheck, testes, documentação e atualização do Graphify.
+  - Inclua atualização/validação de DEC-*, EVID-* e DGATE-* quando a mudança afetar uma decisão.
+  - A última tarefa deve impedir avanço automático para a fase seguinte.
+  - Inclua geração das visões humanas e consulta do gate de saída antes de concluir a fase.

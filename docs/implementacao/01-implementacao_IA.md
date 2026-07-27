@@ -13,7 +13,7 @@ A IA deve seguir a hierarquia documental e o guia canônico. Código existente �
 - implementar o menor corte completo;
 - atualizar contrato/teste/documentação na mesma mudança;
 - registrar evidência e pendências;
-- parar em decisão pendente/contradição.
+- parar em decisão pendente/contradição e informar DEC-*, DGATE-* e EVID-* relacionados.
 
 ## Não inventar
 

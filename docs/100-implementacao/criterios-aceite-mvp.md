@@ -144,3 +144,14 @@ A documentação avançada não expande o aceite do Core. O MVP somente é aprov
 - failure catalog do Core possui owner/teste/evidência para entradas aplicáveis;
 - qualquer exceção desconhecida no pipeline crítico termina sem artefato público;
 - referência visual do Core passou por estados negativos, mobile, zoom e reduced motion.
+
+<!-- DECISION-GOVERNANCE-ACCEPTANCE:START -->
+## Critério de aceite de governança
+
+- [ ] todos os gates de decisão da fase retornam sucesso;
+- [ ] nenhuma evidência requerida está `REJECTED` ou `STALE`;
+- [ ] nenhuma decisão ativa está `SUPERSEDED` sem gate atualizado;
+- [ ] decisões implementadas apontam ADR/MDR/FDR e OpenSpec;
+- [ ] evidências aceitas possuem artefatos, review, commit, ambiente e datas;
+- [ ] Graphify foi atualizado somente depois das fontes canônicas.
+<!-- DECISION-GOVERNANCE-ACCEPTANCE:END -->

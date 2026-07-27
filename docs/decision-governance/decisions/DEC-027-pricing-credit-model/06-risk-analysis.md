@@ -1,0 +1,23 @@
+# Análise de risco — DEC-027
+
+> Estado: `NOT_STARTED`.
+
+## Bloqueadores iniciais
+
+- `BLOCKED_BY_COST_DATA`
+- `BLOCKED_BY_ACCOUNTING_REVIEW`
+- `BLOCKED_BY_LEGAL_REVIEW`
+
+## Avaliação obrigatória
+
+- dano máximo de uma escolha errada;
+- segurança, privacidade, autoria e confiabilidade musical;
+- lock-in, licença, supply chain e obsolescência;
+- custo inicial, recorrente, p95 e de saída;
+- falhas silenciosas, observabilidade e suporte;
+- rollback, kill switch e plano de migração;
+- risco residual e owner.
+
+## Registro
+
+`PENDENTE`
